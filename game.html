@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Play a simple Flappy Bird-style mini game on Tamzid Rahman's 3D animation portfolio.">
+        <meta name="author" content="Tamzid Rahman">
+        <title>Game | Tamzid Rahman</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/bootstrap-icons.css" rel="stylesheet">
+        <link href="css/tamzid-portfolio.css" rel="stylesheet">
+    </head>
+
+    <body>
+
+        <nav class="navbar navbar-expand-lg bg-light shadow-lg">
+            <div class="container">
+                <a class="navbar-brand portfolio-brand" href="index.html">
+                    <img src="images/Tamzid%201.jpg" class="brand-photo" alt="Tamzid Rahman">
+                    <span>Tamzid Rahman<small>3D Animator</small></span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="portfolio.html">Portfolio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="resume.html">Resume</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                        <li class="nav-item ms-lg-3"><a class="nav-link custom-btn custom-border-btn btn" href="contact.html">Hire Me</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="game.html">Game</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <main>
+            <section class="page-hero section-padding section-bg">
+                <div class="container">
+                    <div class="row align-items-center g-4">
+                        <div class="col-lg-8 col-12">
+                            <p class="eyebrow">Game Library</p>
+                            <h1>Choose a Mini Game</h1>
+                            <p>Take a quick creative break. Choose a game from the library and play directly inside the portfolio.</p>
+                        </div>
+                        <div class="col-lg-4 col-12 text-lg-end">
+                            <a href="portfolio.html" class="custom-btn btn">Back to Portfolio</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-padding">
+                <div class="container">
+                    <div class="game-library">
+                        <button class="game-library-card is-active" type="button" data-game-target="flappyGamePanel">
+                            <span class="game-library-icon"><i class="bi-controller"></i></span>
+                            <span><strong>Flappy Render</strong><small>Playable now</small></span>
+                        </button>
+                        <button class="game-library-card" type="button" data-game-target="game2048Panel">
+                            <span class="game-library-icon"><i class="bi-grid-3x3-gap"></i></span>
+                            <span><strong>Poly Merge</strong><small>Playable puzzle</small></span>
+                        </button>
+                        <button class="game-library-card" type="button" data-game-target="keyRushPanel">
+                            <span class="game-library-icon"><i class="bi-keyboard"></i></span>
+                            <span><strong>Key Rush</strong><small>Endless typing</small></span>
+                        </button>
+                    </div>
+
+                    <div class="game-card game-panel" id="flappyGamePanel">
+                        <div class="game-info">
+                            <div>
+                                <p class="eyebrow">How to Play</p>
+                                <h2>Keep the bird flying</h2>
+                                <p>Click, tap, or press Space to flap. Avoid the pipes and try to beat your score.</p>
+                            </div>
+                            <div class="skin-selector" aria-label="Bird skin selector">
+                                <h5>Bird Skins</h5>
+                                <div class="skin-options">
+                                    <button class="skin-option is-active" type="button" data-skin="default">
+                                        <span class="skin-preview skin-preview-default"></span>
+                                        Default
+                                    </button>
+                                    <button class="skin-option" type="button" data-skin="pigeon" data-unlock-score="3">
+                                        <span class="skin-preview skin-preview-pigeon"></span>
+                                        <span class="skin-name">Pigeon</span>
+                                        <span class="skin-lock"><i class="bi-lock-fill"></i> 3</span>
+                                    </button>
+                                    <button class="skin-option" type="button" data-skin="crow" data-unlock-score="3">
+                                        <span class="skin-preview skin-preview-crow"></span>
+                                        <span class="skin-name">Crow</span>
+                                        <span class="skin-lock"><i class="bi-lock-fill"></i> 3</span>
+                                    </button>
+                                    <button class="skin-option" type="button" data-skin="robin" data-unlock-score="5">
+                                        <span class="skin-preview skin-preview-robin"></span>
+                                        <span class="skin-name">Robin</span>
+                                        <span class="skin-lock"><i class="bi-lock-fill"></i> 5</span>
+                                    </button>
+                                    <button class="skin-option" type="button" data-skin="parrot" data-unlock-score="7">
+                                        <span class="skin-preview skin-preview-parrot"></span>
+                                        <span class="skin-name">Parrot</span>
+                                        <span class="skin-lock"><i class="bi-lock-fill"></i> 7</span>
+                                    </button>
+                                    <button class="skin-option" type="button" data-skin="owl" data-unlock-score="10">
+                                        <span class="skin-preview skin-preview-owl"></span>
+                                        <span class="skin-name">Owl</span>
+                                        <span class="skin-lock"><i class="bi-lock-fill"></i> 10</span>
+                                    </button>
+                                    <button class="skin-option" type="button" data-skin="eagle" data-unlock-score="12">
+                                        <span class="skin-preview skin-preview-eagle"></span>
+                                        <span class="skin-name">Eagle</span>
+                                        <span class="skin-lock"><i class="bi-lock-fill"></i> 12</span>
+                                    </button>
+                                    <button class="skin-option" type="button" data-skin="blender" data-unlock-score="15">
+                                        <span class="skin-preview skin-preview-blender"></span>
+                                        <span class="skin-name">Blender</span>
+                                        <span class="skin-lock"><i class="bi-lock-fill"></i> 15</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="game-stats">
+                                <div><strong id="gameScore">0</strong><span>Score</span></div>
+                                <div><strong id="gameBest">0</strong><span>Best</span></div>
+                            </div>
+                        </div>
+                        <div class="game-canvas-wrap">
+                            <canvas id="flappyCanvas" width="420" height="560" aria-label="Flappy Bird style game canvas"></canvas>
+                            <div class="game-overlay" id="gameOverlay">
+                                <h3>Flappy Render</h3>
+                                <p>Click Start, then tap or press Space to fly.</p>
+                                <button class="custom-btn btn" id="startGame" type="button">Start Game</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="game-card game-panel puzzle-game-card" id="game2048Panel" hidden>
+                        <div class="game-info">
+                            <div>
+                                <p class="eyebrow">How to Play</p>
+                                <h2>Merge tiles to reach 2048</h2>
+                                <p>Use arrow keys or the direction buttons. Matching numbers merge together, and your goal is to create the 2048 tile.</p>
+                            </div>
+                            <div class="game-stats game-2048-stats">
+                                <div><strong id="game2048Score">0</strong><span>Score</span></div>
+                                <div><strong id="game2048Best">0</strong><span>Best</span></div>
+                            </div>
+                            <button class="custom-btn btn game-reset-btn" id="game2048New" type="button">New Game</button>
+                        </div>
+                        <div class="game-2048-wrap">
+                            <div class="game-2048-status" id="game2048Status">Join the numbers and keep the board moving.</div>
+                            <div class="game-2048-board" id="game2048Board" role="grid" aria-label="2048 game board" tabindex="0"></div>
+                            <div class="game-2048-controls" aria-label="2048 movement controls">
+                                <button type="button" data-move="up" aria-label="Move up"><i class="bi-arrow-up"></i></button>
+                                <div>
+                                    <button type="button" data-move="left" aria-label="Move left"><i class="bi-arrow-left"></i></button>
+                                    <button type="button" data-move="down" aria-label="Move down"><i class="bi-arrow-down"></i></button>
+                                    <button type="button" data-move="right" aria-label="Move right"><i class="bi-arrow-right"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="game-card game-panel key-rush-card" id="keyRushPanel" hidden>
+                        <div class="game-info">
+                            <div>
+                                <p class="eyebrow">How to Play</p>
+                                <h2>Type before words fall</h2>
+                                <p>Words descend from the top. Type a full word correctly before it reaches the bottom. Special words can heal, freeze, explode, or reward bonus points.</p>
+                            </div>
+                            <div class="game-stats key-rush-stats">
+                                <div><strong id="keyRushScore">0</strong><span>Score</span></div>
+                                <div><strong id="keyRushBest">0</strong><span>Best</span></div>
+                                <div><strong id="keyRushCombo">0</strong><span>Combo</span></div>
+                                <div><strong id="keyRushLives">5</strong><span>Lives</span></div>
+                            </div>
+                            <div class="key-rush-records">
+                                <span>Best Combo <strong id="keyRushBestCombo">0</strong></span>
+                                <span>Words Typed <strong id="keyRushWordsTyped">0</strong></span>
+                                <span>Accuracy <strong id="keyRushAccuracy">100%</strong></span>
+                                <span>Games Played <strong id="keyRushGames">0</strong></span>
+                                <span>Total Destroyed <strong id="keyRushDestroyed">0</strong></span>
+                            </div>
+                            <button class="custom-btn btn game-reset-btn" id="keyRushStart" type="button">Start Key Rush</button>
+                        </div>
+                        <div class="key-rush-wrap">
+                            <div class="key-rush-arena" id="keyRushArena" tabindex="0" aria-label="Key Rush typing game area">
+                                <div class="key-rush-effects" id="keyRushEffects"></div>
+                                <div class="key-rush-overlay" id="keyRushOverlay">
+                                    <strong id="keyRushOverlayTitle">Key Rush</strong>
+                                    <span id="keyRushOverlayText">Tap Start, then type the falling words before they reach the bottom.</span>
+                                </div>
+                                <div class="key-rush-bottom-bar">
+                                    <span id="keyRushStatus">Tap the arena to open keyboard on phone.</span>
+                                    <strong id="keyRushBuffer">Ready</strong>
+                                </div>
+                            </div>
+                            <input class="key-rush-input" id="keyRushInput" type="text" inputmode="text" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Type Key Rush words">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="row align-items-start">
+                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                        <a class="footer-brand" href="index.html">Tamzid Rahman</a>
+                        <p class="text-white-50 mt-3 mb-0">3D Animator focused on character animation, product animation, lighting, materials, and polished visual presentation.</p>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                        <h5 class="site-footer-title mb-3">Quick Links</h5>
+                        <ul class="footer-menu">
+                            <li class="footer-menu-item"><a href="index.html#about" class="footer-menu-link">About</a></li>
+                            <li class="footer-menu-item"><a href="portfolio.html" class="footer-menu-link">Portfolio</a></li>
+                            <li class="footer-menu-item"><a href="resume.html" class="footer-menu-link">Resume</a></li>
+                            <li class="footer-menu-item"><a href="contact.html" class="footer-menu-link">Contact</a></li>
+                            <li class="footer-menu-item"><a href="game.html" class="footer-menu-link">Game</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                        <h5 class="site-footer-title mb-3">Contact Information</h5>
+                        <p class="text-white d-flex mb-2"><i class="bi-telephone me-2"></i><a href="tel:+8801756311044" class="site-footer-link">+880 1756311044</a></p>
+                        <p class="text-white d-flex mb-2"><i class="bi-envelope me-2"></i><a href="mailto:contact.tamzid.me@gmail.com" class="site-footer-link">contact.tamzid.me@gmail.com</a></p>
+                        <p class="text-white d-flex mt-3"><i class="bi-geo-alt me-2"></i>Shibchar, Utrailhat - 7930, Madaripur</p>
+                    </div>
+                </div>
+            </div>
+            <div class="site-footer-bottom">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-7 col-md-7 col-12">
+                            <p class="copyright-text mb-0">Copyright 2026 Tamzid Rahman. Crafted with passion for 3D animation.</p>
+                        </div>
+                        <div class="col-lg-5 col-md-5 col-12 d-flex justify-content-md-end justify-content-start mt-3 mt-md-0">
+                            <ul class="social-icon">
+                                <li class="social-icon-item"><a href="https://www.linkedin.com/in/tamzid-rahman-8a3b2a2a1/" target="_blank" rel="noopener" class="social-icon-link bi-linkedin" aria-label="LinkedIn"></a></li>
+                                <li class="social-icon-item"><a href="https://www.facebook.com/tamzid.rahman.32204" target="_blank" rel="noopener" class="social-icon-link bi-facebook" aria-label="Facebook"></a></li>
+                                <li class="social-icon-item"><a href="https://discord.gg/FM3u83GapS" target="_blank" rel="noopener" class="social-icon-link bi-discord" aria-label="Discord"></a></li>
+                                <li class="social-icon-item"><a href="mailto:contact.tamzid.me@gmail.com" class="social-icon-link bi-envelope" aria-label="Email"></a></li>
+                                <li class="social-icon-item"><a href="tel:+8801756311044" class="social-icon-link bi-telephone" aria-label="Phone"></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/cursor-effect.js"></script>
+        <script src="js/site-animations.js"></script>
+        <script src="js/game-library.js"></script>
+        <script src="js/2048-game.js"></script>
+        <script src="js/key-rush.js"></script>
+        <script src="js/flappy-bird.js"></script>
+
+    </body>
+</html>
