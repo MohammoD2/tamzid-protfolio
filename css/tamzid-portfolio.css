@@ -3985,3 +3985,414 @@ button.form-control:hover {
     animation: none;
   }
 }
+
+
+/* ==================================================
+   TAMZID PORTFOLIO — FLOATING GLASS NAVBAR
+================================================== */
+
+html {
+  scroll-padding-top: 92px;
+}
+
+/* Fixed floating navbar */
+
+.portfolio-floating-navbar {
+  background: transparent !important;
+  box-shadow: none !important;
+  left: 0;
+  padding: 11px 20px 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 1100;
+}
+
+/* Compact glass container */
+
+.portfolio-floating-navbar > .container {
+  align-items: center;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.9),
+      rgba(238, 244, 249, 0.82)
+    );
+  border: 1px solid rgba(59, 93, 125, 0.18);
+  border-radius: 20px;
+  box-shadow:
+    0 14px 36px rgba(16, 32, 51, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  min-height: 62px;
+  padding: 6px 12px 6px 14px;
+  position: relative;
+  transition:
+    background-color 0.35s var(--motion-ease),
+    border-color 0.35s var(--motion-ease),
+    box-shadow 0.35s var(--motion-ease);
+  backdrop-filter: blur(18px) saturate(145%);
+  -webkit-backdrop-filter: blur(18px) saturate(145%);
+}
+
+/* Brand and profile image */
+
+.portfolio-floating-navbar .portfolio-brand {
+  border-radius: 14px;
+  gap: 10px;
+  margin: 0;
+  padding: 2px 7px 2px 1px;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease),
+    transform var(--motion-fast) var(--motion-ease);
+}
+
+.portfolio-floating-navbar .portfolio-brand:hover {
+  background: rgba(59, 93, 125, 0.06);
+  transform: translateY(-1px);
+}
+
+.portfolio-floating-navbar .brand-photo {
+  border: 2px solid rgba(59, 93, 125, 0.22);
+  box-shadow: 0 7px 18px rgba(59, 93, 125, 0.16);
+  height: 42px;
+  transition:
+    border-color var(--motion-fast) var(--motion-ease),
+    box-shadow var(--motion-fast) var(--motion-ease),
+    transform var(--motion-fast) var(--motion-ease);
+  width: 42px;
+}
+
+.portfolio-floating-navbar .portfolio-brand:hover .brand-photo {
+  border-color: rgba(59, 93, 125, 0.42);
+  box-shadow: 0 9px 22px rgba(59, 93, 125, 0.22);
+  transform: scale(1.03);
+}
+
+.portfolio-floating-navbar .portfolio-brand > span:last-child {
+  color: var(--dark-color);
+  font-size: 1.08rem;
+  letter-spacing: -0.025em;
+}
+
+.portfolio-floating-navbar .navbar-brand small {
+  color: var(--primary-color);
+  font-size: 0.62rem;
+  letter-spacing: 0.07em;
+  margin-top: 3px;
+}
+
+/* Navigation links */
+
+.portfolio-floating-navbar .navbar-nav {
+  align-items: center;
+  gap: 2px;
+}
+
+.portfolio-floating-navbar .nav-link {
+  border: 1px solid transparent;
+  border-radius: 11px;
+  color: var(--p-color);
+  font-size: 0.88rem;
+  line-height: 1;
+  margin: 0 1px;
+  padding: 9px 11px !important;
+  position: relative;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease),
+    border-color var(--motion-fast) var(--motion-ease),
+    color var(--motion-fast) var(--motion-ease),
+    transform var(--motion-fast) var(--motion-ease);
+}
+
+.portfolio-floating-navbar .nav-link:hover,
+.portfolio-floating-navbar .nav-link:focus-visible {
+  background: rgba(59, 93, 125, 0.08);
+  border-color: rgba(59, 93, 125, 0.08);
+  color: var(--primary-color);
+  transform: translateY(-1px);
+}
+
+/* Active link and smooth underline */
+
+.portfolio-floating-navbar .nav-link:not(.portfolio-hire-btn)::after {
+  background: var(--primary-color);
+  border-radius: 20px;
+  bottom: 4px;
+  content: "";
+  height: 2px;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  transition: width var(--motion-fast) var(--motion-ease);
+  width: 0;
+}
+
+.portfolio-floating-navbar .nav-link:not(.portfolio-hire-btn):hover::after,
+.portfolio-floating-navbar .nav-link:not(.portfolio-hire-btn):focus-visible::after,
+.portfolio-floating-navbar .nav-link[aria-current="page"]::after {
+  width: 17px;
+}
+
+.portfolio-floating-navbar .nav-link[aria-current="page"] {
+  background: rgba(59, 93, 125, 0.08);
+  color: var(--primary-color);
+}
+
+/* Prevent the older underline system from appearing */
+
+.portfolio-floating-navbar .nav-underline {
+  display: none;
+}
+
+/* Hire Me button */
+
+.portfolio-floating-navbar .portfolio-hire-btn {
+  background:
+    linear-gradient(
+      135deg,
+      #496d8f 0%,
+      var(--primary-color) 48%,
+      #2f4a64 100%
+    );
+  border: 1px solid rgba(47, 74, 100, 0.24);
+  border-radius: 12px;
+  box-shadow:
+    0 7px 18px rgba(47, 74, 100, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  color: var(--white-color) !important;
+  padding: 10px 16px !important;
+}
+
+.portfolio-floating-navbar .portfolio-hire-btn:hover,
+.portfolio-floating-navbar .portfolio-hire-btn:focus-visible {
+  background:
+    linear-gradient(
+      135deg,
+      #547b9f 0%,
+      #3b5d7d 45%,
+      #263f58 100%
+    );
+  border-color: rgba(47, 74, 100, 0.32);
+  box-shadow:
+    0 10px 23px rgba(47, 74, 100, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  color: var(--white-color) !important;
+  transform: translateY(-2px);
+}
+
+.portfolio-floating-navbar .portfolio-hire-btn:active {
+  box-shadow: 0 4px 11px rgba(47, 74, 100, 0.22);
+  transform: translateY(0) scale(0.98);
+}
+
+/* Mobile hamburger button */
+
+.portfolio-floating-navbar .portfolio-navbar-toggler {
+  align-items: center;
+  background: rgba(59, 93, 125, 0.08);
+  border: 1px solid rgba(59, 93, 125, 0.14);
+  border-radius: 12px;
+  height: 40px;
+  justify-content: center;
+  padding: 0;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease),
+    border-color var(--motion-fast) var(--motion-ease),
+    box-shadow var(--motion-fast) var(--motion-ease);
+  width: 40px;
+}
+
+.portfolio-floating-navbar .portfolio-navbar-toggler:hover {
+  background: rgba(59, 93, 125, 0.13);
+  border-color: rgba(59, 93, 125, 0.24);
+}
+
+.portfolio-floating-navbar .portfolio-navbar-toggler:focus {
+  box-shadow: 0 0 0 4px rgba(59, 93, 125, 0.12);
+  outline: none;
+}
+
+/* Animated hamburger lines */
+
+.portfolio-floating-navbar .portfolio-menu-icon,
+.portfolio-floating-navbar .portfolio-menu-icon::before,
+.portfolio-floating-navbar .portfolio-menu-icon::after {
+  background: var(--primary-color);
+  border-radius: 20px;
+  display: block;
+  height: 2px;
+  position: absolute;
+  transition:
+    background-color 0.25s ease,
+    top 0.25s ease,
+    transform 0.25s ease;
+  width: 21px;
+}
+
+.portfolio-floating-navbar .portfolio-menu-icon {
+  position: relative;
+}
+
+.portfolio-floating-navbar .portfolio-menu-icon::before,
+.portfolio-floating-navbar .portfolio-menu-icon::after {
+  content: "";
+  left: 0;
+}
+
+.portfolio-floating-navbar .portfolio-menu-icon::before {
+  top: -6px;
+}
+
+.portfolio-floating-navbar .portfolio-menu-icon::after {
+  top: 6px;
+}
+
+/* Turn hamburger into an X when opened */
+
+.portfolio-floating-navbar
+.portfolio-navbar-toggler[aria-expanded="true"]
+.portfolio-menu-icon {
+  background: transparent;
+}
+
+.portfolio-floating-navbar
+.portfolio-navbar-toggler[aria-expanded="true"]
+.portfolio-menu-icon::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.portfolio-floating-navbar
+.portfolio-navbar-toggler[aria-expanded="true"]
+.portfolio-menu-icon::after {
+  top: 0;
+  transform: rotate(-45deg);
+}
+
+/* Hide hamburger completely on desktop */
+
+@media screen and (min-width: 992px) {
+  .portfolio-floating-navbar .portfolio-navbar-toggler {
+    display: none !important;
+  }
+}
+
+/* Tablet and mobile navbar */
+
+@media screen and (max-width: 991px) {
+  html {
+    scroll-padding-top: 84px;
+  }
+
+  .portfolio-floating-navbar {
+    padding: 9px 10px 0;
+  }
+
+  .portfolio-floating-navbar > .container {
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.95),
+        rgba(238, 244, 249, 0.91)
+      );
+    border-radius: 18px;
+    min-height: 60px;
+    padding: 6px 9px 6px 12px;
+  }
+
+  .portfolio-floating-navbar .portfolio-navbar-toggler {
+    display: inline-flex !important;
+  }
+
+  .portfolio-floating-navbar .navbar-collapse {
+    flex-basis: 100%;
+  }
+
+  .portfolio-floating-navbar .navbar-collapse .navbar-nav {
+    align-items: stretch;
+    border-top: 1px solid rgba(59, 93, 125, 0.12);
+    gap: 3px;
+    margin-top: 8px;
+    padding: 9px 2px 3px;
+  }
+
+  .portfolio-floating-navbar .nav-item {
+    width: 100%;
+  }
+
+  .portfolio-floating-navbar .nav-link {
+    padding: 12px 13px !important;
+    width: 100%;
+  }
+
+  .portfolio-floating-navbar .nav-link:not(.portfolio-hire-btn)::after {
+    bottom: 50%;
+    left: 5px;
+    transform: translateY(50%);
+    width: 0;
+  }
+
+  .portfolio-floating-navbar .nav-link:not(.portfolio-hire-btn):hover::after,
+  .portfolio-floating-navbar .nav-link:not(.portfolio-hire-btn):focus-visible::after,
+  .portfolio-floating-navbar .nav-link[aria-current="page"]::after {
+    height: 18px;
+    width: 2px;
+  }
+
+  .portfolio-floating-navbar .portfolio-hire-btn {
+    margin: 5px 0 2px;
+    padding: 13px 16px !important;
+    text-align: center;
+  }
+}
+
+/* Small phones */
+
+@media screen and (max-width: 575px) {
+  .portfolio-floating-navbar {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 8px;
+  }
+
+  .portfolio-floating-navbar > .container {
+    border-radius: 17px;
+    padding-left: 10px;
+    padding-right: 8px;
+  }
+
+  .portfolio-floating-navbar .brand-photo {
+    height: 38px;
+    width: 38px;
+  }
+
+  .portfolio-floating-navbar .portfolio-brand {
+    gap: 8px;
+  }
+
+  .portfolio-floating-navbar .portfolio-brand > span:last-child {
+    font-size: 0.94rem;
+  }
+
+  .portfolio-floating-navbar .navbar-brand small {
+    font-size: 0.56rem;
+    letter-spacing: 0.06em;
+  }
+
+  .portfolio-floating-navbar .portfolio-navbar-toggler {
+    height: 38px;
+    width: 38px;
+  }
+}
+
+/* Reduce animation when requested by the device */
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-floating-navbar *,
+  .portfolio-floating-navbar *::before,
+  .portfolio-floating-navbar *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
