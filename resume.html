@@ -7,6 +7,21 @@
         <meta name="description" content="Tamzid Rahman is a 3D Animator specializing in product animation, character animation, lighting, materials, and polished visual storytelling.">
         <meta name="author" content="Tamzid Rahman">
         <title>Resume | Tamzid Rahman</title>
+
+        <script>
+            (() => {
+                try {
+                    const savedTheme = localStorage.getItem('tamzid-portfolio-theme');
+                    document.documentElement.setAttribute(
+                        'data-theme',
+                        savedTheme === 'dark' ? 'dark' : 'light'
+                    );
+                } catch (error) {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                }
+            })();
+        </script>
+
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/bootstrap-icons.css" rel="stylesheet">
         <link href="css/tamzid-portfolio.css" rel="stylesheet">
@@ -62,9 +77,26 @@
                         <li class="nav-item ms-lg-2">
                             <a class="nav-link portfolio-hire-btn" href="contact.html">Hire Me</a>
                         </li>
-        
+                        
                         <li class="nav-item">
                             <a class="nav-link" href="game.html">Game</a>
+                        </li>
+                        
+                        <li class="nav-item theme-toggle-item">
+                            <button class="theme-toggle-button"
+                                    type="button"
+                                    data-theme-toggle
+                                    aria-label="Switch to dark mode"
+                                    aria-pressed="false">
+                        
+                                <span class="theme-toggle-track" aria-hidden="true">
+                                    <i class="bi-moon-stars-fill theme-icon theme-icon-moon"></i>
+                                    <i class="bi-sun-fill theme-icon theme-icon-sun"></i>
+                                    <span class="theme-toggle-thumb"></span>
+                                </span>
+                        
+                                <span class="theme-toggle-label">Dark mode</span>
+                            </button>
                         </li>
         
                     </ul>
@@ -306,6 +338,7 @@
 
         <script src="js/bootstrap.min.js"></script>
         <script src="js/cursor-effect.js"></script>
+        <script src="js/theme-toggle.js"></script>
         <script src="js/site-animations.js"></script>
 
     </body>
