@@ -2006,6 +2006,7 @@ body.video-lightbox-open {
   line-height: 1.6;
   overflow: hidden;
   -webkit-box-orient: vertical;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
 }
 
@@ -3644,6 +3645,7 @@ button.form-control:hover {
     display: -webkit-box;
     font-size: 0.78rem;
     -webkit-box-orient: vertical;
+    line-clamp: 2;
     -webkit-line-clamp: 2;
     overflow: hidden;
   }
