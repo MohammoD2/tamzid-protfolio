@@ -23,7 +23,7 @@
               <strong>Course and Project file available on Patreon</strong>
               <span class="video-lightbox-patreon-text">Want to explore the scene setup, files, and extra creative resources?</span>
             </div>
-            <a href="https://patreon.com/10MinuteEditing" target="_blank" rel="noopener">Visit Patreon <i class="bi-box-arrow-up-right"></i></a>
+            <a href="https://patreon.com/AnimatedByTamzid" target="_blank" rel="noopener">Visit Patreon <i class="bi-box-arrow-up-right"></i></a>
           </div>
           <div class="video-lightbox-actions">
             <a href="#" target="_blank" rel="noopener" class="video-lightbox-external">Open on YouTube <i class="bi-box-arrow-up-right"></i></a>
