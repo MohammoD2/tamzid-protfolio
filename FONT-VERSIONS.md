@@ -10,3 +10,5 @@ Classic White is the existing light palette; Midnight Blue is the existing dark 
 Additional color themes can be registered in js/theme-toggle.js with matching CSS palette rules.
 
 Liquid Glass is a light theme defined in css/liquid-glass.css. Its saved theme ID is glass.
+
+Default theme for a first visit or unavailable storage: Liquid Glass. Explicitly saved Classic White/Midnight Blue selections remain respected.

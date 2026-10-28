@@ -7,6 +7,10 @@
         <meta name="description" content="Tamzid Rahman is a 3D Animator specializing in product animation, character animation, lighting, materials, and polished visual storytelling.">
         <meta name="author" content="Tamzid Rahman">
         <title>Projects | Tamzid Rahman</title>
+        <link rel="icon" href="favicon.ico?v=1" sizes="any">
+        <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png?v=1">
+        <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png?v=1">
+        <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png?v=1">
 
         <script>
             (() => {
@@ -14,10 +18,10 @@
                     const savedTheme = localStorage.getItem('tamzid-portfolio-theme');
                     document.documentElement.setAttribute(
                         'data-theme',
-                        ['light', 'dark', 'glass'].includes(savedTheme) ? savedTheme : 'light'
+                        ['light', 'dark', 'glass'].includes(savedTheme) ? savedTheme : 'glass'
                     );
                 } catch (error) {
-                    document.documentElement.setAttribute('data-theme', 'light');
+                    document.documentElement.setAttribute('data-theme', 'glass');
                 }
             })();
         </script>
@@ -29,8 +33,9 @@
         <link href="css/tamzid-portfolio.css" rel="stylesheet">
         <link href="css/theme-picker.css" rel="stylesheet">
         <link href="css/ambient-motion.css?v=4" rel="stylesheet">
-        <link href="css/liquid-glass.css?v=7" rel="stylesheet">
+        <link href="css/liquid-glass.css?v=8" rel="stylesheet">
         <link href="css/quick-actions.css?v=1" rel="stylesheet">
+        <link href="css/projects.css?v=1" rel="stylesheet">
     </head>
 
     <body>
@@ -92,7 +97,27 @@
             </div>
         </nav>
 
-        <main class="min-vh-100" aria-label="Projects"></main>
+        <main class="projects-page" aria-label="Projects">
+            <section class="projects-intro" aria-labelledby="projectsTitle" data-ambient data-wire-shape="cube" data-wire-side="right" data-wire-top="14">
+                <div class="container">
+                    <p class="eyebrow">Project Files &amp; Extras</p>
+                    <h1 id="projectsTitle">Projects are coming soon.</h1>
+                    <p class="projects-intro-copy">A collection of project files, scene breakdowns, and creative resources is on the way.</p>
+                </div>
+            </section>
+            <section class="projects-patreon-section" aria-labelledby="projectsPatreonTitle" data-ambient>
+                <div class="container">
+                    <div class="portfolio-cta-card projects-patreon-card">
+                        <div>
+                            <p class="eyebrow">Explore in the meantime</p>
+                            <h2 id="projectsPatreonTitle">Discover more on Patreon</h2>
+                            <p>Browse my available project files and creative extras on Patreon.</p>
+                        </div>
+                        <a class="custom-btn btn" href="https://www.patreon.com/c/AnimatedByTamzid" target="_blank" rel="noopener">Visit Patreon <i class="bi-box-arrow-up-right ms-2" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </section>
+        </main>
 
         <footer class="site-footer">
             <div class="container">
@@ -114,10 +139,10 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-12 mb-4">
                         <h5 class="site-footer-title mb-3">Contact Information</h5>
-                        <p class="text-white d-flex mb-2"><i class="bi-telephone me-2"></i><a href="tel:+8801756311044" class="site-footer-link">+880 1756311044</a></p>
+                        <p class="text-white d-flex mb-2"><i class="bi-whatsapp me-2"></i><a href="https://wa.me/8801756311044" target="_blank" rel="noopener" class="site-footer-link" aria-label="Chat on WhatsApp">+880 1756311044</a></p>
                         <p class="text-white d-flex mb-2"><i class="bi-envelope me-2"></i><a href="mailto:contact.tamzid.me@gmail.com" class="site-footer-link">contact.tamzid.me@gmail.com</a></p>
                         <p class="text-white d-flex mb-2"><i class="bi-youtube me-2"></i><a href="https://www.youtube.com/@AnimatedByTamzid" target="_blank" rel="noopener" class="site-footer-link">YouTube Channel</a></p>
-                        <p class="text-white d-flex mt-3"><i class="bi-geo-alt me-2"></i>Shibchar, Utrailhat - 7930, Madaripur</p>
+                        <p class="text-white d-flex mt-3"><i class="bi-geo-alt me-2"></i>Dhaka, Bangladesh</p>
                     </div>
                 </div>
             </div>
@@ -134,7 +159,7 @@
                                 <li class="social-icon-item"><a href="https://discord.gg/FM3u83GapS" target="_blank" rel="noopener" class="social-icon-link bi-discord" aria-label="Discord"></a></li>
                                 <li class="social-icon-item"><a href="https://www.youtube.com/@AnimatedByTamzid" target="_blank" rel="noopener" class="social-icon-link bi-youtube" aria-label="YouTube channel"></a></li>
                                 <li class="social-icon-item"><a href="mailto:contact.tamzid.me@gmail.com" class="social-icon-link bi-envelope" aria-label="Email"></a></li>
-                                <li class="social-icon-item"><a href="tel:+8801756311044" class="social-icon-link bi-telephone" aria-label="Phone"></a></li>
+                                <li class="social-icon-item"><a href="https://wa.me/8801756311044" target="_blank" rel="noopener" class="social-icon-link bi-whatsapp" aria-label="WhatsApp"></a></li>
                             </ul>
                         </div>
                     </div>
@@ -158,10 +183,10 @@
         <script src="js/bootstrap.min.js"></script>
         <script src="js/quick-actions.js?v=1"></script>
         <script src="js/cursor-effect.js"></script>
-        <script src="js/theme-toggle.js?v=5"></script>
-        <script src="js/glass-materials.js?v=4"></script>
+        <script src="js/theme-toggle.js?v=6"></script>
+        <script src="js/glass-materials.js?v=5"></script>
         <script src="js/site-animations.js?v=3"></script>
-        <script src="js/ambient-motion.js?v=5"></script>
+        <script src="js/ambient-motion.js?v=6"></script>
 
     </body>
 </html>

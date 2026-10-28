@@ -1,0 +1,18 @@
+/* Projects placeholder: a clear announcement and one horizontal Patreon card. */
+.projects-page { display: flex; flex-direction: column; min-height: 100svh; padding-top: 90px; }
+.projects-intro { display: flex; align-items: center; flex: 1; text-align: center; padding: 90px 0 76px; }
+.projects-intro h1 { max-width: 1040px; margin: 0 auto 26px; font-size: clamp(2.6rem,6.3vw,5.5rem); font-weight: 800; line-height: 1.08; }
+.projects-intro-copy { max-width: 610px; margin: 0 auto; font-size: 1.05rem; line-height: 1.8; }
+.projects-patreon-section { padding-bottom: 76px; }
+.projects-patreon-card { display: flex; align-items: center; justify-content: space-between; gap: 30px; padding: 34px 38px; }
+.projects-patreon-card .eyebrow { margin-bottom: 10px; font-size: .72rem; }
+.projects-patreon-card h2 { font-size: clamp(1.6rem,3vw,2.1rem); margin-bottom: 12px; }
+.projects-patreon-card p:last-child { margin-bottom: 0; }
+.projects-patreon-card .custom-btn { flex-shrink: 0; min-height: 44px; white-space: nowrap; }
+@media (max-width: 767px) {
+  .projects-page { padding-top: 84px; }
+  .projects-intro { padding: 75px 0 54px; }
+  .projects-intro-copy { font-size: .95rem; }
+  .projects-patreon-section { padding-bottom: 54px; }
+  .projects-patreon-card { flex-direction: column; align-items: flex-start; gap: 24px; padding: 27px 24px; }
+}

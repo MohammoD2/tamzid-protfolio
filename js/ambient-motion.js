@@ -1,5 +1,5 @@
 (() => {
-  const sections = [...document.querySelectorAll('main > section.portfolio-hero, main > section.section-padding')];
+  const sections = [...document.querySelectorAll('main > section.portfolio-hero, main > section.section-padding, main > section[data-ambient]')];
   if (!sections.length) return;
   const random = (min, max) => min + Math.random() * (max - min);
   const shapes = [

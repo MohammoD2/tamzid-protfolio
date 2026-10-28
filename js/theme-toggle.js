@@ -7,7 +7,7 @@
     { id: 'dark', name: 'Midnight Blue', description: 'Deep blue with soft, elegant contrast.', preview: 'dark' },
     { id: 'glass', name: 'Liquid Glass', description: 'Sunlit color, luminous edges, and clear glass.', preview: 'glass' }
   ];
-  const normalizeTheme = (id) => themes.some((theme) => theme.id === id) ? id : 'light';
+  const normalizeTheme = (id) => themes.some((theme) => theme.id === id) ? id : 'glass';
   const readSavedTheme = () => {
     try { return localStorage.getItem(storageKey); } catch { return null; }
   };
@@ -100,7 +100,7 @@
       if (event.key === storageKey || event.key === null) applyTheme(readSavedTheme());
     });
     // Reflections follow a fine pointer; touch receives a small elastic press.
-    const glassControls = '[data-glass-surface]';
+    const glassControls = '[data-glass-surface]:not([data-glass-surface=link])';
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     let reflectionFrame = null;
     let reflectionTarget, pointerX, pointerY;

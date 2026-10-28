@@ -226,8 +226,8 @@ html[data-theme="glass"] .experience-metrics > div { padding: 17px 19px; }
 html[data-theme="glass"] .experience-metrics strong { margin-bottom: 5px; }
 html[data-theme="glass"] .experience-metrics span { font-weight: 500; line-height: 1.4; }
 html[data-theme="glass"] .resume-sidebar { padding: 20px; }
-html[data-theme="glass"] .resume-sidebar-section { --glass-fill: .22; margin: 0; padding: 20px; }
-html[data-theme="glass"] .resume-sidebar-section + .resume-sidebar-section { margin-top: 16px; border-top: 1px solid rgba(255,255,255,.9); padding-top: 20px; }
+html[data-theme="glass"] .resume-sidebar-section { margin: 0; padding: 4px 2px; background: none; border: 0; border-radius: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+html[data-theme="glass"] .resume-sidebar-section + .resume-sidebar-section { margin-top: 26px; border-top: 1px solid rgba(89,93,118,.16); padding-top: 24px; }
 html[data-theme="glass"] .resume-sidebar-section h4 { color: #15161b; font-size: 1.2rem; font-weight: 600; margin-bottom: 17px; }
 html[data-theme="glass"] .resume-sidebar-section .tag-cloud { gap: 8px; }
 html[data-theme="glass"] .resume-sidebar-section .tag-cloud span { padding: 8px 11px; font-size: .75rem; line-height: 1.5; font-weight: 500; }
@@ -248,16 +248,33 @@ html[data-theme="glass"] .video-lightbox-patreon span { color: #45464d; font-wei
 html[data-theme="glass"] .youtube-fallback > strong,
 html[data-theme="glass"] .youtube-fallback > span { color: #fff; }
 
-/* The footer links form a small set of colored glass capsules. */
-html[data-theme="glass"] .footer-menu { display: flex; flex-wrap: wrap; column-count: auto; gap: 10px; }
+/* Broad, softly blended color belongs to the footer surface, not link buttons. */
+html[data-theme="glass"] .site-footer {
+  background:
+    radial-gradient(ellipse at 7% 0%,rgba(255,201,178,.5),transparent 53%),
+    radial-gradient(ellipse at 43% 5%,rgba(191,178,239,.44),transparent 56%),
+    radial-gradient(ellipse at 100% 40%,rgba(146,225,214,.48),transparent 56%),
+    radial-gradient(ellipse at 65% 100%,rgba(169,198,242,.48),transparent 57%),
+    linear-gradient(135deg,rgba(249,247,252,.8),rgba(231,241,248,.8));
+  border-top: 1px solid rgba(255,255,255,.8);
+}
+html[data-theme="glass"] .site-footer-bottom { background: rgba(255,255,255,.16); }
+html[data-theme="glass"] .footer-menu { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); column-count: auto; gap: 10px 20px; }
 html[data-theme="glass"] .footer-menu-item { margin: 0; }
-html[data-theme="glass"] .site-footer .footer-menu-link { display: inline-flex; align-items: center; justify-content: center; min-height: 36px; border-radius: 999px; padding: 8px 14px; color: #24252b !important; font-size: .82rem; font-weight: 500; line-height: 1.4; text-decoration: none; }
-html[data-theme="glass"] .site-footer .footer-menu-link:hover { transform: translateY(-2px); }
+html[data-theme="glass"] .site-footer .footer-menu-link {
+  display: inline; min-height: 0; min-width: 0; height: auto; padding: 0;
+  background: transparent !important; border: 0; border-radius: 0; box-shadow: none;
+  -webkit-backdrop-filter: none; backdrop-filter: none; transform: none !important;
+  color: #34353c !important; font-size: .9rem; font-weight: 400; line-height: 1.6;
+  text-decoration: none; transition: color .2s ease;
+}
+html[data-theme="glass"] .site-footer .footer-menu-link:hover { color: #111216 !important; text-decoration: underline; text-underline-offset: 4px; }
+
 @media (max-width: 575px) {
   html[data-theme="glass"] .service-breakdown-grid { gap: 12px; }
   html[data-theme="glass"] .service-breakdown-grid > div { padding: 18px; }
   html[data-theme="glass"] .resume-sidebar { padding: 14px; }
-  html[data-theme="glass"] .resume-sidebar-section { padding: 17px; }
+  html[data-theme="glass"] .resume-sidebar-section { padding: 4px 2px; }
   html[data-theme="glass"] .video-lightbox-details { padding: 20px 18px; }
   html[data-theme="glass"] .video-lightbox-external { padding: 11px 16px; }
 }
