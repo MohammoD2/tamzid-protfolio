@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Play a simple Flappy Bird-style mini game on Tamzid Rahman's 3D animation portfolio.">
+        <meta name="description" content="Play Chess against a strong computer or a friend, plus Flappy Render, Poly Merge, and Key Rush.">
         <meta name="author" content="Tamzid Rahman">
         <title>Game | Tamzid Rahman</title>
         <link rel="icon" href="favicon.ico?v=1" sizes="any">
@@ -36,6 +36,7 @@
         <link href="css/liquid-glass.css?v=8" rel="stylesheet">
         <link href="css/quick-actions.css?v=1" rel="stylesheet">
         <link href="css/experience-polish.css?v=1" rel="stylesheet">
+        <link href="css/chess-game.css?v=2" rel="stylesheet">
     </head>
 
     <body>
@@ -126,6 +127,10 @@
                         <button class="game-library-card" type="button" data-game-target="keyRushPanel">
                             <span class="game-library-icon"><i class="bi-keyboard"></i></span>
                             <span><strong>Key Rush</strong><small>Endless typing</small></span>
+                        </button>
+                        <button class="game-library-card" type="button" data-game-target="chessGamePanel">
+                            <span class="game-library-icon chess-library-icon" aria-hidden="true">♞</span>
+                            <span><strong>Chess</strong><small>Computer or two players</small></span>
                         </button>
                     </div>
 
@@ -220,6 +225,53 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="game-card game-panel chess-game-card" id="chessGamePanel" hidden>
+                        <div class="game-info chess-info">
+                            <div>
+                                <p class="eyebrow">A Game of Strategy</p>
+                                <h2>Your next challenge.</h2>
+                                <p>Take on a strong computer or share the board with a friend. Select a piece, then its destination.</p>
+                            </div>
+                            <div class="chess-settings">
+                                <span class="chess-label" id="chessModeLabel">Play against</span>
+                                <div class="chess-modes" role="group" aria-labelledby="chessModeLabel">
+                                    <button type="button" data-chess-mode="computer" data-glass-surface="control" data-glass-tint="blue" aria-pressed="true">Computer <span>Hard</span></button>
+                                    <button type="button" data-chess-mode="local" data-glass-surface="control" data-glass-tint="violet" aria-pressed="false">2 Players</button>
+                                </div>
+                                <p class="chess-mode-note" id="chessModeNote">You play White. The computer plays Black.</p>
+                                <div class="chess-status-box" role="status" aria-live="polite" aria-atomic="true">
+                                    <span class="chess-label">On the board</span>
+                                    <strong id="chessStatus">White to play</strong>
+                                </div>
+                                <div class="chess-actions">
+                                    <button class="custom-btn btn" id="chessNew" type="button">New game</button>
+                                    <button class="chess-secondary-btn" id="chessUndo" type="button" disabled><i class="bi-arrow-counterclockwise" aria-hidden="true"></i> Undo</button>
+                                    <button class="chess-secondary-btn" id="chessFlip" type="button"><i class="bi-arrow-repeat" aria-hidden="true"></i> Flip board</button>
+                                </div>
+                                <button class="chess-secondary-btn" id="chessRetry" type="button" hidden>Retry computer</button>
+                            </div>
+                        </div>
+                        <div class="chess-play-area">
+                            <div class="chess-player"><span class="chess-player-disc chess-player-black" aria-hidden="true"></span><strong id="chessTopPlayer">Computer</strong><span id="chessOpponentBadge">Hard</span></div>
+                            <div class="chess-board-frame">
+                                <div class="chess-board" id="chessBoard" role="group" aria-label="Chess board. Select a piece and then a destination. Arrow keys navigate squares."></div>
+                            </div>
+                            <div class="chess-player"><span class="chess-player-disc chess-player-white" aria-hidden="true"></span><strong id="chessBottomPlayer">You</strong><span id="chessBottomColor">White</span></div>
+                            <p class="chess-board-note">White moves first · All standard chess rules</p>
+                        </div>
+                        <dialog class="chess-promotion" id="chessPromotion" aria-labelledby="chessPromotionTitle">
+                            <h3 id="chessPromotionTitle">Promote your pawn</h3>
+                            <p>Choose your new piece.</p>
+                            <div class="chess-promotion-options">
+                                <button type="button" data-promote="q">Queen</button>
+                                <button type="button" data-promote="r">Rook</button>
+                                <button type="button" data-promote="b">Bishop</button>
+                                <button type="button" data-promote="n">Knight</button>
+                            </div>
+                            <button class="chess-secondary-btn" id="chessPromotionCancel" type="button">Cancel</button>
+                        </dialog>
                     </div>
 
                     <div class="game-card game-panel key-rush-card" id="keyRushPanel" hidden>
@@ -333,7 +385,8 @@
         <script src="js/game-library.js"></script>
         <script src="js/2048-game.js"></script>
         <script src="js/key-rush.js"></script>
-        <script src="js/flappy-bird.js"></script>
+        <script src="js/flappy-bird.js?v=3"></script>
+        <script type="module" src="js/chess-game.js?v=1"></script>
 
     </body>
 </html>

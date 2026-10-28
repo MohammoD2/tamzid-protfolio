@@ -19,6 +19,7 @@
   canvas.height = height * pixelRatio;
   canvas.style.width = '100%';
   canvas.style.height = 'auto';
+  canvas.style.touchAction = 'none';
   ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
@@ -26,9 +27,14 @@
   const groundHeight = 70;
   const pipeWidth = 70;
   const gapHeight = 190;
-  const gravity = 0.24;
-  const flapPower = -6.2;
-  const pipeSpeed = 1.85;
+  const gravity = 0.5;
+  const flapPower = -7.2;
+  const maxFallSpeed = 11;
+  const physicsStep = 1000 / 120;
+  // Speeds are pixels per 60 Hz frame; acceleration is per second of play.
+  const initialPipeSpeed = 2.35;
+  const maxPipeSpeed = 4.5;
+  const pipeAcceleration = 0.025;
   const pipeSpacing = 310;
   const blenderLogo = new Image();
   blenderLogo.src = 'images/Blender_logo_no_text.svg.png';
@@ -45,6 +51,9 @@
   let selectedSkin = localStorage.getItem('tamzidFlappySkin') || 'default';
   let gameState = 'ready';
   let animationFrame;
+  let elapsedTime;
+  let previousFrameTime;
+  let physicsAccumulator;
 
   bestEl.textContent = best;
 
@@ -83,6 +92,9 @@
 
     pipes = [];
     score = 0;
+    elapsedTime = 0;
+    previousFrameTime = null;
+    physicsAccumulator = 0;
     scoreEl.textContent = score;
 
     for (let i = 0; i < 2; i += 1) {
@@ -455,13 +467,17 @@
     });
   };
 
-  const update = () => {
-    bird.velocity += gravity;
-    bird.y += bird.velocity;
-    bird.rotation = Math.max(-0.45, Math.min(0.85, bird.velocity * 0.08));
+  const update = (frameScale) => {
+    elapsedTime += frameScale / 60;
+    const pipeSpeed = Math.min(maxPipeSpeed, initialPipeSpeed + elapsedTime * pipeAcceleration);
+    const previousVelocity = bird.velocity;
+    bird.velocity = Math.min(maxFallSpeed, bird.velocity + gravity * frameScale);
+    bird.y += (previousVelocity + bird.velocity) * 0.5 * frameScale;
+    const targetRotation = Math.max(-0.45, Math.min(1.2, bird.velocity * 0.1));
+    bird.rotation += (targetRotation - bird.rotation) * (1 - Math.exp(-0.22 * frameScale));
 
     pipes.forEach((pipe) => {
-      pipe.x -= pipeSpeed;
+      pipe.x -= pipeSpeed * frameScale;
 
       if (!pipe.passed && pipe.x + pipeWidth < bird.x) {
         pipe.passed = true;
@@ -480,8 +496,16 @@
     }
   };
 
-  const loop = () => {
-    update();
+  const loop = (timestamp) => {
+    // Fixed physics steps keep flight and collisions consistent across refresh rates.
+    // Limit catch-up time so returning to a hidden tab cannot cause a large jump.
+    const frameTime = previousFrameTime === null ? 1000 / 60 : Math.max(0, Math.min(timestamp - previousFrameTime, 1000 / 30));
+    previousFrameTime = timestamp;
+    physicsAccumulator += frameTime;
+    while (physicsAccumulator >= physicsStep && gameState === 'playing') {
+      update(physicsStep / (1000 / 60));
+      physicsAccumulator -= physicsStep;
+    }
     draw();
 
     if (gameState === 'playing') {
@@ -508,7 +532,7 @@
     gameState = 'playing';
     overlay.classList.add('is-hidden');
     flap();
-    loop();
+    animationFrame = requestAnimationFrame(loop);
   };
 
   const endGame = () => {
@@ -543,18 +567,23 @@
     });
   });
 
-  canvas.addEventListener('click', flap);
-  canvas.addEventListener('touchstart', (event) => {
+  canvas.addEventListener('pointerdown', (event) => {
+    if (!event.isPrimary || event.button !== 0) {
+      return;
+    }
     event.preventDefault();
     flap();
-  }, { passive: false });
+  });
 
   window.addEventListener('keydown', (event) => {
-    if (event.code !== 'Space') {
+    if (event.code !== 'Space' || canvas.closest('.game-panel')?.hidden) {
       return;
     }
 
     event.preventDefault();
+    if (event.repeat) {
+      return;
+    }
     flap();
   });
 

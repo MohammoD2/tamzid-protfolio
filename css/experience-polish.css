@@ -44,9 +44,6 @@ html body :is(.custom-btn,.social-icon-link,.review-filter-btn,.add-review-btn,.
 :is(a,button,input,textarea,select,[role="button"],summary):focus-visible { outline: 2px solid #7b91b6; outline-offset: 4px; }
 ::selection { background: #c8d9e9; color: #192c43; }
 
-.hero-image-slider.carousel-fade .carousel-item { transition: opacity .85s ease-in-out; }
-.hero-image-slider .carousel-item img { transition: transform 7s linear; }
-.hero-image-slider .carousel-indicators [data-bs-target] { min-height: 6px; border-block: 10px solid transparent; background-clip: padding-box; }
 .ambient-layer { opacity: .72; }
 .ambient-motif { animation-duration: 16s; }
 .ambient-flat { opacity: .5; }
