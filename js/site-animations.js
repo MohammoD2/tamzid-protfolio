@@ -1,5 +1,6 @@
 (() => {
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const reducedMotion = motionPreference.matches;
   const animatedItems = document.querySelectorAll([
     '.profile-card',
     '.hero-slider-card',
@@ -149,29 +150,58 @@
     return;
   }
 
-  animatedItems.forEach((item, index) => {
+  // Reveal outer cards only; nested content moves with its parent.
+  const itemSet = new Set(animatedItems);
+  const outerItems = [...animatedItems].filter((item) => {
+    for (let parent = item.parentElement; parent; parent = parent.parentElement) {
+      if (itemSet.has(parent)) return false;
+    }
+    return true;
+  });
+  outerItems.forEach((item) => {
     item.classList.add('reveal-on-scroll');
-    item.style.setProperty('--reveal-delay', `${Math.min(index % 4, 3) * 90}ms`);
   });
 
   if (!('IntersectionObserver' in window)) {
-    animatedItems.forEach((item) => item.classList.add('is-revealed'));
+    outerItems.forEach((item) => item.classList.remove('reveal-on-scroll'));
     return;
   }
 
+  const reveals = new Set();
   const observer = new IntersectionObserver((entries) => {
+    let stagger = 0;
     entries.forEach((entry) => {
       if (!entry.isIntersecting) {
         return;
       }
 
-      entry.target.classList.add('is-revealed');
+      entry.target.classList.remove('reveal-on-scroll');
+      if (!motionPreference.matches && entry.target.animate) {
+        const animation = entry.target.animate([
+          { opacity: 0, translate: '0 18px' },
+          { opacity: 1, translate: '0 0' }
+        ], {
+          duration: 620,
+          delay: Math.min(stagger++, 3) * 55,
+          easing: 'cubic-bezier(.22,1,.36,1)',
+          fill: 'backwards'
+        });
+        reveals.add(animation);
+        animation.onfinish = () => reveals.delete(animation);
+      }
       observer.unobserve(entry.target);
     });
   }, {
-    rootMargin: '0px 0px -10% 0px',
-    threshold: 0.1
+    rootMargin: '0px 0px 24px 0px',
+    threshold: 0.01
   });
 
-  animatedItems.forEach((item) => observer.observe(item));
+  outerItems.forEach((item) => observer.observe(item));
+  motionPreference.addEventListener('change', () => {
+    if (!motionPreference.matches) return;
+    observer.disconnect();
+    outerItems.forEach((item) => item.classList.remove('reveal-on-scroll'));
+    reveals.forEach((animation) => animation.cancel());
+    reveals.clear();
+  });
 })();

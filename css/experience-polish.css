@@ -1,0 +1,73 @@
+/* Shared motion and color finishing layer. */
+:root {
+  --motion-ease: cubic-bezier(.22,.68,.24,1);
+  --motion-soft: cubic-bezier(.22,1,.36,1);
+  --motion-fast: .18s;
+  --motion-medium: .36s;
+  --motion-slow: .62s;
+}
+
+/* Theme transitions must preserve the card's hover transition. */
+html body :is(.profile-card,.hero-slider-card,.featured-block,.work-card,.custom-text-box,.stat-card,.timeline-card,.experience-summary-card,.contact-panel,.service-box,.education-card,.contact-card,.contact-form,.review-card,.all-review-card,.faq-card,.portfolio-cta-card,.resume-sidebar,.resume-item,.location-box,.section-image,.contact-photo,[data-glass-surface]) {
+  will-change: auto;
+  transition: transform var(--motion-medium) var(--motion-soft),
+    box-shadow var(--motion-medium) var(--motion-ease),
+    border-color .3s ease, background-color .3s ease,
+    color .22s ease, opacity .3s ease;
+  transition-delay: 0s;
+}
+/* Entrance animations use independent translate, leaving hover transforms free. */
+html body .reveal-on-scroll { opacity: 0; transform: none; transition: none; }
+
+html[data-theme="glass"] body {
+  background:
+    radial-gradient(ellipse at 4% 3%,rgba(245,211,193,.32),transparent 34%),
+    radial-gradient(ellipse at 100% 20%,rgba(174,184,224,.32),transparent 40%),
+    radial-gradient(ellipse at 0% 55%,rgba(162,211,208,.25),transparent 40%),
+    radial-gradient(ellipse at 95% 84%,rgba(217,194,215,.26),transparent 42%),
+    linear-gradient(145deg,#eef1f6,#e5edf3 45%,#f2eff2);
+}
+html[data-theme="glass"] [data-glass-tint="blue"] { --glass-a: 115,133,190; --glass-b: 123,194,211; }
+html[data-theme="glass"] [data-glass-tint="violet"] { --glass-a: 156,134,194; --glass-b: 147,184,215; }
+html[data-theme="glass"] [data-glass-tint="mint"] { --glass-a: 103,157,160; --glass-b: 138,204,185; }
+html[data-theme="glass"] [data-glass-tint="coral"] { --glass-a: 199,147,169; --glass-b: 224,185,143; }
+html[data-theme="glass"] [data-glass-surface="control"] { --glass-fill: .36; --glass-glow: .26; }
+html[data-theme="glass"] [data-glass-surface="panel"] { --glass-glow: .12; }
+
+html body :is(.custom-btn,.social-icon-link,.review-filter-btn,.add-review-btn,.quick-actions-toggle,.quick-action,.theme-picker-option) {
+  transition: transform .28s var(--motion-soft), scale .18s var(--motion-soft),
+    opacity .22s ease, color .22s ease, background-color .3s ease,
+    border-color .3s ease, box-shadow .3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+html body :is(.custom-btn,.social-icon-link,.review-filter-btn,.add-review-btn,.quick-actions-toggle,.quick-action,.theme-picker-option):active { scale: .97; }
+:is(a,button,input,textarea,select,[role="button"],summary):focus-visible { outline: 2px solid #7b91b6; outline-offset: 4px; }
+::selection { background: #c8d9e9; color: #192c43; }
+
+.hero-image-slider.carousel-fade .carousel-item { transition: opacity .85s ease-in-out; }
+.hero-image-slider .carousel-item img { transition: transform 7s linear; }
+.hero-image-slider .carousel-indicators [data-bs-target] { min-height: 6px; border-block: 10px solid transparent; background-clip: padding-box; }
+.ambient-layer { opacity: .72; }
+.ambient-motif { animation-duration: 16s; }
+.ambient-flat { opacity: .5; }
+.cursor-follower { transition: opacity .2s ease, width .28s var(--motion-soft), height .28s var(--motion-soft), background-color .28s ease; }
+
+@media (hover: hover) and (pointer: fine) {
+  html body :is(.profile-card,.work-card,.contact-card,.review-card,.featured-block,.custom-text-box,.timeline-card,.stat-card):hover { transform: translateY(-4px); }
+  html body .work-card:hover img { transform: scale(1.025); }
+}
+@media (hover: none), (pointer: coarse) {
+  html body :is(.profile-card,.hero-slider-card,.work-card,.contact-card,.review-card,.featured-block,.custom-text-box,.timeline-card,.stat-card,.contact-panel,.resume-sidebar,.service-box,.education-card,.contact-form,.faq-card,.portfolio-cta-card,.resume-item,.location-box,.custom-btn,.social-icon-link):hover { transform: none; }
+  .ambient-layer { opacity: .48; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  html body *, html body *::before, html body *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    transition-delay: 0s !important;
+  }
+  html body .reveal-on-scroll { opacity: 1; translate: none; }
+  html body :is(.custom-btn,.social-icon-link,.review-filter-btn,.add-review-btn,.quick-actions-toggle,.quick-action,.theme-picker-option):active { scale: 1; }
+}
