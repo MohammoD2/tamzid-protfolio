@@ -20,10 +20,10 @@
           <p class="video-lightbox-description"></p>
           <div class="video-lightbox-patreon" hidden>
             <div>
-              <strong>Course and Project file available on Patreon</strong>
+              <strong>Course and project files on the Projects page</strong>
               <span class="video-lightbox-patreon-text">Want to explore the scene setup, files, and extra creative resources?</span>
             </div>
-            <a href="https://patreon.com/AnimatedByTamzid" target="_blank" rel="noopener">Visit Patreon <i class="bi-box-arrow-up-right"></i></a>
+            <a href="projects.html">Visit Projects <i class="bi-arrow-right"></i></a>
           </div>
           <div class="video-lightbox-actions">
             <a href="#" target="_blank" rel="noopener" class="video-lightbox-external">Open on YouTube <i class="bi-box-arrow-up-right"></i></a>

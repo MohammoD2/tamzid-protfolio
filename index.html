@@ -15,7 +15,7 @@
         
                     document.documentElement.setAttribute(
                         'data-theme',
-                        savedTheme === 'dark' ? 'dark' : 'light'
+                        ['light', 'dark', 'glass'].includes(savedTheme) ? savedTheme : 'light'
                     );
                 } catch (error) {
                     document.documentElement.setAttribute('data-theme', 'light');
@@ -23,9 +23,15 @@
             })();
         </script>
 
+        <link rel="preload" href="fonts/Outfit/Outfit-Variable.ttf" as="font" type="font/ttf" crossorigin>
+        <link rel="preload" href="fonts/Manrope/Manrope-Variable.ttf" as="font" type="font/ttf" crossorigin>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/bootstrap-icons.css" rel="stylesheet">
         <link href="css/tamzid-portfolio.css" rel="stylesheet">
+        <link href="css/theme-picker.css" rel="stylesheet">
+        <link href="css/ambient-motion.css?v=4" rel="stylesheet">
+        <link href="css/liquid-glass.css?v=7" rel="stylesheet">
+        <link href="css/quick-actions.css?v=1" rel="stylesheet">
     </head>
 
     <body id="top">
@@ -62,42 +68,23 @@
                         <li class="nav-item">
                             <a class="nav-link" href="index.html#about">About</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="resume.html">Resume</a>
+                        </li>
         
                         <li class="nav-item">
                             <a class="nav-link" href="portfolio.html">Portfolio</a>
                         </li>
         
                         <li class="nav-item">
-                            <a class="nav-link" href="resume.html">Resume</a>
-                        </li>
-        
-                        <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Contact</a>
-                        </li>
-        
-                        <li class="nav-item ms-lg-2">
-                            <a class="nav-link portfolio-hire-btn" href="contact.html">Hire Me</a>
-                        </li>
-        
-                        <li class="nav-item">
-                            <a class="nav-link" href="game.html">Game</a>
+                            <a class="nav-link" href="projects.html">Projects</a>
                         </li>
 
-                        <li class="nav-item theme-toggle-item">
-                            <button class="theme-toggle-button"
-                                    type="button"
-                                    data-theme-toggle
-                                    aria-label="Switch to dark mode"
-                                    aria-pressed="false">
-                        
-                                <span class="theme-toggle-track" aria-hidden="true">
-                                    <i class="bi-moon-stars-fill theme-icon theme-icon-moon"></i>
-                                    <i class="bi-sun-fill theme-icon theme-icon-sun"></i>
-                                    <span class="theme-toggle-thumb"></span>
-                                </span>
-                        
-                                <span class="theme-toggle-label">Dark mode</span>
-                            </button>
+
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="contact.html">Contact</a>
                         </li>
         
                     </ul>
@@ -154,7 +141,7 @@
                 </div>
             </section>
 
-            <section class="hero-section portfolio-hero" id="section_1">
+            <section class="hero-section portfolio-hero" id="section_1" data-wire-shape="cube" data-wire-side="left" data-wire-top="8">
                 <div class="container">
                     <div class="row align-items-center g-5">
                         <div class="col-lg-7 col-12">
@@ -180,7 +167,7 @@
                 </div>
             </section>
 
-            <section class="section-padding feature-section">
+            <section class="section-padding feature-section" data-wire-shape="sphere" data-wire-side="right" data-wire-top="0">
                 <div class="container">
                     <div class="row text-center mb-5">
                         <div class="col-lg-8 col-12 mx-auto">
@@ -386,7 +373,7 @@
                 </div>
             </section>
 
-            <section class="section-padding section-bg" id="section_4">
+            <section class="section-padding section-bg" id="section_4" data-wire-shape="cube" data-wire-side="right" data-wire-top="18">
                 <div class="container">
                     <div class="row align-items-end mb-5">
                         <div class="col-lg-8 col-12">
@@ -770,7 +757,7 @@
                 </div>
             </div>
 
-            <section class="section-padding" id="section_5">
+            <section class="section-padding" id="section_5" data-wire-shape="sphere" data-wire-side="left" data-wire-top="8">
                 <div class="container">
                     <div class="row mb-5 text-center"><div class="col-lg-8 col-12 mx-auto"><h2>Software & Skills</h2><p>Tools and production skills used to create animation-ready scenes and polished final visuals.</p></div></div>
                     <div class="tag-cloud justify-content-center">
@@ -785,10 +772,10 @@
                         <div>
                             <p class="eyebrow">Project Files & Extras</p>
                             <h2>Want access to my project files and many more?</h2>
-                            <p>Check out my Patreon page for project files, behind-the-scenes resources, and extra creative content.</p>
+                            <p>Visit my Projects page for project files, behind-the-scenes resources, and extra creative content.</p>
                         </div>
-                        <a href="https://patreon.com/AnimatedByTamzid" target="_blank" rel="noopener" class="custom-btn btn">
-                            Visit Patreon
+                        <a href="projects.html" class="custom-btn btn">
+                            Visit Projects
                         </a>
                     </div>
                 </div>
@@ -817,7 +804,7 @@
                         </details>
                         <details class="faq-card">
                             <summary>Can you provide project files?</summary>
-                            <p>Yes, project files can be included when agreed before the project starts. Some course files and selected breakdown resources are also available through my Patreon.</p>
+                            <p>Yes, project files can be included when agreed before the project starts. Some course files and selected breakdown resources are also available through my Projects page.</p>
                         </details>
                         <details class="faq-card">
                             <summary>Do you work with Blender and Unreal Engine?</summary>
@@ -839,7 +826,7 @@
                 <div class="container">
                     <div class="row align-items-center g-5">
                         <div class="col-lg-6 col-12"><h2>Let's Create Something Polished</h2><p>Have a product animation, character shot, or 3D visual idea? Send the details and I will help turn the reference into clean animation.</p></div>
-                        <div class="col-lg-6 col-12"><div class="contact-panel"><p><i class="bi-envelope me-2"></i><a href="mailto:contact.tamzid.me@gmail.com">contact.tamzid.me@gmail.com</a></p><p><i class="bi-telephone me-2"></i><a href="tel:+8801756311044">+880 1756311044</a></p><p><i class="bi-linkedin me-2"></i><a href="https://www.linkedin.com/in/tamzid-rahman-8a3b2a2a1/" target="_blank" rel="noopener">LinkedIn Profile</a></p><p><i class="bi-facebook me-2"></i><a href="https://www.facebook.com/tamzid.alloftech.site/" target="_blank" rel="noopener">Facebook Profile</a></p><p><i class="bi-discord me-2"></i><a href="https://discord.gg/FM3u83GapS" target="_blank" rel="noopener">Discord Community</a></p><a href="contact.html" class="custom-btn btn mt-3">Contact Me</a></div></div>
+                        <div class="col-lg-6 col-12"><div class="contact-panel"><p><i class="bi-envelope me-2"></i><a href="mailto:contact.tamzid.me@gmail.com">contact.tamzid.me@gmail.com</a></p><p><i class="bi-telephone me-2"></i><a href="tel:+8801756311044">+880 1756311044</a></p><p><i class="bi-linkedin me-2"></i><a href="https://www.linkedin.com/in/tamzid-rahman-8a3b2a2a1/" target="_blank" rel="noopener">LinkedIn Profile</a></p><p><i class="bi-facebook me-2"></i><a href="https://www.facebook.com/tamzid.alloftech.site/" target="_blank" rel="noopener">Facebook Profile</a></p><p><i class="bi-discord me-2"></i><a href="https://discord.gg/FM3u83GapS" target="_blank" rel="noopener">Discord Community</a></p><p><i class="bi-youtube me-2"></i><a href="https://www.youtube.com/@AnimatedByTamzid" target="_blank" rel="noopener">YouTube Channel</a></p><a href="contact.html" class="custom-btn btn mt-3">Contact Me</a></div></div>
                     </div>
                 </div>
             </section>
@@ -857,6 +844,7 @@
                         <ul class="footer-menu">
                             <li class="footer-menu-item"><a href="index.html#about" class="footer-menu-link">About</a></li>
                             <li class="footer-menu-item"><a href="portfolio.html" class="footer-menu-link">Portfolio</a></li>
+                            <li class="footer-menu-item"><a href="projects.html" class="footer-menu-link">Projects</a></li>
                             <li class="footer-menu-item"><a href="resume.html" class="footer-menu-link">Resume</a></li>
                             <li class="footer-menu-item"><a href="contact.html" class="footer-menu-link">Contact</a></li>
                             <li class="footer-menu-item"><a href="game.html" class="footer-menu-link">Game</a></li>
@@ -866,6 +854,7 @@
                         <h5 class="site-footer-title mb-3">Contact Information</h5>
                         <p class="text-white d-flex mb-2"><i class="bi-telephone me-2"></i><a href="tel:+8801756311044" class="site-footer-link">+880 1756311044</a></p>
                         <p class="text-white d-flex mb-2"><i class="bi-envelope me-2"></i><a href="mailto:contact.tamzid.me@gmail.com" class="site-footer-link">contact.tamzid.me@gmail.com</a></p>
+                        <p class="text-white d-flex mb-2"><i class="bi-youtube me-2"></i><a href="https://www.youtube.com/@AnimatedByTamzid" target="_blank" rel="noopener" class="site-footer-link">YouTube Channel</a></p>
                         <p class="text-white d-flex mt-3"><i class="bi-geo-alt me-2"></i>Shibchar, Utrailhat - 7930, Madaripur</p>
                     </div>
                 </div>
@@ -881,6 +870,7 @@
                                 <li class="social-icon-item"><a href="https://www.linkedin.com/in/tamzid-rahman-8a3b2a2a1/" target="_blank" rel="noopener" class="social-icon-link bi-linkedin" aria-label="LinkedIn"></a></li>
                             <li class="social-icon-item"><a href="https://www.facebook.com/tamzid.alloftech.site/" target="_blank" rel="noopener" class="social-icon-link bi-facebook" aria-label="Facebook"></a></li>
                                 <li class="social-icon-item"><a href="https://discord.gg/FM3u83GapS" target="_blank" rel="noopener" class="social-icon-link bi-discord" aria-label="Discord"></a></li>
+                                <li class="social-icon-item"><a href="https://www.youtube.com/@AnimatedByTamzid" target="_blank" rel="noopener" class="social-icon-link bi-youtube" aria-label="YouTube channel"></a></li>
                                 <li class="social-icon-item"><a href="mailto:contact.tamzid.me@gmail.com" class="social-icon-link bi-envelope" aria-label="Email"></a></li>
                                 <li class="social-icon-item"><a href="tel:+8801756311044" class="social-icon-link bi-telephone" aria-label="Phone"></a></li>
                             </ul>
@@ -891,10 +881,25 @@
         </footer>
 
 
+        <div class="quick-actions" data-quick-actions>
+            <nav class="quick-actions-panel" id="quickActionsPanel" aria-label="Quick actions" inert>
+                <a class="quick-action quick-action-link" href="contact.html"><i class="bi-chat-dots" aria-hidden="true"></i><span>Hire Me</span></a>
+                <a class="quick-action quick-action-link" href="game.html" data-quick-page="game.html"><i class="bi-controller" aria-hidden="true"></i><span>Games</span></a>
+                <button class="quick-action quick-action-theme" type="button" data-theme-picker-open aria-haspopup="dialog" aria-controls="themePicker" aria-expanded="false"><i class="bi-palette" aria-hidden="true"></i><span>Themes</span></button>
+            </nav>
+            <button class="quick-actions-toggle" type="button" data-quick-actions-toggle aria-label="Open quick actions" aria-controls="quickActionsPanel" aria-expanded="false" title="Quick actions">
+                <i class="bi-grid-3x3-gap quick-actions-icon" aria-hidden="true"></i>
+                <i class="bi-x-lg quick-actions-close-icon" aria-hidden="true"></i>
+            </button>
+        </div>
+
         <script src="js/bootstrap.min.js"></script>
+        <script src="js/quick-actions.js?v=1"></script>
         <script src="js/cursor-effect.js"></script>
-        <script src="js/theme-toggle.js"></script>
-        <script src="js/site-animations.js"></script>
+        <script src="js/theme-toggle.js?v=5"></script>
+        <script src="js/glass-materials.js?v=4"></script>
+        <script src="js/site-animations.js?v=3"></script>
+        <script src="js/ambient-motion.js?v=5"></script>
         <script src="js/review-form.js"></script>
         <script src="js/review-filter.js"></script>
         <script src="js/youtube-videos.js"></script>

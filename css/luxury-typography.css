@@ -1,0 +1,30 @@
+/* Typography trial. Remove this stylesheet to restore Outfit + Manrope. */
+@font-face {
+  font-family: 'Bodoni Moda';
+  src: url('../fonts/BodoniModa/BodoniModa-Variable.ttf') format('truetype');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --heading-font-family: 'Bodoni Moda', 'Bodoni MT', 'Didot', Georgia, serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 500;
+  font-optical-sizing: auto;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+h1 {
+  line-height: 1.08;
+}
+
+/* Keep the small brand signature legible in the navigation. */
+.portfolio-floating-navbar .portfolio-brand > span:last-child {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}

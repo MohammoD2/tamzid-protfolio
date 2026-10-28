@@ -1,0 +1,43 @@
+/* Circular motion paths and small flat shapes clipped at section boundaries. */
+.ambient-section { position: relative; }
+.ambient-section > .container { position: relative; z-index: 1; }
+.ambient-layer { position: absolute; inset: 0; overflow: hidden; pointer-events: none; user-select: none; z-index: 0; color: #527fa0; --solid-blue: rgba(82, 127, 160, .85); --solid-blue-soft: rgba(82, 127, 160, .35); --arc-primary: #527fa0; --arc-secondary: rgba(82, 127, 160, .48); }
+.ambient-motif { position: absolute; right: -22px; top: var(--wire-top, 12%); width: clamp(180px, 23vw, 310px); height: auto; opacity: .38; transform-origin: center; animation: studio-wire-float 12s ease-in-out infinite; }
+.ambient-motif path, .ambient-motif ellipse { fill: none; stroke: currentColor; stroke-width: 1.35; vector-effect: non-scaling-stroke; }
+.ambient-motif .ambient-hidden-edge { stroke-dasharray: 4 7; opacity: .55; }
+.ambient-motif-orbit { width: clamp(190px, 26vw, 340px); }
+.ambient-motif.ambient-wire-left { right: auto; left: -36px; }
+/* Square SVG viewports preserve real circles at every screen size.
+   Their centers and the circle path origins sit beyond the clipped corner. */
+.ambient-circles { position: absolute; width: var(--circle-size, 900px); height: var(--circle-size, 900px); right: calc(var(--circle-size, 900px) * -.58); top: calc(var(--circle-size, 900px) * -.58); }
+.ambient-circles-bottom { right: auto; top: auto; left: calc(var(--circle-size, 900px) * -.58); bottom: calc(var(--circle-size, 900px) * -.58); transform: rotate(180deg); }
+.ambient-circles circle { fill: none; stroke: var(--arc-primary); stroke-width: 1.5; vector-effect: non-scaling-stroke; opacity: .52; stroke-dasharray: 100 100; stroke-dashoffset: 100; animation: studio-circle-draw var(--arc-duration, 12s) cubic-bezier(.4,0,.3,1) infinite; animation-delay: -4s; }
+.ambient-circles .ambient-circle-secondary { stroke: var(--arc-secondary); stroke-width: 1; opacity: .4; animation-delay: -7s; }
+.ambient-circles-swap { --arc-primary: rgba(82, 127, 160, .48); --arc-secondary: #527fa0; }
+.ambient-traveler { position: absolute; inset: 0; animation: studio-shape-travel var(--travel-duration, 44s) linear infinite; animation-delay: var(--travel-delay, 0s); }
+.ambient-flat { position: absolute; left: 0; top: 0; width: var(--shape-size, 28px); height: var(--shape-size, 28px); fill: var(--shape-color, #6b91ab); opacity: .68; animation: studio-shape-turn var(--travel-duration, 44s) linear infinite; animation-delay: var(--travel-delay, 0s); }
+.ambient-section.portfolio-hero::after, .ambient-section.section-bg::after { display: none; }
+.ambient-layer .ambient-motif, .ambient-layer .ambient-traveler, .ambient-layer .ambient-flat, .ambient-layer .ambient-circles circle { animation-play-state: paused; }
+.is-ambient-visible > .ambient-layer .ambient-motif, .is-ambient-visible > .ambient-layer .ambient-traveler, .is-ambient-visible > .ambient-layer .ambient-flat, .is-ambient-visible > .ambient-layer .ambient-circles circle { animation-play-state: running; }
+html.ambient-paused .ambient-layer .ambient-motif, html.ambient-paused .ambient-layer .ambient-traveler, html.ambient-paused .ambient-layer .ambient-flat, html.ambient-paused .ambient-layer .ambient-circles circle { animation-play-state: paused; }
+html[data-theme="dark"] .ambient-layer { color: #8fbcd9; --solid-blue: rgba(143, 188, 217, .85); --solid-blue-soft: rgba(143, 188, 217, .32); --arc-primary: #8fbcd9; --arc-secondary: rgba(143, 188, 217, .45); }
+html[data-theme="dark"] .ambient-circles-swap { --arc-primary: rgba(143, 188, 217, .45); --arc-secondary: #8fbcd9; }
+html[data-theme="dark"] .ambient-motif { opacity: .42; }
+html[data-theme="dark"] .ambient-flat { opacity: .82; }
+@keyframes studio-wire-float { 0%, 100% { transform: translate3d(0, 8px, 0); } 50% { transform: translate3d(-10px, -12px, 0); } }
+@keyframes studio-circle-draw { 0% { stroke-dashoffset: 100; } 38%, 48% { stroke-dashoffset: 0; } 90%, 100% { stroke-dashoffset: -100; } }
+@keyframes studio-shape-travel { from { transform: translate3d(var(--from-x), var(--from-y), 0); } to { transform: translate3d(var(--to-x), var(--to-y), 0); } }
+@keyframes studio-shape-turn { from { transform: rotate(var(--shape-angle, 0deg)); } to { transform: rotate(calc(var(--shape-angle, 0deg) + 110deg)); } }
+@media (max-width: 767px) {
+  .ambient-motif { width: 175px; right: -58px; opacity: .32; }
+  .ambient-motif.ambient-wire-left { left: -60px; }
+  .ambient-circles { width: calc(var(--circle-size) * .65); height: calc(var(--circle-size) * .65); right: calc(var(--circle-size) * -.377); top: calc(var(--circle-size) * -.377); }
+  .ambient-circles-bottom { right: auto; top: auto; left: calc(var(--circle-size) * -.377); bottom: calc(var(--circle-size) * -.377); }
+  .ambient-traveler-secondary { display: none; }
+  .ambient-flat { width: calc(var(--shape-size) * .8); height: calc(var(--shape-size) * .8); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ambient-layer .ambient-motif, .ambient-layer .ambient-traveler, .ambient-layer .ambient-flat, .ambient-layer .ambient-circles circle { animation: none !important; }
+  .ambient-circles circle { stroke-dasharray: none; stroke-dashoffset: 0; opacity: .22; }
+  .ambient-traveler { display: none; }
+}

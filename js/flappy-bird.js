@@ -413,12 +413,22 @@
     ctx.restore();
   };
 
+  // Canvas typography follows the selected website theme as well.
+  const canvasFonts = {};
+  const updateCanvasFonts = () => {
+    const styles = getComputedStyle(document.documentElement);
+    canvasFonts.heading = styles.getPropertyValue('--heading-font-family').trim() || 'sans-serif';
+    canvasFonts.body = styles.getPropertyValue('--body-font-family').trim() || 'sans-serif';
+  };
+  updateCanvasFonts();
+  new MutationObserver(updateCanvasFonts).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
   const drawStartText = () => {
     ctx.fillStyle = '#3B5D7D';
-    ctx.font = '700 24px Metropolis, sans-serif';
+    ctx.font = `600 24px ${canvasFonts.heading}`;
     ctx.textAlign = 'center';
     ctx.fillText('Click Start to Play', width / 2, height * 0.44);
-    ctx.font = '400 15px Metropolis, sans-serif';
+    ctx.font = `400 15px ${canvasFonts.body}`;
     ctx.fillText('Tap, click, or press Space to flap', width / 2, height * 0.49);
   };
 

@@ -88,22 +88,28 @@
     underline.className = 'nav-underline';
     nav.appendChild(underline);
 
-    const currentFile = window.location.pathname.split('/').pop() || 'index.html';
-    const currentHash = window.location.hash;
-    const activeLink = links.find((link) => {
-      const linkUrl = new URL(link.getAttribute('href'), window.location.href);
-      const linkFile = linkUrl.pathname.split('/').pop() || 'index.html';
-
-      if (currentHash && linkUrl.hash === currentHash) {
-        return true;
-      }
-
-      return !currentHash && linkFile === currentFile && !linkUrl.hash;
-    }) || links[0];
-
-    links.forEach((link) => link.classList.toggle('active', link === activeLink));
+    let activeLink = links[0];
+    const updateActiveLink = () => {
+      const currentFile = window.location.pathname.split('/').pop() || 'index.html';
+      const currentHash = window.location.hash;
+      const matchesPage = (link) => {
+        const url = new URL(link.getAttribute('href'), window.location.href);
+        return (url.pathname.split('/').pop() || 'index.html') === currentFile;
+      };
+      // Prefer a matching section, then the page link for other homepage sections.
+      activeLink = (currentHash && links.find((link) =>
+        matchesPage(link) && new URL(link.href).hash === currentHash
+      )) || links.find((link) => matchesPage(link) && !new URL(link.href).hash) || null;
+      links.forEach((link) => {
+        const active = link === activeLink;
+        link.classList.toggle('active', active);
+        if (active) link.setAttribute('aria-current', 'page');
+        else link.removeAttribute('aria-current');
+      });
+    };
 
     const moveUnderline = (link) => {
+      if (!link) { underline.style.opacity = '0'; return; }
       const navRect = nav.getBoundingClientRect();
       const linkRect = link.getBoundingClientRect();
       const width = Math.max(34, linkRect.width - 34);
@@ -115,7 +121,14 @@
       underline.style.transform = `translate3d(${left}px, ${top}px, 0)`;
     };
 
+    updateActiveLink();
     requestAnimationFrame(() => moveUnderline(activeLink));
+    const updateNavigation = () => {
+      updateActiveLink();
+      moveUnderline(activeLink);
+    };
+    window.addEventListener('hashchange', updateNavigation);
+    window.addEventListener('popstate', updateNavigation);
 
     links.forEach((link) => {
       link.addEventListener('mouseenter', () => moveUnderline(link));
