@@ -1,0 +1,170 @@
+/* Focused two-game library and a cleaner Flappy Render interface. */
+.game-library {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-inline: auto;
+  max-width: 840px;
+}
+
+#flappyGamePanel {
+  align-items: stretch;
+  background: #fbfcfe;
+  border-color: #d5e0ea;
+  gap: clamp(24px, 4vw, 46px);
+  grid-template-columns: minmax(280px, .9fr) minmax(360px, 1.1fr);
+  overflow: hidden;
+  padding: clamp(24px, 4vw, 42px);
+}
+
+.flappy-heading-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.flappy-heading-row .eyebrow { margin: 0; }
+
+.flappy-difficulty-badge,
+.flappy-controls-note span {
+  align-items: center;
+  background: #e7f2fb;
+  border: 1px solid #c9dfef;
+  border-radius: 8px;
+  color: #005a9e;
+  display: inline-flex;
+  font-size: .72rem;
+  font-weight: 700;
+  gap: 7px;
+  padding: 7px 10px;
+}
+
+.flappy-intro h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 14px; }
+.flappy-intro > p { font-size: .95rem; line-height: 1.7; }
+
+.flappy-controls-note {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.flappy-controls-note span { background: #f5f8fb; color: #414952; }
+
+#flappyGamePanel .skin-selector {
+  border-top: 1px solid #dce5ed;
+  margin-top: 24px;
+  padding-top: 22px;
+}
+
+#flappyGamePanel .skin-selector h5 { color: #111318; font-size: .9rem; margin-bottom: 12px; }
+
+#flappyGamePanel .skin-options {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#flappyGamePanel .skin-option {
+  background: #f3f7fa;
+  border-color: #d8e2ea;
+  font-size: .76rem;
+  gap: 9px;
+  min-width: 0;
+  padding: 9px 10px;
+}
+
+#flappyGamePanel .skin-preview { flex: 0 0 22px; height: 22px; width: 22px; }
+#flappyGamePanel .skin-lock { font-size: .66rem; min-width: 0; padding: 3px 6px; }
+
+#flappyGamePanel .game-stats {
+  gap: 9px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 24px;
+}
+
+#flappyGamePanel .game-stats div {
+  background: #edf4fa;
+  border: 1px solid #d6e3ed;
+  padding: 14px 12px;
+  text-align: center;
+}
+
+#flappyGamePanel .game-stats strong { color: #111318; font-size: 1.65rem; }
+#flappyGamePanel .game-stats span { color: #5b626b; font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; }
+
+#flappyGamePanel .game-canvas-wrap {
+  align-self: center;
+  background: #dceaf5;
+  border: 1px solid #c6d9e8;
+  border-radius: 18px;
+  box-shadow: 0 20px 50px rgba(30,66,96,.18);
+  max-width: 460px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.flappy-canvas-bar {
+  align-items: center;
+  background: #102f4a;
+  color: #dce9f2;
+  display: flex;
+  font-size: .72rem;
+  justify-content: space-between;
+  letter-spacing: .04em;
+  min-height: 42px;
+  padding: 10px 14px;
+  text-transform: uppercase;
+}
+
+.flappy-canvas-bar span { align-items: center; display: inline-flex; gap: 7px; }
+.flappy-canvas-bar i { color: #42d77d; font-size: .5rem; }
+.flappy-canvas-bar strong { color: #fff; font-size: .75rem; }
+
+#flappyCanvas { background: #edf5fb; }
+
+#flappyGamePanel .game-overlay {
+  background: rgba(240,247,252,.88);
+  inset: 42px 0 0;
+  padding: 34px;
+}
+
+#flappyGamePanel .game-overlay h3 { color: #111318; font-size: clamp(2rem, 5vw, 2.8rem); margin-bottom: 10px; }
+#flappyGamePanel .game-overlay p { color: #5b626b; margin-bottom: 22px; max-width: 280px; }
+
+html[data-theme="dark"] #flappyGamePanel {
+  background: var(--theme-surface);
+  border-color: var(--theme-border);
+}
+
+html[data-theme="dark"] :is(.flappy-difficulty-badge,.flappy-controls-note span) {
+  background: var(--theme-surface-raised);
+  border-color: var(--theme-border);
+  color: var(--theme-accent);
+}
+
+html[data-theme="dark"] #flappyGamePanel .skin-selector { border-color: var(--theme-border); }
+html[data-theme="dark"] #flappyGamePanel .skin-selector h5 { color: var(--theme-text); }
+html[data-theme="dark"] #flappyGamePanel .skin-option,
+html[data-theme="dark"] #flappyGamePanel .game-stats div { background: var(--theme-surface-raised); border-color: var(--theme-border); }
+html[data-theme="dark"] #flappyGamePanel .game-stats strong { color: var(--theme-text); }
+html[data-theme="dark"] #flappyGamePanel .game-stats span { color: var(--theme-muted); }
+html[data-theme="dark"] #flappyGamePanel .game-canvas-wrap { border-color: var(--theme-border); box-shadow: 0 22px 50px rgba(2,10,18,.38); }
+html[data-theme="dark"] #flappyGamePanel .game-overlay { background: rgba(16,36,55,.9); }
+html[data-theme="dark"] #flappyGamePanel .game-overlay h3 { color: var(--theme-text); }
+html[data-theme="dark"] #flappyGamePanel .game-overlay p { color: var(--theme-muted); }
+
+@media (max-width: 991px) {
+  #flappyGamePanel { grid-template-columns: 1fr; }
+  #flappyGamePanel .game-canvas-wrap { max-width: 520px; }
+}
+
+@media (max-width: 575px) {
+  .game-library { grid-template-columns: 1fr; }
+  #flappyGamePanel { padding: 18px 14px; }
+  #flappyGamePanel .skin-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #flappyGamePanel .skin-option { font-size: .7rem; padding: 8px; }
+  #flappyGamePanel .game-stats strong { font-size: 1.35rem; }
+  #flappyGamePanel .game-overlay { padding: 24px 18px; }
+}

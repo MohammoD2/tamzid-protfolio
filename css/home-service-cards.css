@@ -1,0 +1,91 @@
+/* Image-first homepage service cards; the existing four-column footprint is preserved. */
+.feature-section .home-service-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+}
+
+.home-service-render {
+  background: #dce9f4;
+  flex: 0 0 118px;
+  height: 118px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.home-service-render::after {
+  background: linear-gradient(180deg,transparent 58%,rgba(10,31,48,.18));
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.home-service-render img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: filter var(--motion-medium) var(--motion-ease),transform var(--motion-medium) var(--motion-soft);
+  width: 100%;
+}
+
+.home-service-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 18px 20px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.feature-section .home-service-content .feature-icon {
+  font-size: 1.55rem;
+  margin-bottom: 9px;
+}
+
+.home-service-content h5 {
+  font-size: 1rem;
+  line-height: 1.28;
+  margin-bottom: 8px;
+}
+
+.home-service-content p {
+  font-size: .8rem;
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+
+.home-service-content > span {
+  color: var(--primary-color);
+  display: inline-block;
+  font-size: .78rem;
+  font-weight: 800;
+  margin-top: auto;
+  padding-top: 13px;
+}
+
+.home-service-card:hover .home-service-render img,
+.home-service-card:focus-visible .home-service-render img {
+  filter: saturate(1.08) contrast(1.04);
+  transform: scale(1.055);
+}
+
+html[data-theme="dark"] .home-service-render { background: var(--theme-surface-soft); }
+html[data-theme="dark"] .home-service-content > span { color: var(--theme-accent); }
+
+@media (max-width: 767px) {
+  .feature-section .home-service-card { padding: 0; }
+  .home-service-render { flex-basis: 86px; height: 86px; }
+  .home-service-content { padding: 13px 14px 15px; }
+  .feature-section .home-service-content .feature-icon { font-size: 1.25rem; margin-bottom: 7px; }
+  .home-service-content h5 { font-size: .88rem; margin-bottom: 6px; }
+  .home-service-content p { font-size: .72rem; line-height: 1.42; }
+  .home-service-content > span { font-size: .7rem; padding-top: 9px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-service-render img { transition: none; }
+}

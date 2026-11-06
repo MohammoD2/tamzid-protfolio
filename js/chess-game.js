@@ -36,6 +36,10 @@ if (panel && board) {
   let searchFen = null;
   let engineTimer;
   let searchTimer;
+  let pendingPieceAnimations = [];
+  let pieceAnimationFrame = 0;
+  let lastMoveSquares = null;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const squareButtons = new Map();
   for (let rank = 8; rank >= 1; rank -= 1) {
@@ -48,6 +52,49 @@ if (panel && board) {
       squareButtons.set(square, button);
     }
   }
+
+  const queueMoveAnimation = (move, reverse = false) => {
+    if (!move) return;
+    const animations = [{
+      from: reverse ? move.to : move.from,
+      to: reverse ? move.from : move.to
+    }];
+    const rank = move.color === 'w' ? '1' : '8';
+    if (move.flags?.includes('k')) {
+      animations.push(reverse ? { from: `f${rank}`, to: `h${rank}` } : { from: `h${rank}`, to: `f${rank}` });
+    } else if (move.flags?.includes('q')) {
+      animations.push(reverse ? { from: `d${rank}`, to: `a${rank}` } : { from: `a${rank}`, to: `d${rank}` });
+    }
+    pendingPieceAnimations.push(...animations);
+    lastMoveSquares = new Set([move.from, move.to]);
+  };
+
+  const schedulePieceAnimations = () => {
+    if (!pendingPieceAnimations.length) return;
+    cancelAnimationFrame(pieceAnimationFrame);
+    pieceAnimationFrame = requestAnimationFrame(() => {
+      const animations = pendingPieceAnimations.splice(0);
+      if (reducedMotion.matches || panel.hidden) return;
+      animations.forEach(({ from, to }) => {
+        const source = squareButtons.get(from);
+        const destination = squareButtons.get(to);
+        const piece = destination?.querySelector('.chess-piece');
+        if (!source || !destination || !piece) return;
+        const sourceRect = source.getBoundingClientRect();
+        const destinationRect = destination.getBoundingClientRect();
+        const deltaX = sourceRect.left - destinationRect.left;
+        const deltaY = sourceRect.top - destinationRect.top;
+        piece.animate([
+          { transform: `translate3d(${deltaX}px, ${deltaY}px, 0) scale(.96)`, filter: 'drop-shadow(0 10px 8px rgba(10,25,40,.28))' },
+          { transform: 'translate3d(0, 0, 0) scale(1.04)', offset: .78, filter: 'drop-shadow(0 4px 3px rgba(10,25,40,.24))' },
+          { transform: 'translate3d(0, 0, 0) scale(1)', filter: 'drop-shadow(0 2px 1px rgba(10,25,40,.2))' }
+        ], {
+          duration: 420,
+          easing: 'cubic-bezier(.22,1,.36,1)'
+        });
+      });
+    });
+  };
 
   const stopEngine = () => {
     clearTimeout(engineTimer);
@@ -81,12 +128,14 @@ if (panel && board) {
       button.innerHTML = piece ? pieceSvg(piece.type, piece.color) : '';
       button.setAttribute('aria-label', `${square}, ${piece ? `${colors[piece.color]} ${names[piece.type]}` : 'empty'}`);
       button.setAttribute('aria-pressed', String(selected === square));
+      button.classList.toggle('is-last-move', Boolean(lastMoveSquares?.has(square)));
       button.tabIndex = square === focusSquare ? 0 : -1;
       if (index % 8 === 0) button.insertAdjacentHTML('beforeend', `<span class="chess-coordinate chess-rank" aria-hidden="true">${square[1]}</span>`);
       if (index >= 56) button.insertAdjacentHTML('beforeend', `<span class="chess-coordinate chess-file" aria-hidden="true">${square[0]}</span>`);
       // Keep existing buttons in place so selecting a piece preserves keyboard focus.
       if (board.children[index] !== button) board.appendChild(button);
     });
+    schedulePieceAnimations();
     const message = gameStatus();
     if (status.textContent !== message) status.textContent = message;
     undoButton.disabled = game.history().length === 0;
@@ -162,7 +211,8 @@ if (panel && board) {
             const match = /^bestmove ([a-h][1-8])([a-h][1-8])([qrbn])?/.exec(line);
             if (!match) { engineFailed(); return; }
             try {
-              game.move({ from: match[1], to: match[2], ...(match[3] ? { promotion: match[3] } : {}) });
+              const playedMove = game.move({ from: match[1], to: match[2], ...(match[3] ? { promotion: match[3] } : {}) });
+              queueMoveAnimation(playedMove);
               feedback = '';
               render();
             } catch {
@@ -184,7 +234,8 @@ if (panel && board) {
 
   const commitMove = move => {
     try {
-      game.move(move);
+      const playedMove = game.move(move);
+      queueMoveAnimation(playedMove);
     } catch {
       feedback = 'That move is not legal. Choose another square.';
       render();
@@ -228,6 +279,9 @@ if (panel && board) {
     stopEngine();
     closePromotion();
     game.reset();
+    pendingPieceAnimations = [];
+    cancelAnimationFrame(pieceAnimationFrame);
+    lastMoveSquares = null;
     selected = null;
     feedback = '';
     engineError = false;
@@ -275,6 +329,9 @@ if (panel && board) {
     const history = game.history({ verbose: true });
     const count = mode === 'computer' && history.at(-1)?.color === 'b' ? 2 : 1;
     for (let i = 0; i < count; i += 1) game.undo();
+    pendingPieceAnimations = [];
+    cancelAnimationFrame(pieceAnimationFrame);
+    lastMoveSquares = null;
     selected = null;
     feedback = '';
     engineError = false;

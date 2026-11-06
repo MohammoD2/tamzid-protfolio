@@ -1,14 +1,14 @@
 # Website typography versions
 
-Active: Outfit for headings and branding, Manrope for body text and navigation.
-The user rejected the Bodoni Moda luxury trial and requested restoration of this previous pairing.
-All six pages now preload Outfit and Manrope. css/luxury-typography.css is inactive.
+Active: Montserrat for headings, branding, body text, and navigation.
+This preserves the typography formerly used by Liquid Glass across both remaining themes.
+All six pages now preload Montserrat. css/luxury-typography.css is inactive.
 The original template font was Metropolis; restore it only if explicitly requested.
 
-Theme-linked typography: Classic White and Midnight Blue use Outfit + Manrope. Liquid Glass uses locally hosted Montserrat: 800 weight titles and 400 weight descriptions. Game canvas text follows the same theme font family.
+Classic White and Midnight Blue both use locally hosted Montserrat: strong, tightly spaced titles and clean 400-weight descriptions. Game canvas text follows the same shared font family.
 Classic White is the existing light palette; Midnight Blue is the existing dark blue palette.
 Additional color themes can be registered in js/theme-toggle.js with matching CSS palette rules.
 
-Liquid Glass is a light theme defined in css/liquid-glass.css. Its saved theme ID is glass.
+Liquid Glass has been removed, including its stylesheet, material-tagging script, and reflection interactions. Old saved Glass selections automatically migrate to Classic White.
 
-Default theme for a first visit or unavailable storage: Liquid Glass. Explicitly saved Classic White/Midnight Blue selections remain respected.
+Default theme for a first visit or unavailable storage: Classic White. Explicitly saved Midnight Blue selections remain respected.

@@ -23,6 +23,7 @@
     const email = String(formData.get('email') || '').trim();
     const project = String(formData.get('project') || '').trim();
     const submitButton = form.querySelector('button[type="submit"]');
+    const submitButtonContent = submitButton ? submitButton.innerHTML : '';
 
     formData.set('_replyto', email);
     formData.set('_subject', `New Project Inquiry from ${name || 'Website Visitor'}${project ? ` - ${project}` : ''}`);
@@ -54,7 +55,7 @@
     } finally {
       if (submitButton) {
         submitButton.disabled = false;
-        submitButton.textContent = 'Send Project Inquiry';
+        submitButton.innerHTML = submitButtonContent;
       }
     }
   });

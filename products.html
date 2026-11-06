@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Tamzid Rahman is a 3D Animator specializing in product animation, character animation, lighting, materials, and polished visual storytelling.">
+        <meta name="description" content="Explore Tamzid Rahman's Blender project files and animation tutorial collections, including the Marble Music Animation Tutorial.">
         <meta name="author" content="Tamzid Rahman">
-        <title>Projects | Tamzid Rahman</title>
+        <title>Products | Tamzid Rahman</title>
         <link rel="icon" href="favicon.ico?v=1" sizes="any">
         <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png?v=1">
         <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png?v=1">
@@ -18,25 +18,25 @@
                     const savedTheme = localStorage.getItem('tamzid-portfolio-theme');
                     document.documentElement.setAttribute(
                         'data-theme',
-                        ['light', 'dark', 'glass'].includes(savedTheme) ? savedTheme : 'glass'
+                        ['light', 'dark'].includes(savedTheme) ? savedTheme : 'light'
                     );
                 } catch (error) {
-                    document.documentElement.setAttribute('data-theme', 'glass');
+                    document.documentElement.setAttribute('data-theme', 'light');
                 }
             })();
         </script>
 
-        <link rel="preload" href="fonts/Outfit/Outfit-Variable.ttf" as="font" type="font/ttf" crossorigin>
-        <link rel="preload" href="fonts/Manrope/Manrope-Variable.ttf" as="font" type="font/ttf" crossorigin>
+        <link rel="preload" href="fonts/Montserrat/Montserrat-Variable.ttf" as="font" type="font/ttf" crossorigin>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/bootstrap-icons.css" rel="stylesheet">
-        <link href="css/tamzid-portfolio.css" rel="stylesheet">
-        <link href="css/theme-picker.css" rel="stylesheet">
-        <link href="css/ambient-motion.css?v=4" rel="stylesheet">
-        <link href="css/liquid-glass.css?v=8" rel="stylesheet">
-        <link href="css/quick-actions.css?v=1" rel="stylesheet">
-        <link href="css/projects.css?v=1" rel="stylesheet">
+        <link href="css/tamzid-portfolio.css?v=2" rel="stylesheet">
+        <link href="css/theme-picker.css?v=2" rel="stylesheet">
+        <link href="css/ambient-motion.css?v=6" rel="stylesheet">
+        <link href="css/quick-actions.css?v=2" rel="stylesheet">
+        <link href="css/projects.css?v=3" rel="stylesheet">
         <link href="css/experience-polish.css?v=1" rel="stylesheet">
+        <link href="css/portfolio-typography.css?v=1" rel="stylesheet">
+        <link href="css/visual-system.css?v=4" rel="stylesheet">
     </head>
 
     <body>
@@ -83,7 +83,7 @@
                         </li>
         
                         <li class="nav-item">
-                            <a class="nav-link" href="projects.html" aria-current="page">Projects</a>
+                            <a class="nav-link" href="products.html" aria-current="page">Products</a>
                         </li>
 
 
@@ -98,12 +98,38 @@
             </div>
         </nav>
 
-        <main class="projects-page" aria-label="Projects">
-            <section class="projects-intro" aria-labelledby="projectsTitle" data-ambient data-wire-shape="cube" data-wire-side="right" data-wire-top="14">
+        <main class="projects-page" aria-label="Products">
+            <section class="projects-intro" aria-labelledby="projectsTitle" data-ambient>
                 <div class="container">
-                    <p class="eyebrow">Project Files &amp; Extras</p>
-                    <h1 id="projectsTitle">Projects are coming soon.</h1>
-                    <p class="projects-intro-copy">A collection of project files, scene breakdowns, and creative resources is on the way.</p>
+                    <p class="eyebrow">3D Models, Tutorials &amp; Tools.</p>
+                    <h1 id="projectsTitle">See how it’s made. Create your own.</h1>
+                    <p class="projects-intro-copy">Explore my Blender tutorials and project files. Follow the process step by step, understand the choices behind each scene, and bring your own ideas to life.</p>
+                </div>
+            </section>
+            <section class="projects-collection-section" aria-labelledby="marbleCollectionTitle">
+                <div class="container project-product-grid">
+                    <article class="project-product-card">
+                        <div class="project-product-media">
+                            <img src="images/marble-music-animation-collection.png" alt="Marble Music Animation Tutorial artwork" width="1680" height="941">
+                            <span class="project-product-badge"><i class="bi-stars" aria-hidden="true"></i> Featured collection</span>
+                        </div>
+                        <div class="project-product-content">
+                            <div class="project-product-topline">
+                                <span class="project-product-type">Blender tutorial collection</span>
+                                <span class="project-product-price" aria-label="Price 10 US dollars"><small>$</small>10</span>
+                            </div>
+                            <h2 id="marbleCollectionTitle">Marble Music Animation Tutorial</h2>
+                            <p>Follow the complete marble music animation workflow through a focused four-part Blender tutorial collection.</p>
+                            <ul class="project-product-features" aria-label="Collection details">
+                                <li><i class="bi-check2" aria-hidden="true"></i> Four step-by-step video lessons</li>
+                                <li><i class="bi-check2" aria-hidden="true"></i> Preconfigured Blender project file</li>
+                                <li><i class="bi-check2" aria-hidden="true"></i> Auto-glowing steps script for Blender</li>
+                            </ul>
+                            <a class="custom-btn btn project-product-action" href="https://www.patreon.com/collection/2479349" target="_blank" rel="noopener">
+                                Get the collection for $10 <i class="bi-arrow-up-right ms-2" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </article>
                 </div>
             </section>
             <section class="projects-patreon-section" aria-labelledby="projectsPatreonTitle" data-ambient>
@@ -132,7 +158,7 @@
                         <ul class="footer-menu">
                             <li class="footer-menu-item"><a href="index.html#about" class="footer-menu-link">About</a></li>
                             <li class="footer-menu-item"><a href="portfolio.html" class="footer-menu-link">Portfolio</a></li>
-                            <li class="footer-menu-item"><a href="projects.html" class="footer-menu-link">Projects</a></li>
+                            <li class="footer-menu-item"><a href="products.html" class="footer-menu-link">Products</a></li>
                             <li class="footer-menu-item"><a href="resume.html" class="footer-menu-link">Resume</a></li>
                             <li class="footer-menu-item"><a href="contact.html" class="footer-menu-link">Contact</a></li>
                             <li class="footer-menu-item"><a href="game.html" class="footer-menu-link">Game</a></li>
@@ -183,11 +209,9 @@
 
         <script src="js/bootstrap.min.js"></script>
         <script src="js/quick-actions.js?v=1"></script>
-        <script src="js/cursor-effect.js?v=2"></script>
         <script src="js/theme-toggle.js?v=6"></script>
-        <script src="js/glass-materials.js?v=5"></script>
         <script src="js/site-animations.js?v=4"></script>
-        <script src="js/ambient-motion.js?v=6"></script>
+        <script src="js/ambient-motion.js?v=7"></script>
 
     </body>
 </html>

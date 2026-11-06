@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Play Chess against a strong computer or a friend, plus Flappy Render, Poly Merge, and Key Rush.">
+        <meta name="description" content="Play Flappy Render or challenge a strong computer or a friend to chess.">
         <meta name="author" content="Tamzid Rahman">
         <title>Game | Tamzid Rahman</title>
         <link rel="icon" href="favicon.ico?v=1" sizes="any">
@@ -18,25 +18,26 @@
                     const savedTheme = localStorage.getItem('tamzid-portfolio-theme');
                     document.documentElement.setAttribute(
                         'data-theme',
-                        ['light', 'dark', 'glass'].includes(savedTheme) ? savedTheme : 'glass'
+                        ['light', 'dark'].includes(savedTheme) ? savedTheme : 'light'
                     );
                 } catch (error) {
-                    document.documentElement.setAttribute('data-theme', 'glass');
+                    document.documentElement.setAttribute('data-theme', 'light');
                 }
             })();
         </script>
 
-        <link rel="preload" href="fonts/Outfit/Outfit-Variable.ttf" as="font" type="font/ttf" crossorigin>
-        <link rel="preload" href="fonts/Manrope/Manrope-Variable.ttf" as="font" type="font/ttf" crossorigin>
+        <link rel="preload" href="fonts/Montserrat/Montserrat-Variable.ttf" as="font" type="font/ttf" crossorigin>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/bootstrap-icons.css" rel="stylesheet">
-        <link href="css/tamzid-portfolio.css" rel="stylesheet">
-        <link href="css/theme-picker.css" rel="stylesheet">
-        <link href="css/ambient-motion.css?v=4" rel="stylesheet">
-        <link href="css/liquid-glass.css?v=8" rel="stylesheet">
-        <link href="css/quick-actions.css?v=1" rel="stylesheet">
+        <link href="css/tamzid-portfolio.css?v=2" rel="stylesheet">
+        <link href="css/theme-picker.css?v=2" rel="stylesheet">
+        <link href="css/ambient-motion.css?v=6" rel="stylesheet">
+        <link href="css/quick-actions.css?v=2" rel="stylesheet">
         <link href="css/experience-polish.css?v=1" rel="stylesheet">
         <link href="css/chess-game.css?v=2" rel="stylesheet">
+        <link href="css/portfolio-typography.css?v=1" rel="stylesheet">
+        <link href="css/visual-system.css?v=4" rel="stylesheet">
+        <link href="css/flappy-game.css?v=1" rel="stylesheet">
     </head>
 
     <body>
@@ -82,7 +83,7 @@
                         </li>
         
                         <li class="nav-item">
-                            <a class="nav-link" href="projects.html">Projects</a>
+                            <a class="nav-link" href="products.html">Products</a>
                         </li>
 
 
@@ -103,8 +104,8 @@
                     <div class="row align-items-center g-4">
                         <div class="col-lg-8 col-12">
                             <p class="eyebrow">Game Library</p>
-                            <h1>Choose a Mini Game</h1>
-                            <p>Take a quick creative break. Choose a game from the library and play directly inside the portfolio.</p>
+                            <h1>Choose a Game</h1>
+                            <p>Take a quick creative break with Flappy Render or challenge yourself on the chess board.</p>
                         </div>
                         <div class="col-lg-4 col-12 text-lg-end">
                             <a href="portfolio.html" class="custom-btn btn">Back to Portfolio</a>
@@ -120,14 +121,6 @@
                             <span class="game-library-icon"><i class="bi-controller"></i></span>
                             <span><strong>Flappy Render</strong><small>Playable now</small></span>
                         </button>
-                        <button class="game-library-card" type="button" data-game-target="game2048Panel">
-                            <span class="game-library-icon"><i class="bi-grid-3x3-gap"></i></span>
-                            <span><strong>Poly Merge</strong><small>Playable puzzle</small></span>
-                        </button>
-                        <button class="game-library-card" type="button" data-game-target="keyRushPanel">
-                            <span class="game-library-icon"><i class="bi-keyboard"></i></span>
-                            <span><strong>Key Rush</strong><small>Endless typing</small></span>
-                        </button>
                         <button class="game-library-card" type="button" data-game-target="chessGamePanel">
                             <span class="game-library-icon chess-library-icon" aria-hidden="true">♞</span>
                             <span><strong>Chess</strong><small>Computer or two players</small></span>
@@ -136,10 +129,17 @@
 
                     <div class="game-card game-panel" id="flappyGamePanel">
                         <div class="game-info">
-                            <div>
-                                <p class="eyebrow">How to Play</p>
+                            <div class="flappy-intro">
+                                <div class="flappy-heading-row">
+                                    <p class="eyebrow">How to Play</p>
+                                    <span class="flappy-difficulty-badge"><i class="bi-speedometer2" aria-hidden="true"></i> Progressive difficulty</span>
+                                </div>
                                 <h2>Keep the bird flying</h2>
-                                <p>Click, tap, or press Space to flap. Avoid the pipes and try to beat your score.</p>
+                                <p>Click, tap, or press Space to flap. The flight begins at a steady speed, then the pipes accelerate and the gaps tighten as your run continues.</p>
+                                <div class="flappy-controls-note" aria-label="Game controls">
+                                    <span><i class="bi-mouse" aria-hidden="true"></i> Click or tap</span>
+                                    <span><i class="bi-keyboard" aria-hidden="true"></i> Space to flap</span>
+                                </div>
                             </div>
                             <div class="skin-selector" aria-label="Bird skin selector">
                                 <h5>Bird Skins</h5>
@@ -188,41 +188,19 @@
                             <div class="game-stats">
                                 <div><strong id="gameScore">0</strong><span>Score</span></div>
                                 <div><strong id="gameBest">0</strong><span>Best</span></div>
+                                <div><strong id="gameSpeed">1.0x</strong><span>Speed</span></div>
                             </div>
                         </div>
                         <div class="game-canvas-wrap">
+                            <div class="flappy-canvas-bar" aria-hidden="true">
+                                <span><i class="bi-circle-fill"></i> Live run</span>
+                                <strong id="gameLevel">Level 1</strong>
+                            </div>
                             <canvas id="flappyCanvas" width="420" height="560" aria-label="Flappy Bird style game canvas"></canvas>
                             <div class="game-overlay" id="gameOverlay">
                                 <h3>Flappy Render</h3>
                                 <p>Click Start, then tap or press Space to fly.</p>
                                 <button class="custom-btn btn" id="startGame" type="button">Start Game</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="game-card game-panel puzzle-game-card" id="game2048Panel" hidden>
-                        <div class="game-info">
-                            <div>
-                                <p class="eyebrow">How to Play</p>
-                                <h2>Merge tiles to reach 2048</h2>
-                                <p>Use arrow keys or the direction buttons. Matching numbers merge together, and your goal is to create the 2048 tile.</p>
-                            </div>
-                            <div class="game-stats game-2048-stats">
-                                <div><strong id="game2048Score">0</strong><span>Score</span></div>
-                                <div><strong id="game2048Best">0</strong><span>Best</span></div>
-                            </div>
-                            <button class="custom-btn btn game-reset-btn" id="game2048New" type="button">New Game</button>
-                        </div>
-                        <div class="game-2048-wrap">
-                            <div class="game-2048-status" id="game2048Status">Join the numbers and keep the board moving.</div>
-                            <div class="game-2048-board" id="game2048Board" role="grid" aria-label="2048 game board" tabindex="0"></div>
-                            <div class="game-2048-controls" aria-label="2048 movement controls">
-                                <button type="button" data-move="up" aria-label="Move up"><i class="bi-arrow-up"></i></button>
-                                <div>
-                                    <button type="button" data-move="left" aria-label="Move left"><i class="bi-arrow-left"></i></button>
-                                    <button type="button" data-move="down" aria-label="Move down"><i class="bi-arrow-down"></i></button>
-                                    <button type="button" data-move="right" aria-label="Move right"><i class="bi-arrow-right"></i></button>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -237,8 +215,8 @@
                             <div class="chess-settings">
                                 <span class="chess-label" id="chessModeLabel">Play against</span>
                                 <div class="chess-modes" role="group" aria-labelledby="chessModeLabel">
-                                    <button type="button" data-chess-mode="computer" data-glass-surface="control" data-glass-tint="blue" aria-pressed="true">Computer <span>Hard</span></button>
-                                    <button type="button" data-chess-mode="local" data-glass-surface="control" data-glass-tint="violet" aria-pressed="false">2 Players</button>
+                                    <button type="button" data-chess-mode="computer" aria-pressed="true">Computer <span>Hard</span></button>
+                                    <button type="button" data-chess-mode="local" aria-pressed="false">2 Players</button>
                                 </div>
                                 <p class="chess-mode-note" id="chessModeNote">You play White. The computer plays Black.</p>
                                 <div class="chess-status-box" role="status" aria-live="polite" aria-atomic="true">
@@ -274,43 +252,6 @@
                         </dialog>
                     </div>
 
-                    <div class="game-card game-panel key-rush-card" id="keyRushPanel" hidden>
-                        <div class="game-info">
-                            <div>
-                                <p class="eyebrow">How to Play</p>
-                                <h2>Type before words fall</h2>
-                                <p>Words descend from the top. Type a full word correctly before it reaches the bottom. Special words can heal, freeze, explode, or reward bonus points.</p>
-                            </div>
-                            <div class="game-stats key-rush-stats">
-                                <div><strong id="keyRushScore">0</strong><span>Score</span></div>
-                                <div><strong id="keyRushBest">0</strong><span>Best</span></div>
-                                <div><strong id="keyRushCombo">0</strong><span>Combo</span></div>
-                                <div><strong id="keyRushLives">5</strong><span>Lives</span></div>
-                            </div>
-                            <div class="key-rush-records">
-                                <span>Best Combo <strong id="keyRushBestCombo">0</strong></span>
-                                <span>Words Typed <strong id="keyRushWordsTyped">0</strong></span>
-                                <span>Accuracy <strong id="keyRushAccuracy">100%</strong></span>
-                                <span>Games Played <strong id="keyRushGames">0</strong></span>
-                                <span>Total Destroyed <strong id="keyRushDestroyed">0</strong></span>
-                            </div>
-                            <button class="custom-btn btn game-reset-btn" id="keyRushStart" type="button">Start Key Rush</button>
-                        </div>
-                        <div class="key-rush-wrap">
-                            <div class="key-rush-arena" id="keyRushArena" tabindex="0" aria-label="Key Rush typing game area">
-                                <div class="key-rush-effects" id="keyRushEffects"></div>
-                                <div class="key-rush-overlay" id="keyRushOverlay">
-                                    <strong id="keyRushOverlayTitle">Key Rush</strong>
-                                    <span id="keyRushOverlayText">Tap Start, then type the falling words before they reach the bottom.</span>
-                                </div>
-                                <div class="key-rush-bottom-bar">
-                                    <span id="keyRushStatus">Tap the arena to open keyboard on phone.</span>
-                                    <strong id="keyRushBuffer">Ready</strong>
-                                </div>
-                            </div>
-                            <input class="key-rush-input" id="keyRushInput" type="text" inputmode="text" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Type Key Rush words">
-                        </div>
-                    </div>
                 </div>
             </section>
         </main>
@@ -327,7 +268,7 @@
                         <ul class="footer-menu">
                             <li class="footer-menu-item"><a href="index.html#about" class="footer-menu-link">About</a></li>
                             <li class="footer-menu-item"><a href="portfolio.html" class="footer-menu-link">Portfolio</a></li>
-                            <li class="footer-menu-item"><a href="projects.html" class="footer-menu-link">Projects</a></li>
+                            <li class="footer-menu-item"><a href="products.html" class="footer-menu-link">Products</a></li>
                             <li class="footer-menu-item"><a href="resume.html" class="footer-menu-link">Resume</a></li>
                             <li class="footer-menu-item"><a href="contact.html" class="footer-menu-link">Contact</a></li>
                             <li class="footer-menu-item"><a href="game.html" class="footer-menu-link">Game</a></li>
@@ -377,16 +318,12 @@
 
         <script src="js/bootstrap.min.js"></script>
         <script src="js/quick-actions.js?v=1"></script>
-        <script src="js/cursor-effect.js?v=2"></script>
         <script src="js/theme-toggle.js?v=6"></script>
-        <script src="js/glass-materials.js?v=5"></script>
         <script src="js/site-animations.js?v=4"></script>
-        <script src="js/ambient-motion.js?v=6"></script>
+        <script src="js/ambient-motion.js?v=7"></script>
         <script src="js/game-library.js"></script>
-        <script src="js/2048-game.js"></script>
-        <script src="js/key-rush.js"></script>
-        <script src="js/flappy-bird.js?v=3"></script>
-        <script type="module" src="js/chess-game.js?v=1"></script>
+        <script src="js/flappy-bird.js?v=6"></script>
+        <script type="module" src="js/chess-game.js?v=2"></script>
 
     </body>
 </html>

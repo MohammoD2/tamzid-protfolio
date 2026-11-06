@@ -1,18 +1,49 @@
-/* Projects placeholder: a clear announcement and one horizontal Patreon card. */
+/* Project collections and Patreon resources. */
 .projects-page { display: flex; flex-direction: column; min-height: 100svh; padding-top: 90px; }
-.projects-intro { display: flex; align-items: center; flex: 1; text-align: center; padding: 90px 0 76px; }
+.projects-intro { display: flex; align-items: center; text-align: center; padding: 90px 0 54px; }
 .projects-intro h1 { max-width: 1040px; margin: 0 auto 26px; font-size: clamp(2.6rem,6.3vw,5.5rem); font-weight: 800; line-height: 1.08; }
 .projects-intro-copy { max-width: 610px; margin: 0 auto; font-size: 1.05rem; line-height: 1.8; }
+.projects-collection-section { padding: 0 0 56px; }
+.project-product-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; align-items: start; }
+.project-product-card { display: grid; grid-template-columns: minmax(0,1fr); overflow: hidden; background: #fbfcfe; border: 1px solid #d4e0e9; border-radius: 16px; box-shadow: 0 16px 36px rgba(31,66,96,.13); }
+.project-product-media { aspect-ratio: 16 / 9; overflow: hidden; position: relative; background: #0b2740; }
+.project-product-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg,transparent 55%,rgba(7,28,46,.16)); pointer-events: none; }
+.project-product-media img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform .65s cubic-bezier(.22,1,.36,1); }
+.project-product-card:hover .project-product-media img { transform: scale(1.025); }
+.project-product-badge { align-items: center; display: inline-flex; gap: 6px; position: absolute; top: 12px; left: 12px; z-index: 2; padding: 6px 9px; border: 1px solid rgba(255,255,255,.34); border-radius: 7px; background: rgba(9,31,51,.72); color: #fff; font-size: .64rem; font-weight: 700; letter-spacing: .04em; backdrop-filter: blur(12px); }
+.project-product-content { display: flex; flex-direction: column; padding: 21px; }
+.project-product-topline { align-items: center; display: flex; gap: 12px; justify-content: space-between; margin-bottom: 14px; }
+.project-product-type { color: #0067c0; font-size: .62rem; font-weight: 800; letter-spacing: .09em; line-height: 1.4; text-transform: uppercase; }
+.project-product-price { align-items: flex-start; display: inline-flex; flex-shrink: 0; color: #111318; font-size: 2rem; font-weight: 800; letter-spacing: -.06em; line-height: .8; }
+.project-product-price small { color: #0067c0; font-size: .75rem; line-height: 1; margin: 1px 3px 0 0; }
+.project-product-content h2 { color: #111318; font-size: 1.45rem; line-height: 1.18; margin-bottom: 10px; }
+.project-product-content > p { color: #5b626b; font-size: .86rem; line-height: 1.65; margin-bottom: 17px; }
+.project-product-features { display: grid; gap: 7px; list-style: none; margin: 0 0 20px; padding: 0; }
+.project-product-features li { align-items: center; color: #303740; display: flex; font-size: .78rem; font-weight: 600; gap: 8px; }
+.project-product-features i { color: #0067c0; font-size: .92rem; }
+.project-product-action { align-self: stretch; min-height: 44px; padding-inline: 14px; font-size: .8rem; text-align: center; }
 .projects-patreon-section { padding-bottom: 76px; }
 .projects-patreon-card { display: flex; align-items: center; justify-content: space-between; gap: 30px; padding: 34px 38px; }
 .projects-patreon-card .eyebrow { margin-bottom: 10px; font-size: .72rem; }
 .projects-patreon-card h2 { font-size: clamp(1.6rem,3vw,2.1rem); margin-bottom: 12px; }
 .projects-patreon-card p:last-child { margin-bottom: 0; }
 .projects-patreon-card .custom-btn { flex-shrink: 0; min-height: 44px; white-space: nowrap; }
+html[data-theme="dark"] .project-product-card { background: var(--theme-surface); border-color: var(--theme-border); box-shadow: 0 26px 65px rgba(2,10,18,.42); }
+html[data-theme="dark"] .project-product-type { color: var(--theme-accent); }
+html[data-theme="dark"] .project-product-price,
+html[data-theme="dark"] .project-product-content h2 { color: var(--theme-text); }
+html[data-theme="dark"] .project-product-price small,
+html[data-theme="dark"] .project-product-features i { color: var(--theme-accent); }
+html[data-theme="dark"] .project-product-content > p,
+html[data-theme="dark"] .project-product-features li { color: var(--theme-muted); }
+@media (max-width: 991px) {
+  .project-product-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
 @media (max-width: 767px) {
   .projects-page { padding-top: 84px; }
   .projects-intro { padding: 75px 0 54px; }
   .projects-intro-copy { font-size: .95rem; }
   .projects-patreon-section { padding-bottom: 54px; }
   .projects-patreon-card { flex-direction: column; align-items: flex-start; gap: 24px; padding: 27px 24px; }
+  .project-product-grid { grid-template-columns: minmax(0,1fr); }
 }

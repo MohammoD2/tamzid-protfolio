@@ -37,7 +37,7 @@ html[data-theme="light"] { color-scheme: light; }
   border: 1px solid var(--picker-line); border-radius: 50%; background: var(--picker-soft);
   color: var(--picker-text); transition: transform .2s ease, background-color .2s ease;
 }
-.theme-picker-close:hover { transform: rotate(90deg); }
+.theme-picker-close:hover { filter: brightness(.92); box-shadow: 0 4px 12px rgba(16,32,51,.12); transform: translateY(-1px); }
 .theme-picker-list { display: grid; gap: 10px; max-height: min(360px, 48dvh); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--picker-line) transparent; padding: 3px; }
 .theme-picker-option {
   display: flex; align-items: center; gap: 13px; width: 100%; min-height: 90px;

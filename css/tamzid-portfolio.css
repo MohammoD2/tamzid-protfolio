@@ -1465,10 +1465,10 @@ body.video-lightbox-open {
 }
 
 .video-lightbox-close:hover {
-  background: rgba(255,255,255,0.96);
-  border-color: rgba(255,255,255,0.8);
-  box-shadow: 0 1.2rem 2.5rem rgba(0,0,0,0.32);
-  transform: translateY(-3px) scale(1.08) rotate(4deg);
+  background: rgba(235,242,248,0.98);
+  border-color: rgba(59,93,125,0.28);
+  box-shadow: 0 0.8rem 1.8rem rgba(0,0,0,0.24);
+  transform: translateY(-1px);
 }
 
 .video-lightbox-close:active {
@@ -3507,33 +3507,6 @@ button.form-control:hover {
   padding: 24px 0;
 }
 
-.cursor-follower {
-  background: rgba(59,93,125,0.16);
-  border: 1px solid rgba(59,93,125,0.36);
-  border-radius: 50%;
-  box-shadow: 0 0 24px rgba(59,93,125,0.24);
-  height: 22px;
-  left: 0;
-  opacity: 0;
-  pointer-events: none;
-  position: fixed;
-  top: 0;
-  transform: translate3d(-50px, -50px, 0);
-  transition: opacity var(--motion-fast) var(--motion-ease), height var(--motion-fast) var(--motion-soft), width var(--motion-fast) var(--motion-soft), background var(--motion-fast) var(--motion-ease);
-  width: 22px;
-  z-index: 9999;
-}
-
-.cursor-follower.is-visible {
-  opacity: 1;
-}
-
-.cursor-follower.is-hovering {
-  background: rgba(59,93,125,0.08);
-  height: 42px;
-  width: 42px;
-}
-
 @media screen and (max-width: 991px) {
   .section-padding {
     padding: 70px 0;
@@ -3987,12 +3960,6 @@ button.form-control:hover {
 
   .service-modal-banner img {
     aspect-ratio: 16 / 9;
-  }
-}
-
-@media (pointer: coarse), (prefers-reduced-motion: reduce) {
-  .cursor-follower {
-    display: none;
   }
 }
 
@@ -5483,7 +5450,7 @@ html[data-theme="dark"] .video-lightbox-close {
 }
 
 html[data-theme="dark"] .video-lightbox-close:hover {
-  background: #29465d;
+  background: #14283b;
   border-color: var(--theme-border-strong);
 }
 

@@ -1,0 +1,34 @@
+/* The former Liquid Glass typography, shared by both remaining color themes. */
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../fonts/Montserrat/Montserrat-Variable.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --body-font-family: 'Montserrat', 'Segoe UI', sans-serif;
+  --heading-font-family: 'Montserrat', 'Segoe UI', sans-serif;
+}
+
+:is(h1,h2,h3,h4,h5,h6) {
+  font-family: var(--heading-font-family);
+  font-weight: 800;
+  letter-spacing: -.04em;
+  line-height: 1.15;
+}
+
+:is(h3,h4) { font-weight: 650; letter-spacing: -.025em; }
+:is(h5,h6,.review-header h5,.about-profile-box h5,.contact-card strong,.theme-option-copy strong) { font-weight: 600; letter-spacing: -.015em; }
+:is(p,li,.hero-copy) { font-weight: 400; }
+.hero-tagline { font-weight: 600; letter-spacing: -.025em; line-height: 1.4; }
+.hero-copy { line-height: 1.8; }
+:is(.profile-card-body,.about-focus-list span,.faq-card summary,.featured-block > span,.portfolio-service-card > span,.work-card > div > span,.experience-metrics span,.stat-card > span,.game-library-card strong,.review-filter-btn span,.review-link,.timeline-company,.contact-form-status,.language-list span,.game-stats span,.review-score-card span,.review-count-card span) { font-weight: 500; }
+:is(.eyebrow,.section-title-small,.video-lightbox-category) { font-weight: 600; letter-spacing: .12em; }
+:is(.review-meta,.timeline-date,.timeline-card-header span,.resume-item > span,.education-card > span,.summary-label,.review-summary > span) { font-weight: 500; }
+:is(.review-header span,.review-summary small,.review-modal .modal-header span,.timeline-location,.review-count-card small) { font-weight: 400; }
+:is(.stat-card strong,.experience-metrics strong,.game-stats strong) { font-weight: 650; }
+.portfolio-floating-navbar .portfolio-brand > span:last-child,
+.footer-brand { font-weight: 700; }
+.portfolio-floating-navbar :is(.nav-link,.navbar-brand small) { font-weight: 500; }

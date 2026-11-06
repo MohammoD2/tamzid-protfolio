@@ -4,10 +4,9 @@
   // Add future themes here; the list is generated from this registry.
   const themes = [
     { id: 'light', name: 'Classic White', description: 'Bright, clean, and timeless.', preview: 'light' },
-    { id: 'dark', name: 'Midnight Blue', description: 'Deep blue with soft, elegant contrast.', preview: 'dark' },
-    { id: 'glass', name: 'Liquid Glass', description: 'Sunlit color, luminous edges, and clear glass.', preview: 'glass' }
+    { id: 'dark', name: 'Midnight Blue', description: 'Deep blue with soft, elegant contrast.', preview: 'dark' }
   ];
-  const normalizeTheme = (id) => themes.some((theme) => theme.id === id) ? id : 'glass';
+  const normalizeTheme = (id) => themes.some((theme) => theme.id === id) ? id : 'light';
   const readSavedTheme = () => {
     try { return localStorage.getItem(storageKey); } catch { return null; }
   };
@@ -98,37 +97,6 @@
     });
     window.addEventListener('storage', (event) => {
       if (event.key === storageKey || event.key === null) applyTheme(readSavedTheme());
-    });
-    // Reflections follow a fine pointer; touch receives a small elastic press.
-    const glassControls = '[data-glass-surface]:not([data-glass-surface=link])';
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let reflectionFrame = null;
-    let reflectionTarget, pointerX, pointerY;
-    document.addEventListener('pointermove', (event) => {
-      if (root.dataset.theme !== 'glass' || reducedMotion.matches || event.pointerType !== 'mouse') return;
-      const target = event.target.closest(glassControls);
-      if (!target) return;
-      reflectionTarget = target; pointerX = event.clientX; pointerY = event.clientY;
-      if (reflectionFrame !== null) return;
-      reflectionFrame = requestAnimationFrame(() => {
-        reflectionFrame = null;
-        if (root.dataset.theme !== 'glass' || !reflectionTarget.isConnected) return;
-        const rect = reflectionTarget.getBoundingClientRect();
-        const x = ((pointerX - rect.left) / Math.max(rect.width, 1) * 100).toFixed(1);
-        const y = ((pointerY - rect.top) / Math.max(rect.height, 1) * 100).toFixed(1);
-        const strength = getComputedStyle(reflectionTarget).getPropertyValue('--glass-reflection-strength').trim() || '.25';
-        reflectionTarget.style.setProperty('--glass-reflection', `radial-gradient(ellipse at ${x}% ${y}%, rgba(255,255,255,${strength}), transparent 55%)`);
-      });
-    }, { passive: true });
-    const pressGlass = (target) => {
-      if (root.dataset.theme !== 'glass' || reducedMotion.matches || !target || !target.animate || !target.matches('button,a,[role=button]')) return;
-      target.animate([{ scale: '1' }, { scale: '.96', offset: .35 }, { scale: '1' }], { duration: 380, easing: 'cubic-bezier(.22,1,.36,1)' });
-    };
-    document.addEventListener('pointerdown', (event) => {
-      if (event.button === 0) pressGlass(event.target.closest(glassControls));
-    }, { passive: true });
-    document.addEventListener('keydown', (event) => {
-      if (!event.repeat && (event.key === 'Enter' || event.key === ' ')) pressGlass(event.target.closest(glassControls));
     });
     applyTheme(readSavedTheme());
   };

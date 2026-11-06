@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
     <head>
         <meta charset="utf-8">
@@ -19,24 +19,26 @@
         
                     document.documentElement.setAttribute(
                         'data-theme',
-                        ['light', 'dark', 'glass'].includes(savedTheme) ? savedTheme : 'glass'
+                        ['light', 'dark'].includes(savedTheme) ? savedTheme : 'light'
                     );
                 } catch (error) {
-                    document.documentElement.setAttribute('data-theme', 'glass');
+                    document.documentElement.setAttribute('data-theme', 'light');
                 }
             })();
         </script>
 
-        <link rel="preload" href="fonts/Outfit/Outfit-Variable.ttf" as="font" type="font/ttf" crossorigin>
-        <link rel="preload" href="fonts/Manrope/Manrope-Variable.ttf" as="font" type="font/ttf" crossorigin>
+        <link rel="preload" href="fonts/Montserrat/Montserrat-Variable.ttf" as="font" type="font/ttf" crossorigin>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/bootstrap-icons.css" rel="stylesheet">
-        <link href="css/tamzid-portfolio.css" rel="stylesheet">
-        <link href="css/theme-picker.css" rel="stylesheet">
-        <link href="css/ambient-motion.css?v=4" rel="stylesheet">
-        <link href="css/liquid-glass.css?v=8" rel="stylesheet">
-        <link href="css/quick-actions.css?v=1" rel="stylesheet">
+        <link href="css/tamzid-portfolio.css?v=2" rel="stylesheet">
+        <link href="css/theme-picker.css?v=2" rel="stylesheet">
+        <link href="css/ambient-motion.css?v=6" rel="stylesheet">
+        <link href="css/quick-actions.css?v=2" rel="stylesheet">
         <link href="css/experience-polish.css?v=2" rel="stylesheet">
+        <link href="css/portfolio-typography.css?v=1" rel="stylesheet">
+        <link href="css/visual-system.css?v=4" rel="stylesheet">
+        <link href="css/hero-role-rotator.css?v=1" rel="stylesheet">
+        <link href="css/home-service-cards.css?v=1" rel="stylesheet">
     </head>
 
     <body id="top">
@@ -49,7 +51,7 @@
                     <img src="images/Tamzid%201.jpg" class="brand-photo" alt="Tamzid Rahman">
                     <span>
                         Tamzid Rahman
-                        <small>Co-Founder of AllOfTech</small>
+                        <small>3D Animator</small>
                     </span>
                 </a>
         
@@ -83,7 +85,7 @@
                         </li>
         
                         <li class="nav-item">
-                            <a class="nav-link" href="projects.html">Projects</a>
+                            <a class="nav-link" href="products.html">Products</a>
                         </li>
 
 
@@ -146,11 +148,17 @@
                 </div>
             </section>
 
-            <section class="hero-section portfolio-hero" id="section_1" data-wire-shape="cube" data-wire-side="left" data-wire-top="8">
+            <section class="hero-section portfolio-hero" id="section_1">
                 <div class="container">
                     <div class="row align-items-center g-5">
                         <div class="col-lg-7 col-12">
-                            <p class="eyebrow">3D Animator</p>
+                            <div class="eyebrow hero-role-rotator" data-role-rotator>
+                                <span class="visually-hidden">Professional roles: Freelance 3D Animator; Co-Founder at AllOfTech.</span>
+                                <span class="hero-role-viewport" aria-hidden="true">
+                                    <span class="hero-role is-active">Freelance 3D Animator</span>
+                                    <span class="hero-role">Co-Founder at AllOfTech</span>
+                                </span>
+                            </div>
                             <h1>Tamzid Rahman</h1>
                             <p class="hero-tagline">Bring Your Imagination To Life</p>
                             <p class="hero-copy">I create clean, believable animations with a strong focus on motion, lighting, materials, and scene design. I also co-founded AllOfTech with a clear vision: to use technology and creative thinking to solve real problems and build something that truly matters.</p>
@@ -172,7 +180,7 @@
                 </div>
             </section>
 
-            <section class="section-padding feature-section" data-wire-shape="sphere" data-wire-side="right" data-wire-top="0">
+            <section class="section-padding feature-section">
                 <div class="container">
                     <div class="row text-center mb-5">
                         <div class="col-lg-8 col-12 mx-auto">
@@ -182,35 +190,47 @@
                     </div>
                     <div class="row g-4">
                         <div class="col-6 col-md-6 col-lg-3">
-                            <button class="featured-block service-detail-card" type="button" data-bs-toggle="modal" data-bs-target="#serviceProductAnimation">
-                                <i class="bi-box-seam feature-icon"></i>
-                                <h5>Product Animation</h5>
-                                <p>Clean product visuals with lighting, materials, and presentation polish.</p>
-                                <span>View breakdown</span>
+                            <button class="featured-block service-detail-card home-service-card" type="button" data-bs-toggle="modal" data-bs-target="#serviceProductAnimation">
+                                <div class="home-service-render"><img src="images/Product%20animation%20render.png" alt="Product animation controller render" loading="lazy"></div>
+                                <div class="home-service-content">
+                                    <i class="bi-box-seam feature-icon" aria-hidden="true"></i>
+                                    <h5>Product Animation</h5>
+                                    <p>Clean product visuals with lighting, materials, and presentation polish.</p>
+                                    <span>View breakdown</span>
+                                </div>
                             </button>
                         </div>
                         <div class="col-6 col-md-6 col-lg-3">
-                            <button class="featured-block service-detail-card" type="button" data-bs-toggle="modal" data-bs-target="#serviceCharacterAnimation">
-                                <i class="bi-person-video3 feature-icon"></i>
-                                <h5>Character Animation</h5>
-                                <p>Natural motion, timing, and performance for production-ready characters.</p>
-                                <span>View breakdown</span>
+                            <button class="featured-block service-detail-card home-service-card" type="button" data-bs-toggle="modal" data-bs-target="#serviceCharacterAnimation">
+                                <div class="home-service-render"><img src="images/Arthur%20in%20Party%201.png" alt="Arthur character animation scene" loading="lazy"></div>
+                                <div class="home-service-content">
+                                    <i class="bi-person-video3 feature-icon" aria-hidden="true"></i>
+                                    <h5>Character Animation</h5>
+                                    <p>Natural motion, timing, and performance for production-ready characters.</p>
+                                    <span>View breakdown</span>
+                                </div>
                             </button>
                         </div>
                         <div class="col-6 col-md-6 col-lg-3">
-                            <button class="featured-block service-detail-card" type="button" data-bs-toggle="modal" data-bs-target="#serviceEnvironmentDesign">
-                                <i class="bi-tree feature-icon"></i>
-                                <h5>Environment & Scene Design</h5>
-                                <p>Detailed environments, scene layout, and composition for clear visual storytelling.</p>
-                                <span>View breakdown</span>
+                            <button class="featured-block service-detail-card home-service-card" type="button" data-bs-toggle="modal" data-bs-target="#serviceEnvironmentDesign">
+                                <div class="home-service-render"><img src="images/Forest%20Render%201.png" alt="Forest environment design render" loading="lazy"></div>
+                                <div class="home-service-content">
+                                    <i class="bi-tree feature-icon" aria-hidden="true"></i>
+                                    <h5>Environment &amp; Scene Design</h5>
+                                    <p>Detailed environments, scene layout, and composition for clear visual storytelling.</p>
+                                    <span>View breakdown</span>
+                                </div>
                             </button>
                         </div>
                         <div class="col-6 col-md-6 col-lg-3">
-                            <button class="featured-block service-detail-card" type="button" data-bs-toggle="modal" data-bs-target="#serviceLightingRendering">
-                                <i class="bi-brightness-high feature-icon"></i>
-                                <h5>Lighting, Rendering & Compositing</h5>
-                                <p>Lighting, render polish, and final compositing for clean presentation-ready visuals.</p>
-                                <span>View breakdown</span>
+                            <button class="featured-block service-detail-card home-service-card" type="button" data-bs-toggle="modal" data-bs-target="#serviceLightingRendering">
+                                <div class="home-service-render"><img src="images/Soldier%20Dying.png" alt="Cinematic lighting rendering and compositing scene" loading="lazy"></div>
+                                <div class="home-service-content">
+                                    <i class="bi-brightness-high feature-icon" aria-hidden="true"></i>
+                                    <h5>Lighting, Rendering &amp; Compositing</h5>
+                                    <p>Lighting, render polish, and final compositing for clean presentation-ready visuals.</p>
+                                    <span>View breakdown</span>
+                                </div>
                             </button>
                         </div>
                     </div>
@@ -378,7 +398,7 @@
                 </div>
             </section>
 
-            <section class="section-padding section-bg" id="section_4" data-wire-shape="cube" data-wire-side="right" data-wire-top="18">
+            <section class="section-padding section-bg" id="section_4">
                 <div class="container">
                     <div class="row align-items-end mb-5">
                         <div class="col-lg-8 col-12">
@@ -518,7 +538,7 @@
                     </div>
                     <div class="row mt-4">
                         <div class="col-12 text-center review-actions">
-                            <button class="custom-btn custom-border-btn btn show-reviews-btn" type="button" data-bs-toggle="modal" data-bs-target="#allReviewsModal">
+                            <button class="btn show-reviews-btn" type="button" data-bs-toggle="modal" data-bs-target="#allReviewsModal">
                                 Show more reviews
                             </button>
                             <button class="custom-btn btn add-review-btn" type="button" data-bs-toggle="modal" data-bs-target="#addReviewModal">
@@ -762,7 +782,7 @@
                 </div>
             </div>
 
-            <section class="section-padding" id="section_5" data-wire-shape="sphere" data-wire-side="left" data-wire-top="8">
+            <section class="section-padding" id="section_5">
                 <div class="container">
                     <div class="row mb-5 text-center"><div class="col-lg-8 col-12 mx-auto"><h2>Software & Skills</h2><p>Tools and production skills used to create animation-ready scenes and polished final visuals.</p></div></div>
                     <div class="tag-cloud justify-content-center">
@@ -777,10 +797,10 @@
                         <div>
                             <p class="eyebrow">Project Files & Extras</p>
                             <h2>Want access to my project files and many more?</h2>
-                            <p>Visit my Projects page for project files, behind-the-scenes resources, and extra creative content.</p>
+                            <p>Visit my Products page for project files, behind-the-scenes resources, and extra creative content.</p>
                         </div>
-                        <a href="projects.html" class="custom-btn btn">
-                            Visit Projects
+                        <a href="products.html" class="custom-btn btn">
+                            Visit Products
                         </a>
                     </div>
                 </div>
@@ -809,7 +829,7 @@
                         </details>
                         <details class="faq-card">
                             <summary>Can you provide project files?</summary>
-                            <p>Yes, project files can be included when agreed before the project starts. Some course files and selected breakdown resources are also available through my Projects page.</p>
+                            <p>Yes, project files can be included when agreed before the project starts. Some course files and selected breakdown resources are also available through my Products page.</p>
                         </details>
                         <details class="faq-card">
                             <summary>Do you work with Blender and Unreal Engine?</summary>
@@ -849,7 +869,7 @@
                         <ul class="footer-menu">
                             <li class="footer-menu-item"><a href="index.html#about" class="footer-menu-link">About</a></li>
                             <li class="footer-menu-item"><a href="portfolio.html" class="footer-menu-link">Portfolio</a></li>
-                            <li class="footer-menu-item"><a href="projects.html" class="footer-menu-link">Projects</a></li>
+                            <li class="footer-menu-item"><a href="products.html" class="footer-menu-link">Products</a></li>
                             <li class="footer-menu-item"><a href="resume.html" class="footer-menu-link">Resume</a></li>
                             <li class="footer-menu-item"><a href="contact.html" class="footer-menu-link">Contact</a></li>
                             <li class="footer-menu-item"><a href="game.html" class="footer-menu-link">Game</a></li>
@@ -900,11 +920,10 @@
 
         <script src="js/bootstrap.min.js"></script>
         <script src="js/quick-actions.js?v=1"></script>
-        <script src="js/cursor-effect.js?v=2"></script>
         <script src="js/theme-toggle.js?v=6"></script>
-        <script src="js/glass-materials.js?v=5"></script>
         <script src="js/site-animations.js?v=4"></script>
-        <script src="js/ambient-motion.js?v=6"></script>
+        <script src="js/ambient-motion.js?v=7"></script>
+        <script src="js/hero-role-rotator.js?v=1"></script>
         <script src="js/review-form.js"></script>
         <script src="js/review-filter.js"></script>
         <script src="js/youtube-videos.js"></script>

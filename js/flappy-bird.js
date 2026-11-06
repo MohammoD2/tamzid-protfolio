@@ -4,6 +4,8 @@
   const overlay = document.querySelector('#gameOverlay');
   const scoreEl = document.querySelector('#gameScore');
   const bestEl = document.querySelector('#gameBest');
+  const speedEl = document.querySelector('#gameSpeed');
+  const levelEl = document.querySelector('#gameLevel');
   const skinButtons = document.querySelectorAll('.skin-option');
 
   if (!canvas || !startButton || !overlay || !scoreEl || !bestEl) {
@@ -26,15 +28,16 @@
 
   const groundHeight = 70;
   const pipeWidth = 70;
-  const gapHeight = 190;
+  const initialGapHeight = 190;
+  const minimumGapHeight = 150;
   const gravity = 0.5;
   const flapPower = -7.2;
   const maxFallSpeed = 11;
   const physicsStep = 1000 / 120;
-  // Speeds are pixels per 60 Hz frame; acceleration is per second of play.
-  const initialPipeSpeed = 2.35;
-  const maxPipeSpeed = 4.5;
-  const pipeAcceleration = 0.025;
+  // Speeds are pixels per 60 Hz frame. There is intentionally no hard speed cap.
+  const initialPipeSpeed = 2.4;
+  const timeAcceleration = 0.014;
+  const scoreAcceleration = 0.115;
   const pipeSpacing = 310;
   const blenderLogo = new Image();
   blenderLogo.src = 'images/Blender_logo_no_text.svg.png';
@@ -54,6 +57,9 @@
   let elapsedTime;
   let previousFrameTime;
   let physicsAccumulator;
+  let currentPipeSpeed;
+  let currentGapHeight;
+  let difficultyLevel;
 
   bestEl.textContent = best;
 
@@ -93,9 +99,14 @@
     pipes = [];
     score = 0;
     elapsedTime = 0;
+    currentPipeSpeed = initialPipeSpeed;
+    currentGapHeight = initialGapHeight;
+    difficultyLevel = 1;
     previousFrameTime = null;
     physicsAccumulator = 0;
     scoreEl.textContent = score;
+    if (speedEl) speedEl.textContent = '1.0x';
+    if (levelEl) levelEl.textContent = 'Level 1';
 
     for (let i = 0; i < 2; i += 1) {
       addPipe(width + 230 + i * pipeSpacing);
@@ -104,39 +115,51 @@
 
   const addPipe = (x) => {
     const minTop = 95;
-    const maxTop = height - groundHeight - gapHeight - 105;
+    const maxTop = height - groundHeight - currentGapHeight - 105;
     const topHeight = minTop + Math.random() * (maxTop - minTop);
 
     pipes.push({
       x,
       topHeight,
+      gapHeight: currentGapHeight,
       passed: false
     });
   };
 
   const drawBackground = () => {
     const gradient = ctx.createLinearGradient(0, 0, 0, height);
-    gradient.addColorStop(0, '#eef4f9');
+    gradient.addColorStop(0, '#dceefa');
+    gradient.addColorStop(0.62, '#eef7fd');
     gradient.addColorStop(1, '#ffffff');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
 
-    ctx.fillStyle = 'rgba(59, 93, 125, 0.08)';
-    for (let x = 18; x < width; x += 38) {
-      for (let y = 22; y < height - groundHeight; y += 38) {
-        ctx.beginPath();
-        ctx.arc(x, y, 1.7, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
+    ctx.fillStyle = 'rgba(255,255,255,.62)';
+    [[72, 110, 48], [330, 165, 62], [210, 72, 36]].forEach(([x, y, size]) => {
+      ctx.beginPath();
+      ctx.ellipse(x, y, size, size * .34, 0, 0, Math.PI * 2);
+      ctx.ellipse(x - size * .34, y + 2, size * .48, size * .27, 0, 0, Math.PI * 2);
+      ctx.ellipse(x + size * .35, y + 4, size * .45, size * .24, 0, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    ctx.fillStyle = 'rgba(97,160,205,.11)';
+    ctx.beginPath();
+    ctx.moveTo(0, height - groundHeight - 70);
+    ctx.quadraticCurveTo(105, height - groundHeight - 135, 210, height - groundHeight - 62);
+    ctx.quadraticCurveTo(315, height - groundHeight - 118, width, height - groundHeight - 54);
+    ctx.lineTo(width, height - groundHeight);
+    ctx.lineTo(0, height - groundHeight);
+    ctx.closePath();
+    ctx.fill();
   };
 
   const drawPipes = () => {
     pipes.forEach((pipe) => {
-      const bottomY = pipe.topHeight + gapHeight;
+      const bottomY = pipe.topHeight + pipe.gapHeight;
       const pipeGradient = ctx.createLinearGradient(pipe.x, 0, pipe.x + pipeWidth, 0);
-      pipeGradient.addColorStop(0, '#2f4a64');
-      pipeGradient.addColorStop(1, '#3B5D7D');
+      pipeGradient.addColorStop(0, '#005a9e');
+      pipeGradient.addColorStop(1, '#1382d3');
 
       ctx.fillStyle = pipeGradient;
       ctx.fillRect(pipe.x, 0, pipeWidth, pipe.topHeight);
@@ -146,16 +169,16 @@
       ctx.fillRect(pipe.x + 10, 0, 8, pipe.topHeight);
       ctx.fillRect(pipe.x + 10, bottomY, 8, height - groundHeight - bottomY);
 
-      ctx.fillStyle = '#223a52';
+      ctx.fillStyle = '#064e83';
       ctx.fillRect(pipe.x - 8, pipe.topHeight - 18, pipeWidth + 16, 18);
       ctx.fillRect(pipe.x - 8, bottomY, pipeWidth + 16, 18);
     });
   };
 
   const drawGround = () => {
-    ctx.fillStyle = '#d8e3ec';
+    ctx.fillStyle = '#d5e5f0';
     ctx.fillRect(0, height - groundHeight, width, groundHeight);
-    ctx.fillStyle = '#3B5D7D';
+    ctx.fillStyle = '#0067c0';
     ctx.fillRect(0, height - groundHeight, width, 4);
   };
 
@@ -444,11 +467,29 @@
     ctx.fillText('Tap, click, or press Space to flap', width / 2, height * 0.49);
   };
 
+  const drawHud = () => {
+    if (gameState === 'ready') return;
+    ctx.save();
+    ctx.fillStyle = 'rgba(16,47,74,.84)';
+    ctx.beginPath();
+    ctx.roundRect(14, 14, 92, 50, 10);
+    ctx.fill();
+    ctx.fillStyle = '#dce9f2';
+    ctx.font = `600 10px ${canvasFonts.body}`;
+    ctx.textAlign = 'left';
+    ctx.fillText('SCORE', 27, 33);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = `700 22px ${canvasFonts.heading}`;
+    ctx.fillText(String(score), 27, 55);
+    ctx.restore();
+  };
+
   const draw = () => {
     drawBackground();
     drawPipes();
     drawGround();
     drawBird();
+    drawHud();
 
     if (gameState === 'ready') {
       drawStartText();
@@ -462,14 +503,24 @@
 
     return pipes.some((pipe) => {
       const inPipeX = bird.x + bird.radius > pipe.x && bird.x - bird.radius < pipe.x + pipeWidth;
-      const inGap = bird.y - bird.radius > pipe.topHeight && bird.y + bird.radius < pipe.topHeight + gapHeight;
+      const inGap = bird.y - bird.radius > pipe.topHeight && bird.y + bird.radius < pipe.topHeight + pipe.gapHeight;
       return inPipeX && !inGap;
     });
   };
 
   const update = (frameScale) => {
     elapsedTime += frameScale / 60;
-    const pipeSpeed = Math.min(maxPipeSpeed, initialPipeSpeed + elapsedTime * pipeAcceleration);
+    currentPipeSpeed = initialPipeSpeed + elapsedTime * timeAcceleration + score * scoreAcceleration;
+    currentGapHeight = Math.max(
+      minimumGapHeight,
+      initialGapHeight - elapsedTime * 0.08 - score * 2
+    );
+    const nextLevel = 1 + Math.floor((currentPipeSpeed - initialPipeSpeed) / 0.55);
+    if (nextLevel !== difficultyLevel) {
+      difficultyLevel = nextLevel;
+      if (levelEl) levelEl.textContent = `Level ${difficultyLevel}`;
+    }
+    if (speedEl) speedEl.textContent = `${(currentPipeSpeed / initialPipeSpeed).toFixed(1)}x`;
     const previousVelocity = bird.velocity;
     bird.velocity = Math.min(maxFallSpeed, bird.velocity + gravity * frameScale);
     bird.y += (previousVelocity + bird.velocity) * 0.5 * frameScale;
@@ -477,7 +528,7 @@
     bird.rotation += (targetRotation - bird.rotation) * (1 - Math.exp(-0.22 * frameScale));
 
     pipes.forEach((pipe) => {
-      pipe.x -= pipeSpeed * frameScale;
+      pipe.x -= currentPipeSpeed * frameScale;
 
       if (!pipe.passed && pipe.x + pipeWidth < bird.x) {
         pipe.passed = true;
@@ -547,7 +598,7 @@
     }
 
     overlay.querySelector('h3').textContent = 'Game Over';
-    overlay.querySelector('p').textContent = `Score: ${score}. Click restart to try again.`;
+    overlay.querySelector('p').textContent = `Score: ${score}. Press Enter or Space to restart.`;
     startButton.textContent = 'Restart Game';
     overlay.classList.remove('is-hidden');
     draw();
@@ -576,7 +627,22 @@
   });
 
   window.addEventListener('keydown', (event) => {
-    if (event.code !== 'Space' || canvas.closest('.game-panel')?.hidden) {
+    if (canvas.closest('.game-panel')?.hidden) {
+      return;
+    }
+
+    const isSpace = event.code === 'Space';
+    const isEnter = event.code === 'Enter';
+
+    if (gameState === 'ended' && (isSpace || isEnter)) {
+      event.preventDefault();
+      if (!event.repeat) {
+        startButton.click();
+      }
+      return;
+    }
+
+    if (!isSpace) {
       return;
     }
 

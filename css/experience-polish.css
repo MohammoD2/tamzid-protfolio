@@ -8,7 +8,7 @@
 }
 
 /* Theme transitions must preserve the card's hover transition. */
-html body :is(.profile-card,.hero-slider-card,.featured-block,.work-card,.custom-text-box,.stat-card,.timeline-card,.experience-summary-card,.contact-panel,.service-box,.education-card,.contact-card,.contact-form,.review-card,.all-review-card,.faq-card,.portfolio-cta-card,.resume-sidebar,.resume-item,.location-box,.section-image,.contact-photo,[data-glass-surface]) {
+html body :is(.profile-card,.hero-slider-card,.featured-block,.work-card,.custom-text-box,.stat-card,.timeline-card,.experience-summary-card,.contact-panel,.service-box,.education-card,.contact-card,.contact-form,.review-card,.all-review-card,.faq-card,.portfolio-cta-card,.resume-sidebar,.resume-item,.location-box,.section-image,.contact-photo) {
   will-change: auto;
   transition: transform var(--motion-medium) var(--motion-soft),
     box-shadow var(--motion-medium) var(--motion-ease),
@@ -18,21 +18,6 @@ html body :is(.profile-card,.hero-slider-card,.featured-block,.work-card,.custom
 }
 /* Entrance animations use independent translate, leaving hover transforms free. */
 html body .reveal-on-scroll { opacity: 0; transform: none; transition: none; }
-
-html[data-theme="glass"] body {
-  background:
-    radial-gradient(ellipse at 4% 3%,rgba(245,211,193,.32),transparent 34%),
-    radial-gradient(ellipse at 100% 20%,rgba(174,184,224,.32),transparent 40%),
-    radial-gradient(ellipse at 0% 55%,rgba(162,211,208,.25),transparent 40%),
-    radial-gradient(ellipse at 95% 84%,rgba(217,194,215,.26),transparent 42%),
-    linear-gradient(145deg,#eef1f6,#e5edf3 45%,#f2eff2);
-}
-html[data-theme="glass"] [data-glass-tint="blue"] { --glass-a: 115,133,190; --glass-b: 123,194,211; }
-html[data-theme="glass"] [data-glass-tint="violet"] { --glass-a: 156,134,194; --glass-b: 147,184,215; }
-html[data-theme="glass"] [data-glass-tint="mint"] { --glass-a: 103,157,160; --glass-b: 138,204,185; }
-html[data-theme="glass"] [data-glass-tint="coral"] { --glass-a: 199,147,169; --glass-b: 224,185,143; }
-html[data-theme="glass"] [data-glass-surface="control"] { --glass-fill: .36; --glass-glow: .26; }
-html[data-theme="glass"] [data-glass-surface="panel"] { --glass-glow: .12; }
 
 html body :is(.custom-btn,.social-icon-link,.review-filter-btn,.add-review-btn,.quick-actions-toggle,.quick-action,.theme-picker-option) {
   transition: transform .28s var(--motion-soft), scale .18s var(--motion-soft),
@@ -45,9 +30,7 @@ html body :is(.custom-btn,.social-icon-link,.review-filter-btn,.add-review-btn,.
 ::selection { background: #c8d9e9; color: #192c43; }
 
 .ambient-layer { opacity: .72; }
-.ambient-motif { animation-duration: 16s; }
 .ambient-flat { opacity: .5; }
-.cursor-follower { transition: opacity .2s ease, width .28s var(--motion-soft), height .28s var(--motion-soft), background-color .28s ease; }
 
 @media (hover: hover) and (pointer: fine) {
   html body :is(.profile-card,.work-card,.contact-card,.review-card,.featured-block,.custom-text-box,.timeline-card,.stat-card):hover { transform: translateY(-4px); }
