@@ -53,6 +53,13 @@
       draw();
     }
   });
+  const miguelBird = new Image();
+  miguelBird.src = 'images/miguel-bird.png';
+  miguelBird.addEventListener('load', () => {
+    if (selectedSkin === 'miguel') {
+      draw();
+    }
+  });
 
   let bird;
   let pipes;
@@ -307,6 +314,53 @@
     });
   };
 
+  const drawMiguelPillars = (pipe) => {
+    const palette = getPillarPalette();
+    eachPillarSegment(pipe, (x, y, segmentWidth, segmentHeight, edge) => {
+      ctx.fillStyle = palette.deep;
+      ctx.fillRect(x, y, segmentWidth, segmentHeight);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(x, y, segmentWidth, segmentHeight);
+      ctx.clip();
+
+      const courseHeight = 34;
+      for (let courseY = y; courseY < y + segmentHeight; courseY += courseHeight) {
+        ctx.fillStyle = palette.primary;
+        ctx.fillRect(x + 7, courseY + 6, 18, 24);
+        ctx.fillRect(x + 45, courseY + 6, 18, 24);
+
+        ctx.fillStyle = palette.light;
+        ctx.fillRect(x + 3, courseY + 3, segmentWidth - 6, 7);
+        ctx.fillRect(x + 3, courseY + 27, segmentWidth - 6, 6);
+
+        ctx.strokeStyle = palette.mid;
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(x + 24, courseY + 10);
+        ctx.lineTo(x + 46, courseY + 27);
+        ctx.moveTo(x + 46, courseY + 10);
+        ctx.lineTo(x + 24, courseY + 27);
+        ctx.stroke();
+
+        ctx.fillStyle = palette.pale;
+        ctx.beginPath();
+        ctx.arc(x + 12, courseY + 8, 1.8, 0, Math.PI * 2);
+        ctx.arc(x + 58, courseY + 8, 1.8, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore();
+
+      const capY = edge === 'top' ? y + segmentHeight - 12 : y;
+      ctx.fillStyle = palette.primary;
+      ctx.fillRect(x, capY, segmentWidth, 12);
+      ctx.fillStyle = palette.light;
+      ctx.fillRect(x + 5, capY + 4, segmentWidth - 10, 3);
+    });
+  };
+
   const drawPipes = () => {
     pipes.forEach((pipe) => {
       if (selectedSkin === 'owl') {
@@ -315,6 +369,8 @@
         drawBlenderPillars(pipe);
       } else if (selectedSkin === 'plane911') {
         drawTowerPillars(pipe);
+      } else if (selectedSkin === 'miguel') {
+        drawMiguelPillars(pipe);
       } else {
         drawClassicPillars(pipe);
       }
@@ -585,6 +641,24 @@
     ctx.drawImage(plane911, -planeWidth / 2, -planeHeight / 2, planeWidth, planeHeight);
   };
 
+  const drawMiguelBird = () => {
+    const spriteWidth = 46;
+    const spriteHeight = 35;
+
+    if (!miguelBird.complete) {
+      const palette = getPillarPalette();
+      ctx.fillStyle = palette.primary;
+      ctx.beginPath();
+      ctx.arc(0, 0, bird.radius, 0, Math.PI * 2);
+      ctx.fill();
+      return;
+    }
+
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(miguelBird, -30, -19, spriteWidth, spriteHeight);
+  };
+
   const drawBird = () => {
     ctx.save();
     ctx.translate(bird.x, bird.y);
@@ -592,6 +666,8 @@
 
     if (selectedSkin === 'plane911') {
       drawPlane911();
+    } else if (selectedSkin === 'miguel') {
+      drawMiguelBird();
     } else if (selectedSkin === 'blender') {
       drawBlenderBird();
     } else if (selectedSkin === 'owl') {
