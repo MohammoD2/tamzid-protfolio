@@ -75,7 +75,18 @@
   padding: 9px 10px;
 }
 
+#flappyGamePanel .skin-option-empty {
+  min-height: 42px;
+  pointer-events: none;
+  visibility: hidden;
+}
+
 #flappyGamePanel .skin-preview { flex: 0 0 22px; height: 22px; width: 22px; }
+#flappyGamePanel .skin-preview-911 {
+  background: transparent url('../images/plane-911.svg') center / contain no-repeat;
+  border-radius: 0;
+}
+#flappyGamePanel .skin-preview-911::after { display: none; }
 #flappyGamePanel .skin-lock { font-size: .66rem; min-width: 0; padding: 3px 6px; }
 
 #flappyGamePanel .game-stats {

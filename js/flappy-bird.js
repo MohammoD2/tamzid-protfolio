@@ -6,7 +6,7 @@
   const bestEl = document.querySelector('#gameBest');
   const speedEl = document.querySelector('#gameSpeed');
   const levelEl = document.querySelector('#gameLevel');
-  const skinButtons = document.querySelectorAll('.skin-option');
+  const skinButtons = document.querySelectorAll('.skin-option[data-skin]');
 
   if (!canvas || !startButton || !overlay || !scoreEl || !bestEl) {
     return;
@@ -46,6 +46,13 @@
       draw();
     }
   });
+  const plane911 = new Image();
+  plane911.src = 'images/plane-911.svg';
+  plane911.addEventListener('load', () => {
+    if (selectedSkin === 'plane911') {
+      draw();
+    }
+  });
 
   let bird;
   let pipes;
@@ -69,7 +76,7 @@
 
   const isSelectedSkinUnlocked = () => {
     const selectedButton = [...skinButtons].find((button) => button.dataset.skin === selectedSkin);
-    return !selectedButton || isSkinUnlocked(selectedButton);
+    return Boolean(selectedButton) && isSkinUnlocked(selectedButton);
   };
 
   const updateSkinButtons = () => {
@@ -154,24 +161,163 @@
     ctx.fill();
   };
 
+  const eachPillarSegment = (pipe, drawSegment) => {
+    const bottomY = pipe.topHeight + pipe.gapHeight;
+    drawSegment(pipe.x, 0, pipeWidth, pipe.topHeight, 'top');
+    drawSegment(pipe.x, bottomY, pipeWidth, height - groundHeight - bottomY, 'bottom');
+  };
+
+  const getPillarPalette = () => document.documentElement.dataset.theme === 'dark'
+    ? {
+        deep: '#284760',
+        primary: '#527c9d',
+        mid: '#6e9aba',
+        light: '#a6c9e2',
+        pale: '#dce9f2'
+      }
+    : {
+        deep: '#2f4a64',
+        primary: '#3b5d7d',
+        mid: '#5f7f9b',
+        light: '#8fb0c7',
+        pale: '#dceaf6'
+      };
+
+  const drawClassicPillars = (pipe) => {
+    const palette = getPillarPalette();
+    const bottomY = pipe.topHeight + pipe.gapHeight;
+    const pipeGradient = ctx.createLinearGradient(pipe.x, 0, pipe.x + pipeWidth, 0);
+    pipeGradient.addColorStop(0, palette.primary);
+    pipeGradient.addColorStop(1, palette.mid);
+
+    ctx.fillStyle = pipeGradient;
+    ctx.fillRect(pipe.x, 0, pipeWidth, pipe.topHeight);
+    ctx.fillRect(pipe.x, bottomY, pipeWidth, height - groundHeight - bottomY);
+
+    ctx.fillStyle = 'rgba(255,255,255,.18)';
+    ctx.fillRect(pipe.x + 10, 0, 8, pipe.topHeight);
+    ctx.fillRect(pipe.x + 10, bottomY, 8, height - groundHeight - bottomY);
+
+    ctx.fillStyle = palette.deep;
+    ctx.fillRect(pipe.x - 8, pipe.topHeight - 18, pipeWidth + 16, 18);
+    ctx.fillRect(pipe.x - 8, bottomY, pipeWidth + 16, 18);
+  };
+
+  const drawForestPillars = (pipe) => {
+    const palette = getPillarPalette();
+    eachPillarSegment(pipe, (x, y, segmentWidth, segmentHeight, edge) => {
+      const wood = ctx.createLinearGradient(x, y, x + segmentWidth, y);
+      wood.addColorStop(0, palette.deep);
+      wood.addColorStop(0.45, palette.mid);
+      wood.addColorStop(0.72, palette.primary);
+      wood.addColorStop(1, palette.deep);
+      ctx.fillStyle = wood;
+      ctx.fillRect(x, y, segmentWidth, segmentHeight);
+
+      ctx.strokeStyle = palette.deep;
+      ctx.lineWidth = 2;
+      for (let offset = 12; offset < segmentWidth; offset += 15) {
+        ctx.beginPath();
+        ctx.moveTo(x + offset, y);
+        ctx.bezierCurveTo(x + offset - 5, y + segmentHeight * .32, x + offset + 6, y + segmentHeight * .68, x + offset - 2, y + segmentHeight);
+        ctx.stroke();
+      }
+
+      const cutY = edge === 'top' ? y + segmentHeight - 16 : y;
+      ctx.fillStyle = palette.light;
+      ctx.fillRect(x, cutY, segmentWidth, 16);
+      ctx.strokeStyle = palette.primary;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.ellipse(x + segmentWidth / 2, cutY + 8, 23, 5, 0, 0, Math.PI * 2);
+      ctx.ellipse(x + segmentWidth / 2, cutY + 8, 12, 3, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillStyle = palette.pale;
+      ctx.fillRect(x, edge === 'top' ? cutY : cutY + 12, segmentWidth, 4);
+    });
+  };
+
+  const drawBlenderPillars = (pipe) => {
+    const palette = getPillarPalette();
+    eachPillarSegment(pipe, (x, y, segmentWidth, segmentHeight) => {
+      ctx.fillStyle = palette.deep;
+      ctx.fillRect(x, y, segmentWidth, segmentHeight);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(x, y, segmentWidth, segmentHeight);
+      ctx.clip();
+
+      const cubeSize = 35;
+      for (let cubeY = y - 2; cubeY < y + segmentHeight; cubeY += cubeSize) {
+        for (let column = 0; column < 2; column += 1) {
+          const cubeX = x + column * cubeSize;
+
+          ctx.fillStyle = palette.primary;
+          ctx.fillRect(cubeX + 3, cubeY + 7, 25, 25);
+
+          ctx.fillStyle = palette.light;
+          ctx.beginPath();
+          ctx.moveTo(cubeX + 3, cubeY + 7);
+          ctx.lineTo(cubeX + 10, cubeY + 2);
+          ctx.lineTo(cubeX + 33, cubeY + 2);
+          ctx.lineTo(cubeX + 28, cubeY + 7);
+          ctx.closePath();
+          ctx.fill();
+
+          ctx.fillStyle = palette.deep;
+          ctx.beginPath();
+          ctx.moveTo(cubeX + 28, cubeY + 7);
+          ctx.lineTo(cubeX + 33, cubeY + 2);
+          ctx.lineTo(cubeX + 33, cubeY + 27);
+          ctx.lineTo(cubeX + 28, cubeY + 32);
+          ctx.closePath();
+          ctx.fill();
+        }
+      }
+
+      ctx.restore();
+    });
+  };
+
+  const drawTowerPillars = (pipe) => {
+    const palette = getPillarPalette();
+    eachPillarSegment(pipe, (x, y, segmentWidth, segmentHeight, edge) => {
+      const tower = ctx.createLinearGradient(x, y, x + segmentWidth, y);
+      tower.addColorStop(0, palette.deep);
+      tower.addColorStop(0.48, palette.light);
+      tower.addColorStop(1, palette.primary);
+      ctx.fillStyle = tower;
+      ctx.fillRect(x, y, segmentWidth, segmentHeight);
+
+      ctx.fillStyle = palette.pale;
+      for (let row = y + 12; row < y + segmentHeight - 20; row += 22) {
+        ctx.fillRect(x + 8, row, 14, 7);
+        ctx.fillRect(x + 28, row, 14, 7);
+        ctx.fillRect(x + 48, row, 14, 7);
+      }
+
+      const deckY = edge === 'top' ? y + segmentHeight - 18 : y;
+      ctx.fillStyle = palette.deep;
+      ctx.fillRect(x, deckY, segmentWidth, 18);
+      ctx.fillStyle = palette.light;
+      ctx.fillRect(x + 9, deckY + 5, segmentWidth - 18, 7);
+      ctx.fillStyle = palette.pale;
+      ctx.fillRect(x + segmentWidth / 2 - 2, edge === 'top' ? deckY : deckY + 12, 4, 6);
+    });
+  };
+
   const drawPipes = () => {
     pipes.forEach((pipe) => {
-      const bottomY = pipe.topHeight + pipe.gapHeight;
-      const pipeGradient = ctx.createLinearGradient(pipe.x, 0, pipe.x + pipeWidth, 0);
-      pipeGradient.addColorStop(0, '#005a9e');
-      pipeGradient.addColorStop(1, '#1382d3');
-
-      ctx.fillStyle = pipeGradient;
-      ctx.fillRect(pipe.x, 0, pipeWidth, pipe.topHeight);
-      ctx.fillRect(pipe.x, bottomY, pipeWidth, height - groundHeight - bottomY);
-
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.18)';
-      ctx.fillRect(pipe.x + 10, 0, 8, pipe.topHeight);
-      ctx.fillRect(pipe.x + 10, bottomY, 8, height - groundHeight - bottomY);
-
-      ctx.fillStyle = '#064e83';
-      ctx.fillRect(pipe.x - 8, pipe.topHeight - 18, pipeWidth + 16, 18);
-      ctx.fillRect(pipe.x - 8, bottomY, pipeWidth + 16, 18);
+      if (selectedSkin === 'owl') {
+        drawForestPillars(pipe);
+      } else if (selectedSkin === 'blender') {
+        drawBlenderPillars(pipe);
+      } else if (selectedSkin === 'plane911') {
+        drawTowerPillars(pipe);
+      } else {
+        drawClassicPillars(pipe);
+      }
     });
   };
 
@@ -406,8 +552,8 @@
   };
 
   const drawBlenderBird = () => {
-    const logoWidth = 54;
-    const logoHeight = 44;
+    const logoWidth = 36;
+    const logoHeight = 30;
 
     if (!blenderLogo.complete) {
       ctx.fillStyle = '#f57c00';
@@ -422,25 +568,34 @@
     ctx.drawImage(blenderLogo, -logoWidth / 2, -logoHeight / 2, logoWidth, logoHeight);
   };
 
+  const drawPlane911 = () => {
+    const planeWidth = 40;
+    const planeHeight = 20;
+
+    if (!plane911.complete) {
+      ctx.fillStyle = '#5f7f9b';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, bird.radius + 3, bird.radius * 0.55, 0, 0, Math.PI * 2);
+      ctx.fill();
+      return;
+    }
+
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(plane911, -planeWidth / 2, -planeHeight / 2, planeWidth, planeHeight);
+  };
+
   const drawBird = () => {
     ctx.save();
     ctx.translate(bird.x, bird.y);
     ctx.rotate(bird.rotation);
 
-    if (selectedSkin === 'pigeon') {
-      drawPigeonBird();
+    if (selectedSkin === 'plane911') {
+      drawPlane911();
     } else if (selectedSkin === 'blender') {
       drawBlenderBird();
-    } else if (selectedSkin === 'crow') {
-      drawCrowBird();
-    } else if (selectedSkin === 'robin') {
-      drawRobinBird();
-    } else if (selectedSkin === 'parrot') {
-      drawParrotBird();
     } else if (selectedSkin === 'owl') {
       drawOwlBird();
-    } else if (selectedSkin === 'eagle') {
-      drawEagleBird();
     } else {
       drawDefaultBird();
     }
@@ -456,7 +611,10 @@
     canvasFonts.body = styles.getPropertyValue('--body-font-family').trim() || 'sans-serif';
   };
   updateCanvasFonts();
-  new MutationObserver(updateCanvasFonts).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  new MutationObserver(() => {
+    updateCanvasFonts();
+    if (bird) draw();
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
   const drawStartText = () => {
     ctx.fillStyle = '#3B5D7D';

@@ -143,9 +143,9 @@
     }
 
     const videoId = frame.dataset.youtubeId;
-    const cardCategory = card?.querySelector('span')?.textContent?.trim() || 'Portfolio Preview';
+    const cardCategory = card?.querySelector('.work-card-body > span:first-child')?.textContent?.trim() || 'Portfolio Preview';
     const cardTitle = card?.querySelector('h5')?.textContent?.trim();
-    const cardDescription = card?.querySelector('p')?.textContent?.trim() || '';
+    const cardDescription = frame.dataset.videoDescription || card?.querySelector('p')?.textContent?.trim() || '';
     const title = frame.dataset.videoTitle || cardTitle || 'YouTube portfolio video';
     const watchUrl = frame.dataset.youtubeUrl || `https://www.youtube.com/watch?v=${videoId}`;
     const thumbnailImage = thumbnail.querySelector('img');
