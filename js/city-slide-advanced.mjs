@@ -77,7 +77,7 @@ export function mount(panel){
 
   function updateNpc(n,dt,speed,drifting){
     n.px=n.x;n.py=n.y;n.stateTime+=dt;n.attackCooldown=Math.max(0,n.attackCooldown-dt);n.angerPulseCooldown=Math.max(0,n.angerPulseCooldown-dt);n.jokeCooldown=Math.max(0,n.jokeCooldown-dt);n.anger=Math.max(0,n.anger-dt*(n.personality==='confident'?.025:.055));n.fear=Math.max(0,n.fear-dt*(n.personality==='nervous'?.12:.22));
-    if(n.state==='hit'||n.state==='down'){n.x+=n.vx*dt;n.y+=n.vy*dt;n.z+=n.vz*dt;n.vz-=430*dt;if(n.z<=0){n.z=0;n.vz=0;n.vx*=Math.exp(-4*dt);n.vy*=Math.exp(-4*dt);n.state='down'}n.rot+=n.spin*dt;n.life-=dt;if(n.life<=0&&outsideCamera(n.x,n.y,320))resetNpc(n,n.id);return}
+    if(n.state==='hit'||n.state==='down'){n.x+=n.vx*dt;n.y+=n.vy*dt;n.z+=n.vz*dt;n.vz-=430*dt;if(n.state==='hit')n.rot+=n.spin*dt;if(n.z<=0){n.z=0;n.vz=0;n.vx*=Math.exp(-6*dt);n.vy*=Math.exp(-6*dt);if(n.state==='hit'){n.state='down';n.spin=0;n.rot=Math.sign(n.rot||1)*Math.PI/2;n.life=2}}if(n.state==='down'){n.spin=0;n.life-=dt;if(n.life<=0)resetNpc(n,n.id)}return}
     const threat=threatFor(n);n.threat+=(threat-n.threat)*Math.min(1,dt*7);if(n.state!=='pursue'&&n.state!=='attackWindup'&&n.state!=='attack'&&n.state!=='attackRecover'&&n.threat>.52){n.lastThreatX=car.x;n.lastThreatY=car.y;n.lastThreatTime=runTime;if(n.state==='wander'||n.state==='idle')setState(n,'notice')}
     const cfg=PERSONALITIES[n.personality];
     if(n.state==='wander'){if(n.pause>0){n.pause-=dt;n.vx*=.85;n.vy*=.85;return}n.destLock-=dt;if(n.destLock<=0||Math.hypot(n.destX-n.x,n.destY-n.y)<24){newDestination(n);if(random()<.12){n.pause=rand(.25,1.1);setState(n,'idle');return}}steer(n,n.destX,n.destY,n.walkSpeed,dt);if(n.threat>.18&&n.threat<.52){n.fear+=dt*n.threat;if(n.fear>.7)setState(n,'cautious')}}
