@@ -119,6 +119,23 @@ if (panel && board) {
     return `${colors[game.turn()]} to play${game.isCheck() ? ' · Check' : ''}`;
   };
 
+  const playMoveAudio = move => {
+    if (!move) return;
+    const flags = move.flags || '';
+    const draw = game.isStalemate() || game.isThreefoldRepetition()
+      || game.isInsufficientMaterial() || game.isDrawByFiftyMoves();
+    window.GameAudio?.chessMove({
+      capture: Boolean(move.captured) || flags.includes('c') || flags.includes('e'),
+      castle: flags.includes('k') || flags.includes('q'),
+      promotion: Boolean(move.promotion) || flags.includes('p'),
+      check: game.isCheck(),
+      checkmate: game.isCheckmate(),
+      draw,
+      delay: reducedMotion.matches ? 0 : .3
+    });
+    if (game.isGameOver()) window.GameAudio?.endGame('chess');
+  };
+
   const render = () => {
     const order = [...squareButtons.keys()];
     if (flipped) order.reverse();
@@ -213,6 +230,7 @@ if (panel && board) {
             try {
               const playedMove = game.move({ from: match[1], to: match[2], ...(match[3] ? { promotion: match[3] } : {}) });
               queueMoveAnimation(playedMove);
+              playMoveAudio(playedMove);
               feedback = '';
               render();
             } catch {
@@ -236,6 +254,7 @@ if (panel && board) {
     try {
       const playedMove = game.move(move);
       queueMoveAnimation(playedMove);
+      playMoveAudio(playedMove);
     } catch {
       feedback = 'That move is not legal. Choose another square.';
       render();
@@ -276,6 +295,7 @@ if (panel && board) {
   };
 
   const newGame = () => {
+    window.GameAudio?.startGame('chess');
     stopEngine();
     closePromotion();
     game.reset();
@@ -324,6 +344,7 @@ if (panel && board) {
   }));
   document.querySelector('#chessNew').addEventListener('click', newGame);
   undoButton.addEventListener('click', () => {
+    window.GameAudio?.cancel('chess');
     stopEngine();
     closePromotion();
     const history = game.history({ verbose: true });

@@ -39,6 +39,7 @@
   const timeAcceleration = 0.014;
   const scoreAcceleration = 0.115;
   const pipeSpacing = 310;
+  const crashDuration = 780;
   const blenderLogo = new Image();
   blenderLogo.src = 'images/Blender_logo_no_text.svg.png';
   blenderLogo.addEventListener('load', () => {
@@ -53,14 +54,6 @@
       draw();
     }
   });
-  const miguelBird = new Image();
-  miguelBird.src = 'images/miguel-bird.png';
-  miguelBird.addEventListener('load', () => {
-    if (selectedSkin === 'miguel') {
-      draw();
-    }
-  });
-
   let bird;
   let pipes;
   let score;
@@ -74,6 +67,9 @@
   let currentPipeSpeed;
   let currentGapHeight;
   let difficultyLevel;
+  let crashParticles = [];
+  let crashStartedAt = 0;
+  let crashPreviousTime = 0;
 
   bestEl.textContent = best;
 
@@ -118,6 +114,9 @@
     difficultyLevel = 1;
     previousFrameTime = null;
     physicsAccumulator = 0;
+    crashParticles = [];
+    crashStartedAt = 0;
+    crashPreviousTime = 0;
     scoreEl.textContent = score;
     if (speedEl) speedEl.textContent = '1.0x';
     if (levelEl) levelEl.textContent = 'Level 1';
@@ -314,53 +313,6 @@
     });
   };
 
-  const drawMiguelPillars = (pipe) => {
-    const palette = getPillarPalette();
-    eachPillarSegment(pipe, (x, y, segmentWidth, segmentHeight, edge) => {
-      ctx.fillStyle = palette.deep;
-      ctx.fillRect(x, y, segmentWidth, segmentHeight);
-
-      ctx.save();
-      ctx.beginPath();
-      ctx.rect(x, y, segmentWidth, segmentHeight);
-      ctx.clip();
-
-      const courseHeight = 34;
-      for (let courseY = y; courseY < y + segmentHeight; courseY += courseHeight) {
-        ctx.fillStyle = palette.primary;
-        ctx.fillRect(x + 7, courseY + 6, 18, 24);
-        ctx.fillRect(x + 45, courseY + 6, 18, 24);
-
-        ctx.fillStyle = palette.light;
-        ctx.fillRect(x + 3, courseY + 3, segmentWidth - 6, 7);
-        ctx.fillRect(x + 3, courseY + 27, segmentWidth - 6, 6);
-
-        ctx.strokeStyle = palette.mid;
-        ctx.lineWidth = 4;
-        ctx.beginPath();
-        ctx.moveTo(x + 24, courseY + 10);
-        ctx.lineTo(x + 46, courseY + 27);
-        ctx.moveTo(x + 46, courseY + 10);
-        ctx.lineTo(x + 24, courseY + 27);
-        ctx.stroke();
-
-        ctx.fillStyle = palette.pale;
-        ctx.beginPath();
-        ctx.arc(x + 12, courseY + 8, 1.8, 0, Math.PI * 2);
-        ctx.arc(x + 58, courseY + 8, 1.8, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      ctx.restore();
-
-      const capY = edge === 'top' ? y + segmentHeight - 12 : y;
-      ctx.fillStyle = palette.primary;
-      ctx.fillRect(x, capY, segmentWidth, 12);
-      ctx.fillStyle = palette.light;
-      ctx.fillRect(x + 5, capY + 4, segmentWidth - 10, 3);
-    });
-  };
-
   const drawPipes = () => {
     pipes.forEach((pipe) => {
       if (selectedSkin === 'owl') {
@@ -369,8 +321,6 @@
         drawBlenderPillars(pipe);
       } else if (selectedSkin === 'plane911') {
         drawTowerPillars(pipe);
-      } else if (selectedSkin === 'miguel') {
-        drawMiguelPillars(pipe);
       } else {
         drawClassicPillars(pipe);
       }
@@ -641,24 +591,6 @@
     ctx.drawImage(plane911, -planeWidth / 2, -planeHeight / 2, planeWidth, planeHeight);
   };
 
-  const drawMiguelBird = () => {
-    const spriteWidth = 46;
-    const spriteHeight = 35;
-
-    if (!miguelBird.complete) {
-      const palette = getPillarPalette();
-      ctx.fillStyle = palette.primary;
-      ctx.beginPath();
-      ctx.arc(0, 0, bird.radius, 0, Math.PI * 2);
-      ctx.fill();
-      return;
-    }
-
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';
-    ctx.drawImage(miguelBird, -30, -19, spriteWidth, spriteHeight);
-  };
-
   const drawBird = () => {
     ctx.save();
     ctx.translate(bird.x, bird.y);
@@ -666,8 +598,6 @@
 
     if (selectedSkin === 'plane911') {
       drawPlane911();
-    } else if (selectedSkin === 'miguel') {
-      drawMiguelBird();
     } else if (selectedSkin === 'blender') {
       drawBlenderBird();
     } else if (selectedSkin === 'owl') {
@@ -676,6 +606,116 @@
       drawDefaultBird();
     }
 
+    ctx.restore();
+  };
+
+  const crashPalettes = {
+    default: ['#6e9aba', '#dce9f2', '#f5b642', '#ffffff'],
+    owl: ['#7c4a24', '#c89152', '#f5b642', '#eef4f9'],
+    blender: ['#f57c00', '#ffad42', '#1e78bd', '#ffffff'],
+    plane911: ['#cbd5e1', '#64748b', '#ef4444', '#f8fafc']
+  };
+
+  const createCrashEffect = () => {
+    const colors = crashPalettes[selectedSkin] || crashPalettes.default;
+    crashParticles = [];
+
+    for (let i = 0; i < 34; i += 1) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 2.4 + Math.random() * 6.5;
+      crashParticles.push({
+        kind: 'fragment',
+        x: bird.x,
+        y: bird.y,
+        vx: Math.cos(angle) * speed + currentPipeSpeed * 0.2,
+        vy: Math.sin(angle) * speed - 1.2,
+        size: 2.5 + Math.random() * 6,
+        rotation: Math.random() * Math.PI,
+        spin: (Math.random() - 0.5) * 0.45,
+        color: colors[i % colors.length],
+        life: 0.65 + Math.random() * 0.35
+      });
+    }
+
+    for (let i = 0; i < 18; i += 1) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 5 + Math.random() * 7;
+      crashParticles.push({
+        kind: 'spark',
+        x: bird.x,
+        y: bird.y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        size: 1 + Math.random() * 2,
+        color: i % 2 ? '#ffd166' : '#ff6b35',
+        life: 0.35 + Math.random() * 0.35
+      });
+    }
+
+    for (let i = 0; i < 7; i += 1) {
+      crashParticles.push({
+        kind: 'smoke',
+        x: bird.x + (Math.random() - 0.5) * 16,
+        y: bird.y + (Math.random() - 0.5) * 12,
+        vx: (Math.random() - 0.5) * 1.2,
+        vy: -0.8 - Math.random() * 1.2,
+        size: 8 + Math.random() * 10,
+        color: '#334155',
+        life: 0.55 + Math.random() * 0.4
+      });
+    }
+  };
+
+  const updateCrashEffect = (frameScale) => {
+    crashParticles.forEach((particle) => {
+      particle.x += particle.vx * frameScale;
+      particle.y += particle.vy * frameScale;
+      particle.vy += (particle.kind === 'smoke' ? -0.015 : 0.28) * frameScale;
+      particle.vx *= Math.pow(particle.kind === 'spark' ? 0.94 : 0.985, frameScale);
+      if (particle.rotation !== undefined) particle.rotation += particle.spin * frameScale;
+    });
+  };
+
+  const drawCrashEffect = (progress) => {
+    const ringRadius = 10 + progress * 58;
+    ctx.save();
+    ctx.strokeStyle = `rgba(255, 137, 54, ${Math.max(0, 0.72 - progress)})`;
+    ctx.lineWidth = 6 * (1 - progress) + 1;
+    ctx.beginPath();
+    ctx.arc(bird.x, bird.y, ringRadius, 0, Math.PI * 2);
+    ctx.stroke();
+
+    crashParticles.forEach((particle) => {
+      const alpha = Math.max(0, Math.min(1, (particle.life - progress) * 3));
+      if (!alpha) return;
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = particle.color;
+
+      if (particle.kind === 'smoke') {
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size * (1 + progress), 0, Math.PI * 2);
+        ctx.fill();
+      } else if (particle.kind === 'spark') {
+        ctx.strokeStyle = particle.color;
+        ctx.lineWidth = particle.size;
+        ctx.beginPath();
+        ctx.moveTo(particle.x, particle.y);
+        ctx.lineTo(particle.x - particle.vx * 2.2, particle.y - particle.vy * 2.2);
+        ctx.stroke();
+      } else {
+        ctx.save();
+        ctx.translate(particle.x, particle.y);
+        ctx.rotate(particle.rotation);
+        if (selectedSkin === 'plane911' || selectedSkin === 'blender') {
+          ctx.fillRect(-particle.size / 2, -particle.size / 3, particle.size, particle.size * 0.66);
+        } else {
+          ctx.beginPath();
+          ctx.ellipse(0, 0, particle.size, particle.size * 0.38, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+    });
     ctx.restore();
   };
 
@@ -722,7 +762,13 @@
     drawBackground();
     drawPipes();
     drawGround();
-    drawBird();
+    if (gameState !== 'crashing' && gameState !== 'ended') {
+      drawBird();
+    }
+    if (crashParticles.length) {
+      const progress = crashStartedAt ? Math.min(1, (crashPreviousTime - crashStartedAt) / crashDuration) : 0;
+      drawCrashEffect(progress);
+    }
     drawHud();
 
     if (gameState === 'ready') {
@@ -768,6 +814,7 @@
         pipe.passed = true;
         score += 1;
         scoreEl.textContent = score;
+        window.GameAudio?.play('flappy', 'score');
       }
     });
 
@@ -809,21 +856,22 @@
     }
 
     bird.velocity = flapPower;
+    window.GameAudio?.play('flappy', 'flap');
   };
 
   const startGame = () => {
     cancelAnimationFrame(animationFrame);
     resetGame();
+    window.GameAudio?.startGame('flappy');
     gameState = 'playing';
     overlay.classList.add('is-hidden');
     flap();
     animationFrame = requestAnimationFrame(loop);
   };
 
-  const endGame = () => {
+  const finishGameOver = () => {
     gameState = 'ended';
-    cancelAnimationFrame(animationFrame);
-
+    window.GameAudio?.endGame('flappy');
     if (score > best) {
       best = score;
       localStorage.setItem('tamzidFlappyBest', String(best));
@@ -836,6 +884,34 @@
     startButton.textContent = 'Restart Game';
     overlay.classList.remove('is-hidden');
     draw();
+  };
+
+  const crashLoop = (timestamp) => {
+    if (!crashStartedAt) {
+      crashStartedAt = timestamp;
+      crashPreviousTime = timestamp;
+    }
+
+    const delta = Math.min(32, timestamp - crashPreviousTime);
+    crashPreviousTime = timestamp;
+    updateCrashEffect(delta / (1000 / 60));
+    draw();
+
+    if (timestamp - crashStartedAt < crashDuration) {
+      animationFrame = requestAnimationFrame(crashLoop);
+    } else {
+      finishGameOver();
+    }
+  };
+
+  const endGame = () => {
+    if (gameState !== 'playing') return;
+    gameState = 'crashing';
+    window.GameAudio?.play('flappy', 'collision');
+    createCrashEffect();
+    crashStartedAt = 0;
+    crashPreviousTime = 0;
+    animationFrame = requestAnimationFrame(crashLoop);
   };
 
   startButton.addEventListener('click', startGame);

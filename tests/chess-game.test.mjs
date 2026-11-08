@@ -59,14 +59,23 @@ export async function runChessChecks() {
       reply(line) { this.onmessage?.({ data: line }); }
       ready() { this.reply('uciok'); this.reply('readyok'); }
     }
+    const audioEvents = [];
     const sandbox = {
       Chess, URL, Worker: FakeWorker,
       document: { querySelector: get, querySelectorAll: () => modes, createElement: () => new Element() },
-      window: { addEventListener() {} }, MutationObserver: class { observe() {} },
+      window: {
+        addEventListener() {},
+        GameAudio: {
+          chessMove(details) { audioEvents.push({ type: 'move', ...details }); },
+          startGame(game) { audioEvents.push({ type: 'start', game }); },
+          endGame(game) { audioEvents.push({ type: 'end', game }); },
+          cancel(game) { audioEvents.push({ type: 'cancel', game }); }
+        }
+      }, MutationObserver: class { observe() {} },
       setTimeout: () => 1, clearTimeout() {}
     };
     vm.runInNewContext(controller, sandbox);
-    return { ...sandbox.controller, controller: sandbox.controller, get, workers, modes, promotions,
+    return { ...sandbox.controller, controller: sandbox.controller, get, workers, modes, promotions, audioEvents,
       move: (from, to) => { sandbox.controller.selectSquare(from); sandbox.controller.selectSquare(to); } };
   };
 
@@ -83,6 +92,9 @@ export async function runChessChecks() {
   checks.push('64 squares, correct orientation, hard computer mode by default');
 
   h.move('e2', 'e4');
+  assert.equal(h.audioEvents.at(-1).type, 'move');
+  assert.equal(h.audioEvents.at(-1).capture, false);
+  assert.equal(h.audioEvents.at(-1).castle, false);
   const firstWorker = h.workers[0];
   assert(firstWorker.commands.includes('position startpos moves e2e4'));
   assert(firstWorker.commands.includes('go movetime 2500'));
@@ -135,6 +147,7 @@ export async function runChessChecks() {
 
   h.game.load('r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1');
   h.move('e1', 'g1');
+  assert.equal(h.audioEvents.at(-1).castle, true);
   assert.equal(h.game.get('g1').type, 'k');
   assert.equal(h.game.get('f1').type, 'r');
   h.get('#chessUndo').click();
@@ -142,6 +155,7 @@ export async function runChessChecks() {
   assert(h.game.fen().includes('KQkq'));
   h.game.load('4k3/8/8/3pP3/8/8/8/4K3 w - d6 0 1');
   h.move('e5', 'd6');
+  assert.equal(h.audioEvents.at(-1).capture, true);
   assert.equal(h.game.get('d5'), undefined);
   assert.equal(h.game.get('d6').type, 'p');
   h.get('#chessUndo').click();
@@ -158,6 +172,7 @@ export async function runChessChecks() {
   assert.equal(h.game.get('a7').type, 'p');
   h.controller.selectSquare('a8');
   h.promotions.find(button => button.dataset.promote === 'n').click();
+  assert.equal(h.audioEvents.findLast(event => event.type === 'move').promotion, true);
   assert.equal(h.game.get('a8').type, 'n');
   assert.match(h.get('#chessStatus').textContent, /insufficient material/);
   h.get('#chessUndo').click();

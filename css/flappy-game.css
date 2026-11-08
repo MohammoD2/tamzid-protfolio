@@ -87,11 +87,6 @@
   border-radius: 0;
 }
 #flappyGamePanel .skin-preview-911::after { display: none; }
-#flappyGamePanel .skin-preview-miguel {
-  background: transparent url('../images/miguel-bird.png') 68% center / cover no-repeat;
-  border-radius: 50%;
-}
-#flappyGamePanel .skin-preview-miguel::after { display: none; }
 #flappyGamePanel .skin-lock { font-size: .66rem; min-width: 0; padding: 3px 6px; }
 
 #flappyGamePanel .game-stats {

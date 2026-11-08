@@ -1,0 +1,83 @@
+<!doctype html><html><head><meta charset="utf-8"><title>City Slide checks</title><style>body{background:#102532;color:#fff;font:16px system-ui;padding:24px}.result{background:#173747;border-radius:8px;margin:7px 0;padding:8px 12px}.pass{border-left:5px solid #69e5a2}.fail{border-left:5px solid #ff7f77}iframe{height:600px;left:0;opacity:.01;pointer-events:none;position:fixed;top:0;width:min(960px,100vw)}</style></head><body><h1>City Slide targeted checks</h1><p id="summary">Running…</p><div id="results"></div><iframe src="../game.html?v=city-upright-crowd"></iframe><script>
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const waitFor=async(test,timeout=9000)=>{const start=performance.now();while(!test()&&performance.now()-start<timeout)await wait(100);return test()};
+const checks=[],check=(ok,label,detail='')=>checks.push({ok:!!ok,label,detail});
+addEventListener('load',async()=>{
+  const frame=document.querySelector('iframe'),win=frame.contentWindow,doc=frame.contentDocument;
+  await wait(900);doc.querySelector('[data-game-target="citySlidePanel"]').click();
+  const panel=doc.querySelector('#citySlidePanel');await waitFor(()=>!panel.hasAttribute('aria-busy')&&panel.citySlideDebug);
+  const overlay=panel.querySelector('.arcade-overlay');
+  check(!panel.hidden,'City Slide opens');check(!panel.hasAttribute('aria-busy'),'Advanced module resolves');
+  check(!panel.querySelector('[data-map]')&&!panel.querySelector('[data-city-map]'),'Old city map remains absent');
+  check(panel.querySelectorAll('[data-vehicle]').length===0,'Supplied single car skin remains');
+  panel.querySelector('[data-overlay-action]').click();await wait(300);
+  check(overlay.classList.contains('is-hidden'),'Driving starts');
+  const debug=panel.citySlideDebug,initial=debug.getState(),values=initial.values;
+  await waitFor(()=>win.GameAudio?.cityState?.loaded,12000);
+  check(win.GameAudio?.cityState?.loaded,'Five City Slide WAV assets preload and decode on open');
+  check(JSON.stringify(win.GameAudio?.cityState?.limits)==='{"hit":4,"crash":2,"heartbeat":1}','Decoded voice limits are 4 / 2 / 1',JSON.stringify(win.GameAudio?.cityState?.limits));
+  check(initial.npcCount===initial.limits.npcs,'NPC pool retains its configured cap');
+  check(initial.trafficCount===initial.limits.traffic,'Traffic pool retains its configured cap');
+  const expectedPursuerCap=frame.contentWindow.matchMedia('(max-width:700px),(pointer:coarse)').matches?12:20;
+  check(initial.limits.pursuers===expectedPursuerCap,`Pursuer cap is ${expectedPursuerCap} for this viewport`,`${initial.limits.pursuers}`);
+  check(values.trafficDamage===70&&values.npcDamage===20&&values.doctorHeal===10,'Damage and healing constants are exactly 70 / 20 / 10',JSON.stringify(values));
+  check(values.trafficCooldown===.85&&values.npcGrace===.55,'Collision and NPC grace timings are configured',JSON.stringify(values));
+  check(['distracted','nervous','confident','jogger','daydreamer'].every(k=>initial.personalityCounts[k]>0),'All five ordinary personalities remain');
+
+  const poses=debug.testPoseDirections();
+  check(poses.right==='right'&&poses.left==='left'&&poses.down==='down'&&poses.up==='up','Four upright directional poses select correctly',JSON.stringify(poses));
+  const canvas=panel.querySelector('.city-stage>canvas'),context=canvas.getContext('2d'),corner=context.getImageData(4,4,1,1).data;
+  check(corner[0]>=248&&corner[1]>=248&&corner[2]>=248,'Light map-free background remains');
+  const pixels=context.getImageData(0,0,canvas.width,canvas.height).data;let drawn=0;for(let i=0;i<pixels.length;i+=4)if(pixels[i]<245||pixels[i+1]<245||pixels[i+2]<245)drawn++;
+  check(drawn>100,'Car and grounded procedural NPCs render');
+
+  const witness=debug.testVisibleWitnesses();
+  check(witness.processed===witness.visibleEligible,'Every eligible visible NPC processes the hit once',JSON.stringify(witness));
+  check(witness.doctorAngry,'Visible doctor becomes hostile');
+  check(witness.nervousAngry,'Visible nervous personality becomes hostile');
+  check(witness.outsideProcessed===0,'NPCs outside the camera do not process the hit');
+  check(witness.active===initial.limits.pursuers,'Active crowd pursuit stops at the hard cap',`${witness.active}`);
+  check(witness.waiting===witness.visibleEligible-witness.active,'Overflow witnesses remain angry in the waiting group',`${witness.waiting}`);
+  await wait(50);check(win.GameAudio.cityState.hitHistory.length===1,'One confirmed NPC hit queues one decoded hit sound',JSON.stringify(win.GameAudio.cityState));
+  debug.testRapidNpcHits();await wait(50);const rapidAudio=win.GameAudio.cityState,hitHistory=rapidAudio.hitHistory;
+  check(rapidAudio.hitVoices<=4,'Rapid NPC impacts respect the four-voice cap',`${rapidAudio.hitVoices}`);
+  check(new Set(hitHistory.slice(0,3)).size===3&&new Set(hitHistory.slice(3,6)).size===3,'NPC hit shuffle bag rotates all three variations',JSON.stringify(hitHistory));
+
+  panel.querySelector('[data-overlay-action]').click();await wait(100);
+  const traffic=debug.testTrafficCollision();
+  check(traffic.first===30,'One genuine traffic collision removes exactly 70 HP',JSON.stringify(traffic));
+  check(traffic.continued===30,'Continued contact does not repeat traffic damage',JSON.stringify(traffic));
+  check(traffic.separated===30,'A separated, cooled collision can remove 70 HP again',JSON.stringify(traffic));
+  check(win.GameAudio.cityState.crashVoices===2,'Two separated crashes produce two voices while overlap stays capped',JSON.stringify(win.GameAudio.cityState));
+  const attacks=debug.testNpcAttacks();
+  check(attacks.first===80,'One completed NPC strike removes exactly 20 HP',JSON.stringify(attacks));
+  check(attacks.repeated===80,'One attack sequence cannot damage twice');
+  check(attacks.graceProtected===80,'Global grace blocks simultaneous attackers');
+
+  const doctorId=debug.hitDoctor();await wait(60);const healed=debug.getState().health;
+  check(doctorId!==null&&healed===100,'One doctor hit restores exactly 10 HP',`health=${healed}`);
+  check(debug.repeatDoctorHit(doctorId)===100,'The same doctor cannot heal twice');
+  debug.damage(5,'npc');await wait(80);debug.heal(10,0,0);
+  check(debug.getState().health===100,'Doctor-style healing cannot exceed 100 HP');
+  await wait(180);check(panel.querySelector('[data-health-value]').textContent.includes('/ 100'),'HUD shows current and maximum health',panel.querySelector('[data-health-value]').textContent);
+
+  debug.setHealth(40);await wait(330);check(win.GameAudio.cityState.heartbeat==='stopped','Heartbeat remains off at exactly 40 HP');
+  debug.setHealth(39);await wait(330);check(win.GameAudio.cityState.heartbeat==='playing'&&win.GameAudio.cityState.heartbeatVoices===1,'Heartbeat starts once below 40 HP',JSON.stringify(win.GameAudio.cityState));
+  panel.querySelector('[data-pause]').click();await wait(350);check(!overlay.classList.contains('is-hidden')&&win.GameAudio.cityState.heartbeat==='stopped','Pause overlay opens and stops heartbeat');
+  panel.querySelector('[data-overlay-action]').click();await wait(350);check(overlay.classList.contains('is-hidden')&&win.GameAudio.cityState.heartbeat==='playing','Resume below 40 restores one heartbeat loop');
+  win.GameAudio.setMuted(true);await wait(350);check(win.GameAudio.cityState.heartbeat==='stopped','Muting stops heartbeat');
+  win.GameAudio.setMuted(false);await wait(350);check(win.GameAudio.cityState.heartbeat==='playing','Unmuting below 40 restores heartbeat');
+  debug.setHealth(35);await wait(250);const thresholdDoctor=debug.hitDoctor();await wait(350);check(thresholdDoctor!==null&&win.GameAudio.cityState.heartbeat==='stopped','Doctor healing across 40 stops heartbeat smoothly');
+
+  win.dispatchEvent(new KeyboardEvent('keydown',{code:'KeyW',bubbles:true}));await wait(500);win.dispatchEvent(new KeyboardEvent('keyup',{code:'KeyW',bubbles:true}));
+  check(panel.querySelector('[data-district]').textContent.includes('Car'),'Original driving HUD remains');
+  const benchmark=debug.benchmark(240);check(benchmark.average<1,'Fixed-step update remains below the regression ceiling',`${benchmark.average.toFixed(3)} ms/update`);
+  check(win.GameAudio?.activeGame==='city','City audio remains active');
+  await wait(600);debug.damage(200,'npc');await wait(520);check(!overlay.classList.contains('is-hidden')&&/Run over/.test(overlay.textContent)&&win.GameAudio.cityState.heartbeat==='stopped','Zero health triggers game over and clears heartbeat');
+  panel.querySelector('[data-overlay-action]').click();await wait(100);const restarted=debug.getState();
+  check(restarted.health===100&&restarted.state==='playing'&&restarted.eventId===0&&restarted.pursuers===0,'Restart resets health, event IDs, and pursuit');
+  panel.querySelector('[data-game-close]').click();await wait(80);check(panel.hidden&&win.GameAudio.cityState.heartbeat==='stopped','Close releases the active panel and audio nodes');
+  doc.querySelector('[data-game-target="citySlidePanel"]').click();await wait(100);check(!panel.hidden&&win.GameAudio.cityState.loaded&&win.GameAudio.cityState.heartbeatVoices===0,'Reopening reuses decoded buffers without duplicating heartbeat nodes');panel.querySelector('[data-game-close]').click();
+  const passed=checks.filter(c=>c.ok).length;document.querySelector('#summary').textContent=`${passed}/${checks.length} checks passed · ${benchmark.average.toFixed(3)} ms/update`;document.querySelector('#results').innerHTML=checks.map(c=>`<div class="result ${c.ok?'pass':'fail'}">${c.ok?'PASS':'FAIL'} — ${c.label}${c.detail?` <small>(${c.detail})</small>`:''}</div>`).join('');document.body.dataset.complete='true';
+});
+</script></body></html>

@@ -1,0 +1,16 @@
+<!doctype html><html><head><meta charset="utf-8"><title>City Slide preview</title><style>html,body,iframe{border:0;height:100%;margin:0;width:100%}</style></head><body><iframe src="../game.html?v=city-advanced-preview"></iframe><script>
+const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+addEventListener('load',async()=>{
+  await wait(900);
+  const frame=document.querySelector('iframe'),doc=frame.contentDocument,panel=doc.querySelector('#citySlidePanel');
+  doc.querySelector('[data-game-target="citySlidePanel"]')?.click();
+  while(!panel.citySlideDebug)await wait(100);
+  panel.querySelector('[data-overlay-action]')?.click();
+  await wait(350);
+  panel.citySlideDebug.testVisibleWitnesses();
+  panel.querySelector('.arcade-overlay').classList.add('is-hidden');
+  await wait(900);
+  panel.style.opacity='1';panel.style.transform='none';
+  frame.contentWindow.scrollTo({top:panel.offsetTop-20,behavior:'instant'});
+});
+</script></body></html>

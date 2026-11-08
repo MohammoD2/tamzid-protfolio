@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Play Flappy Render or challenge a strong computer or a friend to chess.">
+        <meta name="description" content="Play City Slide, Flappy Render, or challenge a strong computer or a friend to chess.">
         <meta name="author" content="Tamzid Rahman">
         <title>Game | Tamzid Rahman</title>
         <link rel="icon" href="favicon.ico?v=1" sizes="any">
@@ -38,6 +38,9 @@
         <link href="css/portfolio-typography.css?v=1" rel="stylesheet">
         <link href="css/visual-system.css?v=4" rel="stylesheet">
         <link href="css/flappy-game.css?v=4" rel="stylesheet">
+        <link href="css/game-audio.css?v=2" rel="stylesheet">
+        <link href="css/arcade-games.css?v=2" rel="stylesheet">
+        <link href="css/city-vehicles.css?v=2" rel="stylesheet">
     </head>
 
     <body>
@@ -105,7 +108,7 @@
                         <div class="col-lg-8 col-12">
                             <p class="eyebrow">Game Library</p>
                             <h1>Choose a Game</h1>
-                            <p>Take a quick creative break with Flappy Render or challenge yourself on the chess board.</p>
+                            <p>Take a creative break with quick arcade challenges or settle in for a game of chess.</p>
                         </div>
                         <div class="col-lg-4 col-12 text-lg-end">
                             <a href="portfolio.html" class="custom-btn btn">Back to Portfolio</a>
@@ -124,6 +127,10 @@
                         <button class="game-library-card" type="button" data-game-target="chessGamePanel">
                             <span class="game-library-icon chess-library-icon" aria-hidden="true">♞</span>
                             <span><strong>Chess</strong><small>Computer or two players</small></span>
+                        </button>
+                        <button class="game-library-card" type="button" data-game-target="citySlidePanel">
+                            <span class="game-library-icon city-library-icon" aria-hidden="true"><i class="bi-buildings"></i></span>
+                            <span><strong>City Slide</strong><small>Endless city driving</small></span>
                         </button>
                     </div>
 
@@ -162,11 +169,6 @@
                                         <span class="skin-preview skin-preview-911"></span>
                                         <span class="skin-name">911</span>
                                         <span class="skin-lock"><i class="bi-lock-fill"></i> 11</span>
-                                    </button>
-                                    <button class="skin-option" type="button" data-skin="miguel" data-unlock-score="15">
-                                        <span class="skin-preview skin-preview-miguel"></span>
-                                        <span class="skin-name">Miguel</span>
-                                        <span class="skin-lock"><i class="bi-lock-fill"></i> 15</span>
                                     </button>
                                     <span class="skin-option skin-option-empty" aria-hidden="true"></span>
                                     <span class="skin-option skin-option-empty" aria-hidden="true"></span>
@@ -240,6 +242,22 @@
                         </dialog>
                     </div>
 
+                    <div class="game-card game-panel arcade-game-card city-game-card" id="citySlidePanel" hidden data-arcade-game="city">
+                        <div class="arcade-info">
+                            <div class="arcade-heading"><div><p class="eyebrow">Open City Sandbox</p><h2>City Slide</h2></div><button class="arcade-close" type="button" data-game-close aria-label="Close City Slide"><i class="bi-x-lg"></i></button></div>
+                            <p class="arcade-copy">Cruise the open driving space, link controlled drifts, and react to a lively crowd at your own pace.</p>
+                            <div class="arcade-instruction"><i class="bi-keyboard" aria-hidden="true"></i><strong>WASD to drive · Space to drift</strong></div>
+                            <div class="arcade-stats"><div><span>Score</span><strong data-score>0</strong></div><div><span>Best</span><strong data-best>0</strong></div><div><span>Combo</span><strong data-combo>x1.0</strong></div></div>
+                            <div class="arcade-actions"><button class="arcade-secondary" type="button" data-pause disabled>Pause</button><button class="arcade-secondary" type="button" data-reset-car>Reset car</button></div>
+                            <div class="game-audio city-audio" id="gameAudioControls" aria-label="Game sound controls"><button class="game-audio-toggle" id="gameAudioToggle" type="button" aria-expanded="false" aria-controls="gameAudioSettings"><i class="bi-volume-up-fill" aria-hidden="true"></i><span>Sound</span></button><div class="game-audio-settings" id="gameAudioSettings" hidden><label for="gameEffectsVolume"><span><i class="bi-stars" aria-hidden="true"></i> Effects</span><output id="gameEffectsOutput">72%</output></label><input id="gameEffectsVolume" type="range" min="0" max="100" step="1" value="72" aria-label="Game sound effects volume"></div><span class="visually-hidden" id="gameAudioStatus" role="status" aria-live="polite"></span></div>
+                            <p class="arcade-status" data-status role="status" aria-live="polite">Ready to explore.</p>
+                        </div>
+                        <div class="arcade-stage city-stage"><canvas width="960" height="600" tabindex="0" aria-label="City Slide top-down driving game."></canvas><div class="city-hud"><strong data-hud-score>0</strong><span data-district>Car · Free drive</span></div><div class="city-health" data-health aria-label="Car health"><div><span>Car health</span><strong data-health-value>100</strong></div><div class="city-health-track"><span data-health-fill></span></div></div>
+                            <div class="drive-controls city-drive-controls" aria-label="Touch driving controls"><div class="drive-steer"><button type="button" data-drive="left" aria-label="Steer left"><i class="bi-arrow-left"></i></button><button type="button" data-drive="right" aria-label="Steer right"><i class="bi-arrow-right"></i></button></div><div class="drive-pedals"><button type="button" data-drive="brake">Drift</button><button type="button" data-drive="down" aria-label="Brake or reverse"><i class="bi-arrow-down"></i></button><button type="button" data-drive="up" aria-label="Accelerate"><i class="bi-arrow-up"></i></button></div></div>
+                            <div class="arcade-overlay"><span class="arcade-overlay-icon"><i class="bi-buildings"></i></span><h3>City Slide</h3><p>Drive freely, dodge traffic, meet the crowd, and build arcade drift combos.</p><button class="custom-btn btn" type="button" data-overlay-action>Start driving</button></div>
+                        </div>
+                    </div>
+
                 </div>
             </section>
         </main>
@@ -309,9 +327,10 @@
         <script src="js/theme-toggle.js?v=6"></script>
         <script src="js/site-animations.js?v=4"></script>
         <script src="js/ambient-motion.js?v=7"></script>
-        <script src="js/game-library.js"></script>
-        <script src="js/flappy-bird.js?v=11"></script>
-        <script type="module" src="js/chess-game.js?v=2"></script>
+        <script src="js/game-audio.js?v=5"></script>
+        <script src="js/game-library.js?v=6"></script>
+        <script src="js/flappy-bird.js?v=12"></script>
+        <script type="module" src="js/chess-game.js?v=3"></script>
 
     </body>
 </html>

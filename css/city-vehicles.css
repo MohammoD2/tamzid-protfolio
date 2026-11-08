@@ -1,0 +1,45 @@
+/* City Slide keeps the playable canvas while removing the panel background. */
+.city-game-card {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="dark"] .city-game-card {
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+.city-stage,
+html[data-theme="dark"] .city-stage {
+  background: #fff;
+}
+
+.city-health {
+  background: rgba(8, 29, 38, .78);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 12px;
+  color: #fff;
+  min-width: 168px;
+  padding: 8px 10px;
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  z-index: 4;
+}
+.city-health > div:first-child { align-items: center; display: flex; gap: 10px; justify-content: space-between; }
+.city-health span { font-size: .58rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.city-health strong { font-size: .78rem; }
+.city-health-track { background: rgba(255,255,255,.2); border-radius: 999px; height: 6px; margin-top: 6px; overflow: hidden; }
+.city-health-track span { background: #26c991; border-radius: inherit; display: block; height: 100%; transition: background-color .2s ease, width .25s ease; width: 100%; }
+.city-health.is-warning .city-health-track span { background: #f0ad35; }
+.city-health.is-critical .city-health-track span { background: #e54a5f; }
+.city-health.is-critical .city-health-track span { animation: city-health-critical 1.15s ease-in-out infinite; }
+.city-health.is-hit { animation: city-health-hit .28s ease; }
+.city-health.is-heal { animation: city-health-heal .45s ease; }
+@keyframes city-health-hit { 50% { box-shadow: 0 0 0 5px rgba(229,74,95,.25); transform: translateX(-2px); } }
+@keyframes city-health-heal { 50% { box-shadow: 0 0 0 5px rgba(38,201,145,.23); } }
+@keyframes city-health-critical { 50% { filter: brightness(1.28); opacity: .68; } }
+@media (max-width: 575px) { .city-health { min-width: 148px; right: 10px; top: 10px; } }
+@media (prefers-reduced-motion: reduce) { .city-health,.city-health-track span { animation: none; transition: none; } }
+
