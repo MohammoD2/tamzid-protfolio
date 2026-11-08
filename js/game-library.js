@@ -2,7 +2,7 @@
   const gameCards = document.querySelectorAll('.game-library-card[data-game-target]');
   const gamePanels = document.querySelectorAll('.game-panel');
   const arcadeModules = {
-    citySlidePanel: () => import('./city-slide-advanced.mjs?v=4')
+    citySlidePanel: () => import('./city-slide-advanced.mjs?v=5')
   };
   const arcadeInstances = new Map();
 
