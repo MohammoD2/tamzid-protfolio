@@ -18,8 +18,8 @@ const PANTS=['#263746','#45515d','#272b4b','#4b3a35'];
 const CAR_SPRITE=new Image();CAR_SPRITE.src=new URL('../images/travel-car-topview.svg?v=1',import.meta.url).href;
 
 export function mount(panel){
-  const canvas=panel.querySelector('.city-stage>canvas'),ctx=fitCanvas(canvas,VIEW_W,VIEW_H,1.5);
-  const $=selector=>panel.querySelector(selector),scoreEl=$('[data-score]'),hudScore=$('[data-hud-score]'),bestEl=$('[data-best]'),comboEl=$('[data-combo]'),districtEl=$('[data-district]'),statusEl=$('[data-status]'),pauseBtn=$('[data-pause]'),healthFill=$('[data-health-fill]'),healthValue=$('[data-health-value]'),healthWrap=$('[data-health]'),overlay=$('.arcade-overlay'),overlayTitle=overlay.querySelector('h3'),overlayCopy=overlay.querySelector('p'),overlayAction=overlay.querySelector('[data-overlay-action]');
+  const stage=panel.querySelector('.city-stage'),canvas=stage.querySelector('canvas'),ctx=fitCanvas(canvas,VIEW_W,VIEW_H,1.5);
+  const $=selector=>panel.querySelector(selector),scoreEl=$('[data-score]'),hudScore=$('[data-hud-score]'),bestEl=$('[data-best]'),comboEl=$('[data-combo]'),districtEl=$('[data-district]'),statusEl=$('[data-status]'),pauseBtn=$('[data-pause]'),healthFill=$('[data-health-fill]'),healthValue=$('[data-health-value]'),healthWrap=$('[data-health]'),fullscreenBtn=$('[data-city-fullscreen]'),overlay=$('.arcade-overlay'),overlayTitle=overlay.querySelector('h3'),overlayCopy=overlay.querySelector('p'),overlayAction=overlay.querySelector('[data-overlay-action]');
   const mobile=matchMedia('(max-width:700px),(pointer:coarse)').matches,reduced=prefersReducedMotion();
   const NPC_LIMIT=mobile?34:52,TRAFFIC_LIMIT=mobile?4:7,PURSUER_LIMIT=mobile?12:20,EXPRESSION_LIMIT=mobile?16:28;
   const controls={left:false,right:false,up:false,down:false,brake:false},keyMap={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',ArrowUp:'up',KeyW:'up',ArrowDown:'down',KeyS:'down',Space:'brake'};
@@ -133,9 +133,45 @@ export function mount(panel){
   function start(){resetWorld();state='playing';overlay.classList.add('is-hidden');pauseBtn.disabled=false;pauseBtn.textContent='Pause';overlayAction.textContent='Start driving';window.GameAudio?.startGame('city');loop.start();canvas.focus()}
   function pause(hidden=false){if(state!=='playing')return;state='paused';loop.stop();clearControls();best=safeBest(BEST_KEY,score);pauseBtn.textContent='Resume';overlayTitle.textContent='Paused';overlayCopy.textContent=hidden?'The tab was hidden. Resume when you are ready.':'Your position, health, and score are preserved.';overlayAction.textContent='Resume';overlay.classList.remove('is-hidden');window.GameAudio?.pauseGame('city');render()}
   function resume(){if(state!=='paused')return;state='playing';overlay.classList.add('is-hidden');pauseBtn.textContent='Pause';window.GameAudio?.resumeGame('city');loop.start();canvas.focus()}
-  const keyDown=e=>{if(editable(e.target))return;if(e.code==='Escape'&&state==='playing'){e.preventDefault();pause();return}const key=keyMap[e.code];if(!key||state!=='playing')return;e.preventDefault();controls[key]=true},keyUp=e=>{const key=keyMap[e.code];if(!key)return;e.preventDefault();controls[key]=false};window.addEventListener('keydown',keyDown);window.addEventListener('keyup',keyUp);
+  const isExpanded=()=>document.fullscreenElement===stage||document.webkitFullscreenElement===stage||stage.classList.contains('is-windowed-max');
+  const requestStageFullscreen=()=>stage.requestFullscreen?.()||stage.webkitRequestFullscreen?.();
+  const exitStageFullscreen=()=>document.exitFullscreen?.()||document.webkitExitFullscreen?.();
+  const syncFullscreenUi=()=>{
+    const on=isExpanded();
+    fullscreenBtn?.setAttribute('aria-pressed',String(on));
+    fullscreenBtn?.setAttribute('aria-label',on?'Minimize City Slide':'Full screen City Slide');
+    if(fullscreenBtn)fullscreenBtn.title=on?'Minimize':'Full screen';
+    const icon=fullscreenBtn?.querySelector('i');
+    if(icon)icon.className=on?'bi-fullscreen-exit':'bi-arrows-fullscreen';
+    document.documentElement.classList.toggle('city-slide-expanded',on);
+    requestAnimationFrame(()=>{fitCanvas(canvas,VIEW_W,VIEW_H,1.5);render();requestAnimationFrame(()=>{fitCanvas(canvas,VIEW_W,VIEW_H,1.5);render()})});
+  };
+  const collapseStage=async()=>{
+    if(document.fullscreenElement||document.webkitFullscreenElement){try{await exitStageFullscreen()}catch(_){}}
+    stage.classList.remove('is-windowed-max');
+    syncFullscreenUi();
+  };
+  const toggleFullscreen=async()=>{
+    if(isExpanded()){await collapseStage();return}
+    try{
+      const request=requestStageFullscreen();
+      if(request)await request;
+      else stage.classList.add('is-windowed-max');
+    }catch(_){stage.classList.add('is-windowed-max')}
+    syncFullscreenUi();
+  };
+  const keyDown=e=>{
+    if(editable(e.target))return;
+    if(e.code==='Escape'){
+      if(stage.classList.contains('is-windowed-max')){e.preventDefault();collapseStage();return}
+      if(isExpanded())return;
+      if(state==='playing'){e.preventDefault();pause()}
+      return;
+    }
+    const key=keyMap[e.code];if(!key||state!=='playing')return;e.preventDefault();controls[key]=true
+  },keyUp=e=>{const key=keyMap[e.code];if(!key)return;e.preventDefault();controls[key]=false};window.addEventListener('keydown',keyDown);window.addEventListener('keyup',keyUp);
   const buttons=[...panel.querySelectorAll('[data-drive]')],touchStart=e=>{if(state!=='playing')return;e.preventDefault();controls[e.currentTarget.dataset.drive]=true;e.currentTarget.classList.add('is-active');try{e.currentTarget.setPointerCapture(e.pointerId)}catch(_){}},touchEnd=e=>{e.preventDefault();controls[e.currentTarget.dataset.drive]=false;e.currentTarget.classList.remove('is-active')};buttons.forEach(b=>{b.addEventListener('pointerdown',touchStart);b.addEventListener('pointerup',touchEnd);b.addEventListener('pointercancel',touchEnd);b.addEventListener('lostpointercapture',touchEnd)});
-  overlayAction.addEventListener('click',()=>state==='paused'?resume():start());pauseBtn.addEventListener('click',()=>state==='paused'?resume():pause());$('[data-reset-car]').addEventListener('click',()=>{resetCar();render()});const stopVisibility=bindVisibility(pause),resize=()=>{fitCanvas(canvas,VIEW_W,VIEW_H,1.5);render()};window.addEventListener('resize',resize);resetWorld();render();
+  overlayAction.addEventListener('click',()=>state==='paused'?resume():start());pauseBtn.addEventListener('click',()=>state==='paused'?resume():pause());$('[data-reset-car]').addEventListener('click',()=>{resetCar();render()});fullscreenBtn?.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();toggleFullscreen()});const stopVisibility=bindVisibility(pause),resize=()=>{fitCanvas(canvas,VIEW_W,VIEW_H,1.5);render()};window.addEventListener('resize',resize);document.addEventListener('fullscreenchange',syncFullscreenUi);document.addEventListener('webkitfullscreenchange',syncFullscreenUi);resetWorld();render();
   panel.citySlideDebug={
     getState:()=>({
       state,health,score,npcCount:npcs.length,
@@ -156,5 +192,5 @@ export function mount(panel){
     testRapidNpcHits:()=>{const targets=npcs.filter(n=>n.state!=='hit'&&n.state!=='down').slice(0,6);for(let i=0;i<targets.length;i++)hitNpc(targets[i],90+i*25,i%2===0);return targets.length},
     benchmark:(steps=240)=>{const previousState=state,startTime=performance.now();state='playing';for(let i=0;i<steps;i++)update(STEP);const elapsed=performance.now()-startTime;state=previousState;return{steps,elapsed,average:elapsed/steps}}
   };
-  return{pause,close(){if(state==='playing')pause();window.GameAudio?.cancel('city')},destroy(){loop.stop();clearControls();stopVisibility();CAR_SPRITE.removeEventListener('load',redrawSprite);delete panel.citySlideDebug;window.GameAudio?.cancel('city');window.removeEventListener('keydown',keyDown);window.removeEventListener('keyup',keyUp);window.removeEventListener('resize',resize);buttons.forEach(b=>{b.removeEventListener('pointerdown',touchStart);b.removeEventListener('pointerup',touchEnd);b.removeEventListener('pointercancel',touchEnd);b.removeEventListener('lostpointercapture',touchEnd)})}};
+  return{pause,close(){if(state==='playing')pause();collapseStage();window.GameAudio?.cancel('city')},destroy(){loop.stop();clearControls();stopVisibility();collapseStage();CAR_SPRITE.removeEventListener('load',redrawSprite);delete panel.citySlideDebug;window.GameAudio?.cancel('city');window.removeEventListener('keydown',keyDown);window.removeEventListener('keyup',keyUp);window.removeEventListener('resize',resize);document.removeEventListener('fullscreenchange',syncFullscreenUi);document.removeEventListener('webkitfullscreenchange',syncFullscreenUi);buttons.forEach(b=>{b.removeEventListener('pointerdown',touchStart);b.removeEventListener('pointerup',touchEnd);b.removeEventListener('pointercancel',touchEnd);b.removeEventListener('lostpointercapture',touchEnd)})}};
 }

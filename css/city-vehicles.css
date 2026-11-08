@@ -15,6 +15,36 @@ html[data-theme="dark"] .city-stage {
   background: #fff;
 }
 
+.city-fullscreen-btn {
+  align-items: center;
+  background: rgba(8, 29, 38, .78);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 12px;
+  color: #fff;
+  display: flex;
+  height: 42px;
+  justify-content: center;
+  padding: 0;
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  transition: background .2s ease, transform .2s ease;
+  width: 42px;
+  z-index: 6;
+}
+
+.city-fullscreen-btn:hover {
+  background: rgba(12, 44, 54, .92);
+}
+
+.city-fullscreen-btn:active {
+  transform: scale(.96);
+}
+
+.city-fullscreen-btn i {
+  font-size: 1.05rem;
+}
+
 .city-health {
   background: rgba(8, 29, 38, .78);
   border: 1px solid rgba(255, 255, 255, .16);
@@ -23,9 +53,36 @@ html[data-theme="dark"] .city-stage {
   min-width: 168px;
   padding: 8px 10px;
   position: absolute;
-  right: 14px;
+  right: 64px;
   top: 14px;
   z-index: 4;
+}
+
+.city-stage:fullscreen,
+.city-stage:-webkit-full-screen,
+.city-stage.is-windowed-max {
+  aspect-ratio: auto;
+  background: #071015;
+  border-radius: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.city-stage.is-windowed-max {
+  height: 100dvh;
+  inset: 0;
+  max-height: none;
+  position: fixed;
+  width: 100vw;
+  z-index: 2300;
+}
+
+html.city-slide-expanded {
+  overflow: hidden;
+}
+
+html.city-slide-expanded .quick-actions {
+  display: none;
 }
 .city-health > div:first-child { align-items: center; display: flex; gap: 10px; justify-content: space-between; }
 .city-health span { font-size: .58rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
@@ -40,6 +97,9 @@ html[data-theme="dark"] .city-stage {
 @keyframes city-health-hit { 50% { box-shadow: 0 0 0 5px rgba(229,74,95,.25); transform: translateX(-2px); } }
 @keyframes city-health-heal { 50% { box-shadow: 0 0 0 5px rgba(38,201,145,.23); } }
 @keyframes city-health-critical { 50% { filter: brightness(1.28); opacity: .68; } }
-@media (max-width: 575px) { .city-health { min-width: 148px; right: 10px; top: 10px; } }
+@media (max-width: 575px) {
+  .city-fullscreen-btn { height: 38px; right: 10px; top: 10px; width: 38px; }
+  .city-health { min-width: 148px; right: 56px; top: 10px; }
+}
 @media (prefers-reduced-motion: reduce) { .city-health,.city-health-track span { animation: none; transition: none; } }
 
