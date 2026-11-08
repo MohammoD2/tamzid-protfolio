@@ -21,7 +21,7 @@ export function mount(panel){
   const stage=panel.querySelector('.city-stage'),canvas=stage.querySelector('canvas'),ctx=fitCanvas(canvas,VIEW_W,VIEW_H,1.5);
   const $=selector=>panel.querySelector(selector),scoreEl=$('[data-score]'),hudScore=$('[data-hud-score]'),bestEl=$('[data-best]'),comboEl=$('[data-combo]'),districtEl=$('[data-district]'),statusEl=$('[data-status]'),pauseBtn=$('[data-pause]'),healthFill=$('[data-health-fill]'),healthValue=$('[data-health-value]'),healthWrap=$('[data-health]'),fullscreenBtn=$('[data-city-fullscreen]'),overlay=$('.arcade-overlay'),overlayTitle=overlay.querySelector('h3'),overlayCopy=overlay.querySelector('p'),overlayAction=overlay.querySelector('[data-overlay-action]');
   const mobile=matchMedia('(max-width:700px),(pointer:coarse)').matches,reduced=prefersReducedMotion();
-  const NPC_LIMIT=mobile?34:52,TRAFFIC_LIMIT=mobile?4:7,PURSUER_LIMIT=mobile?12:20,EXPRESSION_LIMIT=mobile?16:28;
+  const NPC_LIMIT=mobile?140:220,TRAFFIC_LIMIT=mobile?4:7,PURSUER_LIMIT=mobile?12:20,EXPRESSION_LIMIT=mobile?16:28;
   const controls={left:false,right:false,up:false,down:false,brake:false},keyMap={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',ArrowUp:'up',KeyW:'up',ArrowDown:'down',KeyS:'down',Space:'brake'};
   let state='ready',score=0,best=safeBest(BEST_KEY),combo=1,driftTime=0,grace=0,health=STARTING_CAR_HEALTH,displayHealth=STARTING_CAR_HEALTH,damageGrace=0,lowHealthCue=false,eventId=0,runTime=0,crowdDecisionClock=0,car,camera={x:0,y:0},marks=[],particles=[],popups=[],npcHits=0,doctorHits=0,maxPursuers=0,lastEngine=0,lastSkid=0,lastImpact=0,healthFlash=0;
   const npcs=[],traffic=[],expressions=[],decorations=[],grid=new Map(),cellCounts=new Map();
