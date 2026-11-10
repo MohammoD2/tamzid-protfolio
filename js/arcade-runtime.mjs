@@ -12,14 +12,17 @@ export function safeBest(key, value) {
 }
 
 export function fitCanvas(canvas, width, height, maxDpr = 2) {
-  const dpr = Math.min(maxDpr, window.devicePixelRatio || 1);
+  const touchOrMobile = window.matchMedia?.('(pointer: coarse)').matches;
+  const dpr = Math.min(maxDpr, touchOrMobile ? 1.25 : 1.5, window.devicePixelRatio || 1);
   const pixelWidth = Math.max(1, Math.round(canvas.clientWidth * dpr));
   const pixelHeight = Math.max(1, Math.round(canvas.clientHeight * dpr));
   if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
     canvas.width = pixelWidth;
     canvas.height = pixelHeight;
   }
-  const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
+  // A synchronized, opaque buffer avoids partial-frame presentation seen on
+  // several mobile GPU/browser combinations when a canvas is resized.
+  const ctx = canvas.getContext('2d', { alpha: false });
   ctx.setTransform(pixelWidth / width, 0, 0, pixelHeight / height, 0, 0);
   return ctx;
 }

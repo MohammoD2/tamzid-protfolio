@@ -6,6 +6,7 @@ addEventListener('load',async()=>{
   doc.querySelector('[data-game-target="citySlidePanel"]')?.click();
   while(!panel.citySlideDebug)await wait(100);
   panel.querySelector('[data-overlay-action]')?.click();
+  if(!panel.citySlideDebug.getState().controlsVisible)panel.querySelector('[data-controls-toggle]')?.click();
   await wait(350);
   panel.citySlideDebug.testVisibleWitnesses();
   panel.querySelector('.arcade-overlay').classList.add('is-hidden');

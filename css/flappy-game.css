@@ -82,11 +82,11 @@
 }
 
 #flappyGamePanel .skin-preview { flex: 0 0 22px; height: 22px; width: 22px; }
-#flappyGamePanel .skin-preview-911 {
-  background: transparent url('../images/plane-911.svg') center / contain no-repeat;
+#flappyGamePanel .skin-preview-helicopter {
+  background: transparent url('../images/helicopter.svg') center / contain no-repeat;
   border-radius: 0;
 }
-#flappyGamePanel .skin-preview-911::after { display: none; }
+#flappyGamePanel .skin-preview-helicopter::after { display: none; }
 #flappyGamePanel .skin-lock { font-size: .66rem; min-width: 0; padding: 3px 6px; }
 
 #flappyGamePanel .game-stats {

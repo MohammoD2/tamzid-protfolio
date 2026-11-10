@@ -372,7 +372,10 @@
         damage: () => { noise(game, .09, .032, { frequency: 230 }); tone(game, 92, .11, .03, { type: 'sawtooth', to: 68, filter: 360 }); },
         traffic: details => { if (!playCityBuffer('crash', details)) { noise(game, .13, .038, { frequency: 190 }); tone(game, 82, .15, .035, { type: 'triangle', to: 55, filter: 320 }); } },
         heal: () => { tone(game, 440, .09, .025, { type: 'sine', filter: 1600 }); tone(game, 660, .13, .022, { delay: .07, type: 'sine', filter: 2000 }); },
-        warning: () => { tone(game, 260, .1, .025, { type: 'square', filter: 900 }); tone(game, 260, .1, .025, { delay: .16, type: 'square', filter: 900 }); }
+        warning: () => { tone(game, 260, .1, .025, { type: 'square', filter: 900 }); tone(game, 260, .1, .025, { delay: .16, type: 'square', filter: 900 }); },
+        milestone: () => { tone(game, 523.25, .12, .035, { type: 'sine', filter: 1800 }); tone(game, 659.25, .15, .032, { delay: .08, type: 'sine', filter: 2100 }); tone(game, 783.99, .2, .028, { delay: .17, type: 'sine', filter: 2400 }); },
+        shoot: () => { noise(game, .045, .025, { frequency: 1250, q: .8 }); tone(game, 185, .055, .018, { type: 'square', to: 115, filter: 800 }); },
+        bulletImpact: () => { noise(game, .07, .028, { frequency: 720, q: 1 }); tone(game, 110, .08, .024, { type: 'triangle', to: 72, filter: 500 }); }
       }
     };
     cues[game]?.[event]?.(details);

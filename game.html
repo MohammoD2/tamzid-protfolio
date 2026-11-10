@@ -37,10 +37,10 @@
         <link href="css/chess-game.css?v=2" rel="stylesheet">
         <link href="css/portfolio-typography.css?v=1" rel="stylesheet">
         <link href="css/visual-system.css?v=4" rel="stylesheet">
-        <link href="css/flappy-game.css?v=4" rel="stylesheet">
+        <link href="css/flappy-game.css?v=5" rel="stylesheet">
         <link href="css/game-audio.css?v=2" rel="stylesheet">
         <link href="css/arcade-games.css?v=2" rel="stylesheet">
-        <link href="css/city-vehicles.css?v=3" rel="stylesheet">
+        <link href="css/city-vehicles.css?v=8" rel="stylesheet">
     </head>
 
     <body>
@@ -165,9 +165,9 @@
                                         <span class="skin-name">Blender</span>
                                         <span class="skin-lock"><i class="bi-lock-fill"></i> 9</span>
                                     </button>
-                                    <button class="skin-option" type="button" data-skin="plane911" data-unlock-score="11">
-                                        <span class="skin-preview skin-preview-911"></span>
-                                        <span class="skin-name">911</span>
+                                    <button class="skin-option" type="button" data-skin="helicopter" data-unlock-score="11">
+                                        <span class="skin-preview skin-preview-helicopter"></span>
+                                        <span class="skin-name">Helicopter</span>
                                         <span class="skin-lock"><i class="bi-lock-fill"></i> 11</span>
                                     </button>
                                     <span class="skin-option skin-option-empty" aria-hidden="true"></span>
@@ -252,8 +252,9 @@
                             <div class="game-audio city-audio" id="gameAudioControls" aria-label="Game sound controls"><button class="game-audio-toggle" id="gameAudioToggle" type="button" aria-expanded="false" aria-controls="gameAudioSettings"><i class="bi-volume-up-fill" aria-hidden="true"></i><span>Sound</span></button><div class="game-audio-settings" id="gameAudioSettings" hidden><label for="gameEffectsVolume"><span><i class="bi-stars" aria-hidden="true"></i> Effects</span><output id="gameEffectsOutput">72%</output></label><input id="gameEffectsVolume" type="range" min="0" max="100" step="1" value="72" aria-label="Game sound effects volume"></div><span class="visually-hidden" id="gameAudioStatus" role="status" aria-live="polite"></span></div>
                             <p class="arcade-status" data-status role="status" aria-live="polite">Ready to explore.</p>
                         </div>
-                        <div class="arcade-stage city-stage"><canvas width="960" height="600" tabindex="0" aria-label="City Slide top-down driving game."></canvas><div class="city-hud"><strong data-hud-score>0</strong><span data-district>Car · Free drive</span></div><button class="city-fullscreen-btn" type="button" data-city-fullscreen aria-pressed="false" aria-label="Full screen City Slide" title="Full screen"><i class="bi-arrows-fullscreen" aria-hidden="true"></i></button><div class="city-health" data-health aria-label="Car health"><div><span>Car health</span><strong data-health-value>100</strong></div><div class="city-health-track"><span data-health-fill></span></div></div>
+                        <div class="arcade-stage city-stage"><canvas width="960" height="600" tabindex="0" aria-label="City Slide top-down driving game."></canvas><div class="city-hud"><strong data-hud-score>0</strong><span data-district>Car · Free drive</span></div><div class="city-hits" data-hits aria-live="polite">HITS: <strong data-hit-count>0</strong></div><button class="city-fullscreen-btn" type="button" data-city-fullscreen aria-pressed="false" aria-label="Full screen City Slide" title="Full screen"><i class="bi-arrows-fullscreen" aria-hidden="true"></i></button><button class="city-controls-toggle" type="button" data-controls-toggle aria-pressed="false" aria-label="Show on-screen controls" title="Show controls"><i class="bi-controller" aria-hidden="true"></i></button><div class="city-health" data-health aria-label="Car health"><div><span>Car health</span><strong data-health-value>100</strong></div><div class="city-health-track"><span data-health-fill></span></div></div>
                             <div class="drive-controls city-drive-controls" aria-label="Touch driving controls"><div class="drive-steer"><button type="button" data-drive="left" aria-label="Steer left"><i class="bi-arrow-left"></i></button><button type="button" data-drive="right" aria-label="Steer right"><i class="bi-arrow-right"></i></button></div><div class="drive-pedals"><button type="button" data-drive="brake">Drift</button><button type="button" data-drive="down" aria-label="Brake or reverse"><i class="bi-arrow-down"></i></button><button type="button" data-drive="up" aria-label="Accelerate"><i class="bi-arrow-up"></i></button></div></div>
+                            <div class="city-milestone" data-milestone aria-live="assertive" hidden><span>HIT MILESTONE</span><strong data-milestone-value>100</strong></div><div class="city-impact" data-impact aria-hidden="true"></div>
                             <div class="arcade-overlay"><span class="arcade-overlay-icon"><i class="bi-buildings"></i></span><h3>City Slide</h3><p>Drive freely, dodge traffic, meet the crowd, and build arcade drift combos.</p><button class="custom-btn btn" type="button" data-overlay-action>Start driving</button></div>
                         </div>
                     </div>
@@ -327,9 +328,9 @@
         <script src="js/theme-toggle.js?v=6"></script>
         <script src="js/site-animations.js?v=4"></script>
         <script src="js/ambient-motion.js?v=7"></script>
-        <script src="js/game-audio.js?v=5"></script>
-        <script src="js/game-library.js?v=10"></script>
-        <script src="js/flappy-bird.js?v=12"></script>
+        <script src="js/game-audio.js?v=6"></script>
+        <script src="js/game-library.js?v=12"></script>
+        <script src="js/flappy-bird.js?v=13"></script>
         <script type="module" src="js/chess-game.js?v=3"></script>
 
     </body>

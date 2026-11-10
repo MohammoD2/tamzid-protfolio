@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 80" role="img" aria-labelledby="title">
+  <title id="title">Top-down helicopter</title>
+  <g stroke="#183747" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M69 31 30 16M69 49 30 64M98 40h43" fill="none" stroke-width="7"/>
+    <path d="m131 29 17 11-17 11" fill="#ef5350" stroke-width="4"/>
+    <path d="M48 40h67" fill="none" stroke="#9fc6db" stroke-width="5"/>
+    <path d="M80 12v56" fill="none" stroke="#9fc6db" stroke-width="5"/>
+    <ellipse cx="80" cy="40" rx="28" ry="19" fill="#3b5d7d" stroke-width="4"/>
+    <path d="M64 31q16-14 32 0v18q-16 14-32 0Z" fill="#dceaf6" stroke-width="3"/>
+    <circle cx="80" cy="40" r="5" fill="#f5b642" stroke-width="2"/>
+  </g>
+</svg>

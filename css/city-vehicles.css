@@ -94,12 +94,61 @@ html.city-slide-expanded .quick-actions {
 .city-health.is-critical .city-health-track span { animation: city-health-critical 1.15s ease-in-out infinite; }
 .city-health.is-hit { animation: city-health-hit .28s ease; }
 .city-health.is-heal { animation: city-health-heal .45s ease; }
+.city-hits {
+  background: rgba(8,29,38,.82); border: 1px solid rgba(255,255,255,.16); color: #fff;
+  position: absolute; top: 14px; z-index: 5;
+}
+.city-hits { border-radius: 999px; font: 800 .8rem/1 "Outfit",system-ui,sans-serif; left: 50%; letter-spacing: .08em; padding: 11px 16px; transform: translateX(-50%); }
+.city-hits strong { font: inherit; }
+.city-hits.is-milestone { animation: city-hit-pulse .8s cubic-bezier(.2,.8,.2,1); }
+.city-controls-toggle { align-items: center; background: rgba(8,29,38,.78); border: 1px solid rgba(255,255,255,.16); border-radius: 11px; color: #fff; display: flex; height: 40px; justify-content: center; left: max(14px,env(safe-area-inset-left)); padding: 0; position: absolute; top: max(70px,calc(env(safe-area-inset-top) + 70px)); transition: background .14s ease,transform .1s ease; width: 40px; z-index: 7; }
+.city-controls-toggle[aria-pressed="true"] { background: #178f82; }
+.city-controls-toggle:active { transform: scale(.94); }
+.city-drive-controls { opacity: 0; transform: translateY(12px); transition: opacity .2s ease,transform .2s ease,visibility .2s; visibility: hidden; }
+.city-drive-controls.is-visible { opacity: 1; transform: none; visibility: visible; }
+.city-stage { overscroll-behavior: contain; }
+.city-drive-controls,.city-drive-controls button { -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; touch-action: none; user-select: none; }
+.city-drive-controls { bottom: max(12px,env(safe-area-inset-bottom)); left: max(12px,env(safe-area-inset-left)); right: max(12px,env(safe-area-inset-right)); }
+.city-drive-controls>div { align-items: flex-end; gap: 10px; }
+.city-drive-controls button { backdrop-filter: blur(5px); background: rgba(8,27,36,.62); border: 2px solid rgba(255,255,255,.42); box-shadow: 0 6px 18px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.14); height: 58px; transition: background-color .08s ease,border-color .08s ease,box-shadow .08s ease,transform .08s ease; width: 58px; }
+#citySlidePanel .city-drive-controls button { border-radius: 50% !important; }
+.city-drive-controls button i { font-size: 1.3rem; line-height: 1; }
+.city-drive-controls button.is-active { background: rgba(20,170,143,.92); border-color: rgba(255,255,255,.8); box-shadow: 0 2px 8px rgba(0,0,0,.2),0 0 0 5px rgba(44,215,180,.16); transform: scale(.91); }
+.city-milestone { align-items: center; color: #fff; display: flex; flex-direction: column; inset: 0; justify-content: center; pointer-events: none; position: absolute; text-shadow: 0 4px 22px rgba(0,0,0,.7); z-index: 7; }
+.city-milestone[hidden] { display: none; }
+.city-milestone span { font: 800 .72rem/1 "Outfit",system-ui,sans-serif; letter-spacing: .22em; }
+.city-milestone strong { font: 900 clamp(3rem,10vw,6.5rem)/1 "Outfit",system-ui,sans-serif; }
+.city-milestone.is-active { animation: city-milestone-show 1.35s ease both; }
+.city-impact { border: 0 solid rgba(255,208,72,.34); inset: 0; pointer-events: none; position: absolute; z-index: 6; }
+.city-impact.is-active { animation: city-impact .48s ease-out; }
+@keyframes city-hit-pulse { 35% { box-shadow: 0 0 0 8px rgba(255,208,72,.18),0 0 28px rgba(255,208,72,.7); transform: translateX(-50%) scale(1.2); } }
+@keyframes city-milestone-show { 0% { opacity: 0; transform: scale(.65); } 20%,70% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.12); } }
+@keyframes city-impact { 35% { border-width: 12px; } 100% { border-width: 0; } }
 @keyframes city-health-hit { 50% { box-shadow: 0 0 0 5px rgba(229,74,95,.25); transform: translateX(-2px); } }
 @keyframes city-health-heal { 50% { box-shadow: 0 0 0 5px rgba(38,201,145,.23); } }
 @keyframes city-health-critical { 50% { filter: brightness(1.28); opacity: .68; } }
 @media (max-width: 575px) {
   .city-fullscreen-btn { height: 38px; right: 10px; top: 10px; width: 38px; }
   .city-health { min-width: 148px; right: 56px; top: 10px; }
+  .city-hits { padding: 9px 12px; top: 58px; }
+  .city-controls-toggle { height: 38px; left: max(10px,env(safe-area-inset-left)); top: max(62px,calc(env(safe-area-inset-top) + 62px)); width: 38px; }
+  .city-drive-controls { align-items: flex-end; bottom: max(14px,env(safe-area-inset-bottom)); left: max(14px,env(safe-area-inset-left)); right: max(64px,calc(env(safe-area-inset-right) + 14px)); }
+  .city-drive-controls .drive-steer { flex: 0 0 140px; gap: 12px; width: 140px; }
+  .city-drive-controls .drive-steer button { height: 64px; width: 64px; }
+  .city-drive-controls .drive-pedals { align-items: center; display: grid; flex: 0 0 144px; gap: 10px 12px; grid-template-columns: 56px 76px; grid-template-rows: 54px 54px; width: 144px; }
+  .city-drive-controls .drive-pedals button { height: 54px; width: 54px; }
+  .city-drive-controls .drive-pedals button:first-child { font-size: .52rem; grid-column: 1; grid-row: 1; letter-spacing: .02em; width: 54px; }
+  .city-drive-controls .drive-pedals [data-drive="down"] { grid-column: 1; grid-row: 2; }
+  .city-drive-controls .drive-pedals [data-drive="up"] { background: rgba(12,73,67,.72); border-width: 3px; grid-column: 2; grid-row: 1 / 3; height: 76px; margin: 16px 0 0; width: 76px; }
+  .city-drive-controls .drive-pedals [data-drive="up"] i { font-size: 1.65rem; }
 }
-@media (prefers-reduced-motion: reduce) { .city-health,.city-health-track span { animation: none; transition: none; } }
+@media (max-width: 360px) {
+  .city-drive-controls { left: max(10px,env(safe-area-inset-left)); right: max(56px,calc(env(safe-area-inset-right) + 10px)); }
+  .city-drive-controls .drive-steer { flex-basis: 120px; gap: 8px; width: 120px; }
+  .city-drive-controls .drive-steer button { height: 56px; width: 56px; }
+  .city-drive-controls .drive-pedals { flex-basis: 126px; gap: 8px; grid-template-columns: 50px 68px; grid-template-rows: 48px 48px; width: 126px; }
+  .city-drive-controls .drive-pedals button,.city-drive-controls .drive-pedals button:first-child { height: 48px; width: 48px; }
+  .city-drive-controls .drive-pedals [data-drive="up"] { height: 68px; margin-top: 14px; width: 68px; }
+}
+@media (prefers-reduced-motion: reduce) { .city-health,.city-health-track span,.city-hits,.city-milestone,.city-impact { animation: none !important; transition: none; } }
 

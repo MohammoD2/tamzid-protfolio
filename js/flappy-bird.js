@@ -47,10 +47,10 @@
       draw();
     }
   });
-  const plane911 = new Image();
-  plane911.src = 'images/plane-911.svg';
-  plane911.addEventListener('load', () => {
-    if (selectedSkin === 'plane911') {
+  const helicopter = new Image();
+  helicopter.src = 'images/helicopter.svg';
+  helicopter.addEventListener('load', () => {
+    if (selectedSkin === 'helicopter') {
       draw();
     }
   });
@@ -59,6 +59,10 @@
   let score;
   let best = Number(localStorage.getItem('tamzidFlappyBest') || 0);
   let selectedSkin = localStorage.getItem('tamzidFlappySkin') || 'default';
+  if (selectedSkin === 'plane911') {
+    selectedSkin = 'helicopter';
+    localStorage.setItem('tamzidFlappySkin', selectedSkin);
+  }
   let gameState = 'ready';
   let animationFrame;
   let elapsedTime;
@@ -319,7 +323,7 @@
         drawForestPillars(pipe);
       } else if (selectedSkin === 'blender') {
         drawBlenderPillars(pipe);
-      } else if (selectedSkin === 'plane911') {
+      } else if (selectedSkin === 'helicopter') {
         drawTowerPillars(pipe);
       } else {
         drawClassicPillars(pipe);
@@ -574,11 +578,11 @@
     ctx.drawImage(blenderLogo, -logoWidth / 2, -logoHeight / 2, logoWidth, logoHeight);
   };
 
-  const drawPlane911 = () => {
-    const planeWidth = 40;
-    const planeHeight = 20;
+  const drawHelicopter = () => {
+    const helicopterWidth = 46;
+    const helicopterHeight = 24;
 
-    if (!plane911.complete) {
+    if (!helicopter.complete) {
       ctx.fillStyle = '#5f7f9b';
       ctx.beginPath();
       ctx.ellipse(0, 0, bird.radius + 3, bird.radius * 0.55, 0, 0, Math.PI * 2);
@@ -588,7 +592,17 @@
 
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
-    ctx.drawImage(plane911, -planeWidth / 2, -planeHeight / 2, planeWidth, planeHeight);
+    ctx.drawImage(helicopter, -helicopterWidth / 2, -helicopterHeight / 2, helicopterWidth, helicopterHeight);
+    const rotorPhase = performance.now() * .028;
+    ctx.save();
+    ctx.rotate(-bird.rotation);
+    ctx.strokeStyle = 'rgba(24,55,71,.72)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(Math.cos(rotorPhase) * -29, Math.sin(rotorPhase) * -7);
+    ctx.lineTo(Math.cos(rotorPhase) * 29, Math.sin(rotorPhase) * 7);
+    ctx.stroke();
+    ctx.restore();
   };
 
   const drawBird = () => {
@@ -596,8 +610,8 @@
     ctx.translate(bird.x, bird.y);
     ctx.rotate(bird.rotation);
 
-    if (selectedSkin === 'plane911') {
-      drawPlane911();
+    if (selectedSkin === 'helicopter') {
+      drawHelicopter();
     } else if (selectedSkin === 'blender') {
       drawBlenderBird();
     } else if (selectedSkin === 'owl') {
@@ -613,7 +627,7 @@
     default: ['#6e9aba', '#dce9f2', '#f5b642', '#ffffff'],
     owl: ['#7c4a24', '#c89152', '#f5b642', '#eef4f9'],
     blender: ['#f57c00', '#ffad42', '#1e78bd', '#ffffff'],
-    plane911: ['#cbd5e1', '#64748b', '#ef4444', '#f8fafc']
+    helicopter: ['#cbd5e1', '#3b5d7d', '#ef5350', '#f5b642']
   };
 
   const createCrashEffect = () => {
@@ -706,7 +720,7 @@
         ctx.save();
         ctx.translate(particle.x, particle.y);
         ctx.rotate(particle.rotation);
-        if (selectedSkin === 'plane911' || selectedSkin === 'blender') {
+        if (selectedSkin === 'helicopter' || selectedSkin === 'blender') {
           ctx.fillRect(-particle.size / 2, -particle.size / 3, particle.size, particle.size * 0.66);
         } else {
           ctx.beginPath();
