@@ -103,12 +103,27 @@
                 <div class="container">
                     <p class="eyebrow">3D Models, Tutorials &amp; Tools.</p>
                     <h1 id="projectsTitle">See how it’s made. Create your own.</h1>
-                    <p class="projects-intro-copy">Explore my Blender tutorials and project files. Follow the process step by step, understand the choices behind each scene, and bring your own ideas to life.</p>
+                    <p class="projects-intro-copy">Learn with Blender tutorials and project files, then bring your own ideas to life.</p>
                 </div>
             </section>
-            <section class="projects-collection-section" aria-labelledby="marbleCollectionTitle">
-                <div class="container project-product-grid">
-                    <article class="project-product-card">
+            <section class="projects-collection-section" aria-label="Product collection">
+                <div class="container">
+                    <div class="project-product-filters" aria-label="Filter products">
+                        <div class="project-category-filters" role="group" aria-label="Product categories">
+                            <button class="project-filter-btn is-active" type="button" data-product-filter="all" aria-pressed="true">All</button>
+                            <button class="project-filter-btn" type="button" data-product-filter="project-files" aria-pressed="false">Project Files</button>
+                            <button class="project-filter-btn" type="button" data-product-filter="3d-models" aria-pressed="false">3D Models</button>
+                            <button class="project-filter-btn" type="button" data-product-filter="materials" aria-pressed="false">Materials</button>
+                            <button class="project-filter-btn" type="button" data-product-filter="tutorials" aria-pressed="false">Tutorials</button>
+                        </div>
+                        <label class="project-free-filter">
+                            <span>Free only</span>
+                            <input type="checkbox" data-free-filter>
+                            <span class="project-free-switch" aria-hidden="true"></span>
+                        </label>
+                    </div>
+                    <div class="project-product-grid" data-product-grid>
+                        <article class="project-product-card" data-product-category="tutorials" data-product-free="false">
                         <div class="project-product-media">
                             <img src="images/marble-music-animation-collection.png" alt="Marble Music Animation Tutorial artwork" width="1680" height="941">
                             <span class="project-product-badge"><i class="bi-stars" aria-hidden="true"></i> Featured collection</span>
@@ -129,7 +144,9 @@
                                 Get the collection for $10 <i class="bi-arrow-up-right ms-2" aria-hidden="true"></i>
                             </a>
                         </div>
-                    </article>
+                        </article>
+                    </div>
+                    <p class="project-products-empty" data-products-empty role="status" hidden>No products match these filters yet.</p>
                 </div>
             </section>
             <section class="projects-patreon-section" aria-labelledby="projectsPatreonTitle" data-ambient>
@@ -212,6 +229,7 @@
         <script src="js/theme-toggle.js?v=6"></script>
         <script src="js/site-animations.js?v=4"></script>
         <script src="js/ambient-motion.js?v=7"></script>
+        <script src="js/product-filters.js?v=1"></script>
 
     </body>
 </html>

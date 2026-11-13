@@ -80,8 +80,8 @@
     if (!context || !parameter) return;
     const now = context.currentTime;
     parameter.cancelScheduledValues(now);
-    parameter.setValueAtTime(Math.max(.0001, parameter.value), now);
-    parameter.linearRampToValueAtTime(Math.max(.0001, value), now + duration);
+    parameter.setValueAtTime(Math.max(0, parameter.value), now);
+    parameter.linearRampToValueAtTime(Math.max(0, value), now + duration);
   }
 
   function pruneVoices() {
@@ -385,6 +385,11 @@
     return Boolean(unlock() && state.effects > 0 && activeGame === game && !document.hidden);
   }
 
+  function getEffectsBus() {
+    const audio = unlock();
+    return audio && effectsGain ? { context: audio, destination: effectsGain } : null;
+  }
+
   function play(game, event, options) {
     if (!canPlay(game)) return false;
     if (game === 'flappy') playFlappy(event, options);
@@ -524,6 +529,7 @@
     cancel: safe(cancelVoices),
     setMuted: safe(setMuted),
     setVolume: safe(setVolume),
+    getEffectsBus: safe(getEffectsBus),
     get preferences() { return { ...state }; },
     get cityState() {
       return {
